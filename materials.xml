@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='utf-8'?>
+<materials>
+  <cross_sections>/home/mason/cross_sections/ENDF8/endfb80_hdf5/cross_sections.xml</cross_sections>
+  <material id="0" name="vacuum">
+    <density units="g/cm3" value="1e-20" />
+    <nuclide ao="0.996337" name="N14" />
+    <nuclide ao="0.003663" name="N15" />
+  </material>
+  <material id="1" name="deuterium">
+    <density units="kg/m3" value="0.001" />
+    <nuclide ao="1" name="H2" />
+  </material>
+  <material id="4" name="air">
+    <density units="g/cm3" value="0.001205" />
+    <nuclide ao="0.000148583129" name="C12" />
+    <nuclide ao="1.60703476e-06" name="C13" />
+    <nuclide ao="0.781575372" name="N14" />
+    <nuclide ao="0.00285532775" name="N15" />
+    <nuclide ao="0.210235865" name="O16" />
+    <nuclide ao="8.00842335e-05" name="O17" />
+    <nuclide ao="0.000432033365" name="O18" />
+    <nuclide ao="1.55828794e-05" name="Ar36" />
+    <nuclide ao="2.93813883e-06" name="Ar38" />
+    <nuclide ao="0.0046526059" name="Ar40" />
+  </material>
+  <material id="13" name="aluminum_6061">
+    <density units="g/cm3" value="2.7" />
+    <nuclide ao="0.00881687922" name="Mg24" />
+    <nuclide ao="0.00111620195" name="Mg25" />
+    <nuclide ao="0.00122893835" name="Mg26" />
+    <nuclide ao="0.977324713" name="Al27" />
+    <nuclide ao="0.00534499966" name="Si28" />
+    <nuclide ao="0.000271530132" name="Si29" />
+    <nuclide ao="0.000179204092" name="Si30" />
+    <nuclide ao="4.11473671e-05" name="Ti46" />
+    <nuclide ao="3.71074438e-05" name="Ti47" />
+    <nuclide ao="0.000367682897" name="Ti48" />
+    <nuclide ao="2.69826977e-05" name="Ti49" />
+    <nuclide ao="2.5835559e-05" name="Ti50" />
+    <nuclide ao="4.42071668e-05" name="Cr50" />
+    <nuclide ao="0.000852491208" name="Cr52" />
+    <nuclide ao="9.66656598e-05" name="Cr53" />
+    <nuclide ao="2.40621288e-05" name="Cr54" />
+    <nuclide ao="0.000434559057" name="Mn55" />
+    <nuclide ao="0.000116134627" name="Fe54" />
+    <nuclide ao="0.00182306529" name="Fe56" />
+    <nuclide ao="4.21025279e-05" name="Fe57" />
+    <nuclide ao="5.60307355e-06" name="Fe58" />
+    <nuclide ao="0.000811849846" name="Cu63" />
+    <nuclide ao="0.000362191869" name="Cu65" />
+    <nuclide ao="0.000297894307" name="Zn64" />
+    <nuclide ao="0.000168000999" name="Zn66" />
+    <nuclide ao="2.44761643e-05" name="Zn67" />
+    <nuclide ao="0.000111778523" name="Zn68" />
+    <nuclide ao="3.69565848e-06" name="Zn70" />
+    <sab name="c_Al27" />
+  </material>
+  <material id="20" name="REBCO tape">
+    <density units="g/cm3" value="6.3" />
+    <nuclide ao="0.01692307683" name="Ba130" />
+    <nuclide ao="0.0153846153" name="Ba132" />
+    <nuclide ao="0.37230769026" name="Ba134" />
+    <nuclide ao="1.01384614827" name="Ba135" />
+    <nuclide ao="1.20769230105" name="Ba136" />
+    <nuclide ao="1.72769229819" name="Ba137" />
+    <nuclide ao="11.0307691701" name="Ba138" />
+    <nuclide ao="15.957692254500001" name="Cu63" />
+    <nuclide ao="7.1192307455" name="Cu65" />
+    <nuclide ao="53.71803226164828" name="O16" />
+    <nuclide ao="0.0204076922902" name="O17" />
+    <nuclide ao="0.10771384606152" name="O18" />
+  </material>
+  <material id="21" name="tungsten">
+    <density units="g/cm3" value="19.25" />
+    <nuclide ao="0.12" name="W180" />
+    <nuclide ao="26.5" name="W182" />
+    <nuclide ao="14.31" name="W183" />
+    <nuclide ao="30.64" name="W184" />
+    <nuclide ao="28.43" name="W186" />
+  </material>
+  <material id="81" name="crispy">
+    <density units="g/cm3" value="1.4" />
+    <nuclide ao="0.067203845" name="H1" />
+    <nuclide ao="7.72933104e-06" name="H2" />
+    <nuclide ao="0.136943828" name="B10" />
+    <nuclide ao="0.551216112" name="B11" />
+    <nuclide ao="0.226052782" name="C12" />
+    <nuclide ao="0.00244492547" name="C13" />
+    <nuclide ao="0.01340965" name="O16" />
+    <nuclide ao="5.10807965e-06" name="O17" />
+    <nuclide ao="2.75567455e-05" name="O18" />
+    <nuclide ao="2.75567455e-05" name="Cl35" />
+    <nuclide ao="0.000651683424" name="Cl37" />
+  </material>
+  <material id="298" name="stainless 304">
+    <density units="g/cm3" value="8.0" />
+    <nuclide ao="0.00181016539" name="C12" />
+    <nuclide ao="1.9578257e-05" name="C13" />
+    <nuclide ao="0.00902042466" name="Si28" />
+    <nuclide ao="0.000458244576" name="Si29" />
+    <nuclide ao="0.000302431639" name="Si30" />
+    <nuclide ao="0.000407975189" name="P31" />
+    <nuclide ao="0.000244140964" name="S32" />
+    <nuclide ao="1.92763157e-06" name="S33" />
+    <nuclide ao="1.09232456e-05" name="S34" />
+    <nuclide ao="2.57017543e-08" name="S36" />
+    <nuclide ao="0.00872312748" name="Cr50" />
+    <nuclide ao="0.168216831" name="Cr52" />
+    <nuclide ao="0.0190744383" name="Cr53" />
+    <nuclide ao="0.00474803142" name="Cr54" />
+    <nuclide ao="0.0100006144" name="Mn55" />
+    <nuclide ao="0.0403523669" name="Fe54" />
+    <nuclide ao="0.633445864" name="Fe56" />
+    <nuclide ao="0.0146290275" name="Fe57" />
+    <nuclide ao="0.001946855" name="Fe58" />
+    <nuclide ao="0.0589458369" name="Ni58" />
+    <nuclide ao="0.0227057109" name="Ni60" />
+    <nuclide ao="0.000987005296" name="Ni61" />
+    <nuclide ao="0.00314709137" name="Ni62" />
+    <nuclide ao="0.000801362752" name="Ni64" />
+    <sab name="c_Fe56" />
+  </material>
+</materials>
