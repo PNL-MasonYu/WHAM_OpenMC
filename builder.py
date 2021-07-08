@@ -27,7 +27,7 @@ worst_source.angle = openmc.stats.Isotropic()
 settings.source = worst_source
 
 settings.particles = int(5e6)
-settings.batches = 50
+settings.batches = 5
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 settings.verbosity = 7
@@ -54,6 +54,7 @@ mesh.dimension = [200, 200, 200]
 mesh.lower_left = [-200, -200, 0]
 mesh.width = [2, 2, 2]
 full_mesh_filter = openmc.MeshFilter(mesh)
+coil_filter = openmc.CellFilter([c[2001].id])
 
 thermal_flux = openmc.Tally(name='thermal flux')
 thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
@@ -85,6 +86,21 @@ damage_energy.filters = [full_mesh_filter]
 damage_energy.scores = ['damage-energy']
 tallies_file.append(damage_energy)
 
+radiative_capture = openmc.Tally(name='neutron radiative capture')
+radiative_capture.filters = [full_mesh_filter]
+radiative_capture.scores = ['(n,gamma)']
+tallies_file.append(radiative_capture)
+
+absorption = openmc.Tally(name='neutron absorption')
+absorption.filters = [full_mesh_filter]
+absorption.scores = ['absorption']
+tallies_file.append(absorption)
+
+avg_coil_flux = openmc.Tally(name='Average neutron flux')
+avg_coil_flux.filters = [coil_filter, energy_filter]
+avg_coil_flux.scores = ['flux']
+tallies_file.append(avg_coil_flux)
+
 tallies_file.export_to_xml("./")
 
 geometry = openmc.Geometry(root)
@@ -96,6 +112,6 @@ chamber_geometry_plot = p.slice_plot(basis='yz',
                                    width=(350, 350), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
-openmc.plot_inline(chamber_geometry_plot)
-#openmc.run(threads=8, openmc_exec="/usr/local/bin/openmc")
+#openmc.plot_inline(chamber_geometry_plot)
+openmc.run(threads=8, openmc_exec="/usr/local/bin/openmc")
 # %%

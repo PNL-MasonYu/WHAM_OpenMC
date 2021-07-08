@@ -19,7 +19,9 @@ c = {}
 
 coil = r[2002] &~ r[2001]
 
-shield = r[1001] | r[1002] &~ r[4001]
+shield = r[1001] | r[1002] &~ r[3001]
+
+crispy_shield = r[3001] &~ r[4001]
 
 cryostat = r[4001] &~ r[4002]
 
@@ -27,12 +29,12 @@ cryostat = r[4001] &~ r[4002]
 #c[1002] = openmc.Cell(1002, "Deuterium neutron gas fill", m.deuterium, d2_fill)
 c[2001] = openmc.Cell(2001, "CFS coil", m.rebco, coil)
 c[3001] = openmc.Cell(3001, "Shield", m.tungsten, shield)
-#c[3002] = openmc.Cell(3002, "Inner shield", m.tungsten, central_shield)
+c[3002] = openmc.Cell(3002, "Crispy shield", m.crispy, crispy_shield)
 #c[3011] = openmc.Cell(3011, "Crispy Mix shield", m.tungsten, outer_shield)
 c[4001] = openmc.Cell(4001, "Cryostat", m.stainless, cryostat)
 #c[3021] = openmc.Cell(3021, "In-vessel shield", m.tungsten, inner_shield)
 
-root_cells.extend([c[2001], c[3001], c[4001]])
+root_cells.extend([c[2001], c[3001], c[3002], c[4001]])
 root.add_cells(root_cells)
 
 remaining_vacuum = r[1000]

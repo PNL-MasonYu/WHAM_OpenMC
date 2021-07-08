@@ -87,3 +87,7 @@ r[4002] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_dist)
 r[4002] &= +openmc.ZPlane(cryo_zmin) & -openmc.ZPlane(cryo_zmax)
 r[4002] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_dist)
 
+# Close shield
+r[3001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist+10)
+r[3001] &= +openmc.ZPlane(cryo_zmin-cryostat_thickness-10) & -openmc.ZPlane(cryo_zmax+cryostat_thickness)
+r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-10)
