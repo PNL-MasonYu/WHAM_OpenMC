@@ -11,6 +11,11 @@ flux_neutron_f, z_fus = cql3d.axial_neutron_flux("WHAM_VNS_gen3_large_50keV_NBI_
 #print(solzz)
 # %%
 vns_sources = []
+midpt_index = int(len(flux_neutron_f) / 2)
+strength_sum = 0
+for n in range(ndfz.shape[1]):
+    strength_sum += flux_neutron_f[midpt_index+n]
+
 for n in range(ndfz.shape[1]):
     fusion_source = openmc.Source()
     fusion_source.angle = openmc.stats.Isotropic()
@@ -21,8 +26,7 @@ for n in range(ndfz.shape[1]):
     z_uniform = openmc.stats.Uniform(z_thickness*n, z_thickness*(n+1))
     phi_uniform = openmc.stats.Uniform(0, 2*np.pi)
     fusion_source.space = openmc.stats.CylindricalIndependent(r_tabular, phi_uniform ,z_uniform)
-    midpt_index = int(len(flux_neutron_f) / 2)
-    fusion_source.strength = flux_neutron_f[midpt_index+n]
+    fusion_source.strength = flux_neutron_f[midpt_index+n] / strength_sum
     vns_sources.append(fusion_source)
-
 # %%
+

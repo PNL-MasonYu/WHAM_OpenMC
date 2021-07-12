@@ -84,7 +84,7 @@ aluminum_6061.add_s_alpha_beta('c_Al27')
 # This is basically YBCO for now
 rebco = openmc.Material(20, name="REBCO tape")
 rebco.set_density("g/cm3", 6.3)
-rebco.add_element('Yt', 7.6923076)
+rebco.add_element('Y', 7.6923076)
 rebco.add_element('Ba', 15.3846153)
 rebco.add_element('Cu', 23.0769230)
 rebco.add_element('O', 53.8461538)
@@ -107,6 +107,53 @@ crispy.add_nuclide('O18', 2.75567455e-05)
 crispy.add_nuclide('Cl35', 2.75567455e-05)
 crispy.add_nuclide('Cl37', 6.51683424e-04)
 
+# This water does not have the S_ab scattering kernels, meant for mixing
+water = openmc.Material(101, name="water")
+water.set_density('g/cm3', 1.4)
+water.add_element('H', 66.666)
+water.add_element('O', 33.333)
+
+cooled_tungsten = openmc.Material.mix_materials([tungsten, water], [0.85, 0.15], 'vo')
+cooled_tungsten.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
+
+tungsten_carbide = openmc.Material(22, name = 'tungsten carbide')
+tungsten_carbide.add_elements_from_formula('WC')
+tungsten_carbide.set_density('g/cm3', 15.63)
+
+cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water], [0.85, 0.15], 'vo')
+cooled_tungsten_carbide.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
+
+rafm_steel = openmc.Material(900, name="EUROFER 97 RAFM Steel")
+rafm_steel.add_element('Fe', 90)
+rafm_steel.add_element('Cr', 9.21)
+rafm_steel.add_element('C', 0.104)
+rafm_steel.add_element('Mn', 0.502)
+rafm_steel.add_element('V', 0.204)
+rafm_steel.add_element('W', 1.148)
+rafm_steel.add_element('Ta', 0.14)
+rafm_steel.add_element('N', 0.0234)
+rafm_steel.add_element('O', 0.001)
+rafm_steel.add_element('P', 0.04)
+rafm_steel.add_element('S', 0.004)
+rafm_steel.add_element('B', 0.01)
+rafm_steel.add_element('Ti', 0.004)
+rafm_steel.add_element('Nb', 0.0012)
+rafm_steel.add_element('Mo', 0.008)
+rafm_steel.add_element('Ni', 0.0214)
+rafm_steel.set_density('g/cm3', 7.798)
+#rafm_steel.add_s_alpha_beta('c_Fe56', 0.9)
+
+cooled_rafm_steel = openmc.Material.mix_materials([rafm_steel, water], [0.85, 0.15], 'vo')
+cooled_rafm_steel.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
+
+LiPb_breeder = openmc.Material(1000, name = "lead lithium eutectic breeder")
+# Should double check this number... Varies with temperature
+LiPb_breeder.set_density('g/cm3', 9.8)
+LiPb_breeder.add_element('Li', 15, enrichment=90, enrichment_target='Li6')
+LiPb_breeder.add_element('Pb', 85)
+
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
-                  rebco, tungsten, crispy]
+                  rebco, tungsten, crispy, water,
+                  cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
+                  rafm_steel, LiPb_breeder]
 materials = openmc.Materials(materials_list)

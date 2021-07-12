@@ -1,18 +1,24 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plots>
-  <plot basis="xz" color_by="material" filename="./background" id="1" type="slice">
+  <plot basis="yz" color_by="material" filename="./slice" id="1" type="slice">
     <origin>0 0 200</origin>
     <width>400 400</width>
     <pixels>1000 1000</pixels>
     <background>255 0 255</background>
     <color id="0" rgb="0 0 0" />
     <color id="1" rgb="128 128 128" />
+    <color id="2" rgb="0 128 0" />
+    <color id="3" rgb="0 100 0" />
     <color id="4" rgb="240 255 255" />
     <color id="13" rgb="211 211 211" />
     <color id="20" rgb="255 165 0" />
     <color id="21" rgb="0 128 0" />
+    <color id="22" rgb="0 100 0" />
     <color id="81" rgb="165 42 42" />
+    <color id="101" rgb="0 0 255" />
     <color id="298" rgb="0 128 128" />
+    <color id="900" rgb="240 255 255" />
+    <color id="1000" rgb="128 128 128" />
     <show_overlaps>true</show_overlaps>
     <overlap_color>255 0 0</overlap_color>
   </plot>

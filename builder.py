@@ -16,7 +16,9 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-#settings.source = vns_sources
+settings.source = vns_sources
+# Alternatively use the worst-case scenario source
+"""
 worst_source = openmc.Source()
 z_uniform = openmc.stats.Uniform(85, 90)
 r_uniform = openmc.stats.Uniform(0, 10)
@@ -25,9 +27,9 @@ worst_source.space = openmc.stats.CylindricalIndependent(r_uniform, phi_uniform,
 worst_source.energy = openmc.stats.Normal(14.1e6, 0.04e6)
 worst_source.angle = openmc.stats.Isotropic()
 settings.source = worst_source
-
+"""
 settings.particles = int(5e6)
-settings.batches = 5
+settings.batches = 100
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 settings.verbosity = 7
@@ -38,7 +40,8 @@ settings.export_to_xml(working_directory)
 settings.export_to_xml("./")
 
 # ENDF/B-VIII.0 cross sections
-materials.cross_sections = "/home/mason/cross_sections/ENDF8/endfb80_hdf5/cross_sections.xml"
+# Likely will have to modify this on different machines to point to the correct cross_sections.xml file
+materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
 
 materials.export_to_xml("./")
 
@@ -54,12 +57,25 @@ mesh.dimension = [200, 200, 200]
 mesh.lower_left = [-200, -200, 0]
 mesh.width = [2, 2, 2]
 full_mesh_filter = openmc.MeshFilter(mesh)
+
 coil_filter = openmc.CellFilter([c[2001].id])
+
+# Mesh surface tally for neutron current
+mesh_surface = openmc.MeshSurfaceFilter(mesh)
+total_current = openmc.Tally(name='total neutron current')
+total_current.filters = [mesh_surface]
+total_current.scores = ['current']
+tallies_file.append(total_current)
+
+fast_current = openmc.Tally(name='fast neutron current')
+fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e6, 20e6])]
+fast_current.scores = ['current']
+tallies_file.append(fast_current)
 
 thermal_flux = openmc.Tally(name='thermal flux')
 thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
 thermal_flux.scores = ['flux']
-tallies_file.append(thermal_flux)
+#tallies_file.append(thermal_flux)
 
 epithermal_flux = openmc.Tally(name='epithermal flux')
 epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5])]
@@ -97,7 +113,7 @@ absorption.scores = ['absorption']
 tallies_file.append(absorption)
 
 avg_coil_flux = openmc.Tally(name='Average neutron flux')
-avg_coil_flux.filters = [coil_filter, energy_filter]
+avg_coil_flux.filters = [coil_filter, log_energy_filter]
 avg_coil_flux.scores = ['flux']
 tallies_file.append(avg_coil_flux)
 
@@ -108,10 +124,10 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 150), 
-                                   width=(350, 350), 
+                                   origin=(0, 0, 200), 
+                                   width=(400, 400), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
-#openmc.plot_inline(chamber_geometry_plot)
-openmc.run(threads=8, openmc_exec="/usr/local/bin/openmc")
+openmc.plot_inline(chamber_geometry_plot)
+#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
 # %%

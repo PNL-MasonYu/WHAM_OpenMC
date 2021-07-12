@@ -14,7 +14,9 @@ from boolean import root
 # Colors of each material in plots
 material_color = {m.vacuum: 'black', m.air: 'azure', m.aluminum_6061: 'lightgrey',
                   m.deuterium: 'grey', m.stainless: 'teal', m.tungsten: 'green',
-                  m.rebco: 'orange', m.crispy: 'brown'}
+                  m.rebco: 'orange', m.crispy: 'brown', m.rafm_steel: 'azure', 
+                  m.tungsten_carbide: 'darkgreen', m.LiPb_breeder: 'grey',
+                  m.cooled_tungsten_carbide: 'darkgreen', m.water: 'blue'}
 
 for material in m.materials_list:
     if not material in material_color.keys():
