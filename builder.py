@@ -3,7 +3,7 @@ import openmc
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-
+from openmc import tallies
 
 from material import materials
 from boolean import c, root_cells, root
@@ -39,9 +39,10 @@ settings.photon_transport = True
 settings.export_to_xml(working_directory)
 settings.export_to_xml("./")
 
+# Set OPENMC_CROSS_SECTIONS environment variable to the path to cross_sections.xml, or
+# modify this on different machines to point to the correct cross_sections.xml file
 # ENDF/B-VIII.0 cross sections
-# Likely will have to modify this on different machines to point to the correct cross_sections.xml file
-materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
+#materials.cross_sections = "/home/mason/nuclear_data/endfb80_hdf5/cross_sections.xml"
 
 materials.export_to_xml("./")
 
@@ -58,8 +59,15 @@ mesh.lower_left = [-200, -200, 0]
 mesh.width = [2, 2, 2]
 full_mesh_filter = openmc.MeshFilter(mesh)
 
-coil_filter = openmc.CellFilter([c[2001].id])
+# Mesh tally covering a quarter of the device, focused on the breeder
+breeder_mesh = openmc.RegularMesh(mesh_id=2)
+breeder_mesh.dimension = [100, 100, 100]
+breeder_mesh.lower_left = [0, 0, 0]
+breeder_mesh.width = [2, 2, 2]
+breeder_mesh_filter = openmc.MeshFilter(breeder_mesh)
 
+coil_filter = openmc.CellFilter([c[2001].id])
+openmc.AggregateScore
 # Mesh surface tally for neutron current
 mesh_surface = openmc.MeshSurfaceFilter(mesh)
 total_current = openmc.Tally(name='total neutron current')
@@ -68,14 +76,14 @@ total_current.scores = ['current']
 tallies_file.append(total_current)
 
 fast_current = openmc.Tally(name='fast neutron current')
-fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e6, 20e6])]
+fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6])]
 fast_current.scores = ['current']
 tallies_file.append(fast_current)
 
 thermal_flux = openmc.Tally(name='thermal flux')
 thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
 thermal_flux.scores = ['flux']
-#tallies_file.append(thermal_flux)
+tallies_file.append(thermal_flux)
 
 epithermal_flux = openmc.Tally(name='epithermal flux')
 epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5])]
@@ -117,6 +125,26 @@ avg_coil_flux.filters = [coil_filter, log_energy_filter]
 avg_coil_flux.scores = ['flux']
 tallies_file.append(avg_coil_flux)
 
+breeder_reaction = openmc.Tally(name='Breeder Li-6(n,alpha)T reaction')
+breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
+breeder_reaction.scores = ['(n,alpha)']
+tallies_file.append(breeder_reaction)
+
+multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
+multiplier_reaction.filters = [openmc.CellFilter(c[6000].id)]
+multiplier_reaction.scores = ['(n,2n)', '(n,3n)']
+tallies_file.append(breeder_reaction)
+
+breeder_mesh = openmc.Tally(name='Breeder mesh')
+breeder_mesh.filters = [breeder_mesh_filter]
+breeder_mesh.scores = ['(n,alpha)']
+tallies_file.append(breeder_mesh)
+
+multiplier_mesh = openmc.Tally(name='Multiplier mesh')
+multiplier_mesh.filters = [breeder_mesh_filter]
+multiplier_mesh.scores = ['(n,2n)', '(n,3n)']
+tallies_file.append(multiplier_mesh)
+
 tallies_file.export_to_xml("./")
 
 geometry = openmc.Geometry(root)
@@ -129,5 +157,6 @@ chamber_geometry_plot = p.slice_plot(basis='yz',
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 openmc.plot_inline(chamber_geometry_plot)
+# Run locally
 #openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
 # %%

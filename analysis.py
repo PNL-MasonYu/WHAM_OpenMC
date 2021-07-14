@@ -182,6 +182,14 @@ def plot_coil_flux_energy():
     plt.hist(["<0.5 eV", "0.5 eV - 100 keV", ">100 keV"],
             [flux[0], flux[1], flux[2]])
     return fig8
+
+def surf_to_grid():
+    """
+    This converts the dataframe for the mesh surface tally into grids of U, V vectors at each cell
+    Returns the U, V vectors on each point in the grid
+    """
+    
+    return
 # %%
 plot_fast_flux()
 # %%

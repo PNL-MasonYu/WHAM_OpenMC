@@ -37,6 +37,7 @@ coil_nr = 16
 coil_dz = 2.4
 # Conductor thickness in r (cm)
 coil_dr = 1.9
+
 # Throat inner radius in cm
 throat_IR = 25.4
 # Cryostat clearance in cm
@@ -45,19 +46,19 @@ cryostat_dist = 5
 # Cryostat thickness in cm
 cryostat_thickness = 1.5
 # First wall thickness in cm
-fw_thickness = 0.9
+fw_thickness = 0.1
 # First wall support structure thickness in cm
 fw_support_thickness = 5
 # First wall cylinder end location in cm
 fw_end = 130
 # First wall inner radius in cm
-fw_radius = 75
+fw_radius = 80
 # Breeder blanket outer radius in cm
 breeder_OR = 175
 # Angle between axis to the expanding portion of shield in degree
 expand_angle = 17.5
-
-
+# Virtex of the cone for the expanding portion of shield in cm
+expand_virtex = 210
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -66,6 +67,7 @@ cryo_zmax = coil_zmax + cryostat_dist + cryostat_thickness
 
 expand_tan = np.tan(expand_angle*np.pi/180)
 expand_sin = np.sin(expand_angle*np.pi/180)
+throat_start = expand_virtex - throat_IR / expand_tan
 ##########################Universe Cell############################
 
 r[1] = -rpp(-199, 199, -239, 239, -199, 199)
@@ -80,7 +82,7 @@ r[1000] = +p_vacx1 & -p_vacx2 & +p_vacy1 & -p_vacy2 & +p_vacz1 & -p_vacz2
 
 ############################Shield##################################
 # The conical shield itself
-r[1001] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210, expand_tan, False)
+r[1001] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, expand_tan, False)
 r[1001] &= +openmc.ZPlane(fw_end)
 r[1001] &= -openmc.ZPlane(cryo_zmax)
 r[1001] &= +openmc.ZCylinder(0, 0, throat_IR)
@@ -92,10 +94,12 @@ r[1002] &= +openmc.ZPlane(cryo_zmax)
 r[1002] &= -openmc.ZPlane(cryo_zmax+10)
 r[1002] &= +openmc.ZCylinder(0, 0, throat_IR)
 
+r[1901] = +openmc.ZCylinder(0, 0, throat_IR)
+r[1901] &= +openmc.ZPlane(expand_virtex - throat_start)
 # Coil itself
 r[2001] = -openmc.ZCylinder(0, 0, coil_radius)
 r[2001] &= +openmc.ZPlane(coil_zmin) & -openmc.ZPlane(coil_zmax)
-r[2002] = -openmc.ZCylinder(0, 0, coil_radius + coil_dr*coil_nr) 
+r[2002] = -openmc.ZCylinder(0, 0, coil_radius + coil_dr*coil_nr)
 r[2002] &= +openmc.ZPlane(coil_zmin) & -openmc.ZPlane(coil_zmax)
 
 # Cryostat big doughnut

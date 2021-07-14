@@ -2,7 +2,7 @@ import openmc
 
 vacuum = openmc.Material(0, name='vacuum')
 vacuum.set_density('g/cm3', 1e-20)
-vacuum.add_element('N', 1)
+vacuum.add_nuclide('N14', 1)
 
 air = openmc.Material(4, name='air')
 air.set_density('g/cm3', 0.001205)
@@ -120,9 +120,6 @@ tungsten_carbide = openmc.Material(22, name = 'tungsten carbide')
 tungsten_carbide.add_elements_from_formula('WC')
 tungsten_carbide.set_density('g/cm3', 15.63)
 
-cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water], [0.85, 0.15], 'vo')
-cooled_tungsten_carbide.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
-
 rafm_steel = openmc.Material(900, name="EUROFER 97 RAFM Steel")
 rafm_steel.add_element('Fe', 90)
 rafm_steel.add_element('Cr', 9.21)
@@ -131,7 +128,7 @@ rafm_steel.add_element('Mn', 0.502)
 rafm_steel.add_element('V', 0.204)
 rafm_steel.add_element('W', 1.148)
 rafm_steel.add_element('Ta', 0.14)
-rafm_steel.add_element('N', 0.0234)
+rafm_steel.add_nuclide('N14', 0.0234)
 rafm_steel.add_element('O', 0.001)
 rafm_steel.add_element('P', 0.04)
 rafm_steel.add_element('S', 0.004)
@@ -151,6 +148,10 @@ LiPb_breeder = openmc.Material(1000, name = "lead lithium eutectic breeder")
 LiPb_breeder.set_density('g/cm3', 9.8)
 LiPb_breeder.add_element('Li', 15, enrichment=90, enrichment_target='Li6')
 LiPb_breeder.add_element('Pb', 85)
+
+# Shield material with structural support and coolant mixed in
+cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water, rafm_steel], [0.75, 0.15, 0.1], 'vo')
+cooled_tungsten_carbide.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
 
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
                   rebco, tungsten, crispy, water,

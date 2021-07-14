@@ -8,6 +8,21 @@ def elim(region, complement):
         region &= ~x
     return region
 
+def remove_void(root):
+    """
+    function to remove all undefined voids in the model and replace them with vacuum
+    use with caution - comes with performance penalties
+    and will most likely cause excessive events from boundary crossings
+    """
+    remaining_vacuum = r[1000]
+    all_cells = dict(root.get_all_cells())
+    for cell in all_cells.values():
+        remaining_vacuum &= ~cell.region
+    c[9999] = openmc.Cell(9999, "Vacuum", m.vacuum, remaining_vacuum)
+
+    root.add_cell(c[9999])
+    return root
+
 root = openmc.Universe(universe_id=0)
 
 root_cells = []
@@ -15,7 +30,7 @@ root_cells = []
 # Dictionary containing all cells
 c = {}
 
-#################Stainless Vacuum Chamber##################
+# Merge and split regions via boolean operations
 
 coil = r[2002] &~ r[2001]
 
@@ -46,13 +61,7 @@ c[5100] = openmc.Cell(5100, "First Wall structure", m.rafm_steel, first_wall_sup
 c[6000] = openmc.Cell(6000, "Breeder blanket", m.LiPb_breeder, breeder)
 c[7000] = openmc.Cell(7000, "End expander tank", m.stainless, expander_tank)
 
-root_cells.extend([c[2001], c[3001], c[3002], c[4001], c[5000], c[5100], c[6000], c[7000]])
+all_cells = [c[key] for key in c.keys()]
+root_cells.extend(all_cells)
 root.add_cells(root_cells)
 
-remaining_vacuum = r[1000]
-all_cells = dict(root.get_all_cells())
-for cell in all_cells.values():
-    remaining_vacuum &= ~cell.region
-c[9999] = openmc.Cell(9999, "Vacuum", m.vacuum, remaining_vacuum)
-
-root.add_cell(c[9999])
