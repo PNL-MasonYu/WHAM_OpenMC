@@ -1,13 +1,14 @@
 <?xml version='1.0' encoding='utf-8'?>
 <geometry>
-  <cell id="2001" material="20" name="CFS coil" region="-29 30 -31 ~(-26 27 -28)" universe="0" />
-  <cell id="3001" material="5" name="Shield" region="((((13 -14) | 14) 15 -16 17 -18 19) | (-20 21 -22 23)) ~(-40 41 -42 43) ~(-44 45 46 -47 -48) ~(-49 50 ((51 -52) | 52) -53) ~(((54 -55) | 55) (-56 -57) -58 59) ~(-60 61 62 -63 -64) ~(-65 66 ((67 -68) | 68) -69) ~(((70 -71) | 71) (-72 -73) -74 75)" universe="0" />
-  <cell id="3002" material="5" name="Crispy shield" region="-40 41 -42 43 ~(-32 33 -34 35)" universe="0" />
-  <cell id="4001" material="298" name="Cryostat" region="-32 33 -34 35 ~(-36 37 -38 39)" universe="0" />
-  <cell id="5000" material="21" name="First Wall" region="(-44 45 46 -47 -48) | (-49 50 ((51 -52) | 52) -53) | (((54 -55) | 55) (-56 -57) -58 59)" universe="0" />
-  <cell id="5100" material="900" name="First Wall structure" region="(-60 61 62 -63 -64) | (-65 66 ((67 -68) | 68) -69) | (((70 -71) | 71) (-72 -73) -74 75)" universe="0" />
-  <cell id="6000" material="1000" name="Breeder blanket" region="(-76 77 78 -79) | (-80 ((81 82) | -82) ((83 -84) | 84) -85 86) | (((87 -88) | 88) -89 -90 91)" universe="0" />
-  <cell id="7000" material="298" name="End expander tank" region="(92 -93 -94 95) | (96 -97 -98 99)" universe="0" />
+  <cell id="1001" material="0" name="Vacuum" region="(-24 25 -26) | (-27 -28 29 30 -31) | (-42 43 -44 45 ~(-35 36 -37 ~(-32 33 -34))) | (98 99 -100) | (-109 110 -111) | (112 113 -114) | (115 116 -117)" universe="0" />
+  <cell id="2001" material="20" name="CFS coil" region="-35 36 -37 ~(-32 33 -34)" universe="0" />
+  <cell id="3001" material="5" name="Shield" region="((((13 -14) | 14) 15 -16 17 -18 19) | (-20 21 -22 23)) ~(-46 47 -48 49) ~(-50 51 52 -53 -54) ~(-55 56 ((57 -58) | 58) -59) ~(((60 -61) | 61) (-62 -63) -64 65) ~(-66 67 68 -69 -70) ~(-71 72 ((73 -74) | 74) -75) ~(((76 -77) | 77) (-78 -79) -80 81)" universe="0" />
+  <cell id="3002" material="5" name="Crispy shield" region="-46 47 -48 49 ~(-38 39 -40 41)" universe="0" />
+  <cell id="4001" material="298" name="Cryostat" region="-38 39 -40 41 ~(-42 43 -44 45)" universe="0" />
+  <cell id="5000" material="21" name="First Wall" region="(-50 51 52 -53 -54) | (-55 56 ((57 -58) | 58) -59) | (((60 -61) | 61) (-62 -63) -64 65)" universe="0" />
+  <cell id="5100" material="900" name="First Wall structure" region="(-66 67 68 -69 -70) | (-71 72 ((73 -74) | 74) -75) | (((76 -77) | 77) (-78 -79) -80 81)" universe="0" />
+  <cell id="6000" material="1000" name="Breeder blanket" region="(-82 83 84 -85) | (-86 ((87 88) | -88) ((89 -90) | 90) -91 92) | (((93 -94) | 94) -95 -96 97)" universe="0" />
+  <cell id="7000" material="298" name="End expander tank" region="(101 -102 -103 104) | (105 -106 -107 108)" universe="0" />
   <surface coeffs="0 0 210 0.3152987888789835" id="13" type="z-cone" />
   <surface coeffs="210" id="14" type="z-plane" />
   <surface coeffs="130" id="15" type="z-plane" />
@@ -19,78 +20,98 @@
   <surface coeffs="265.7" id="21" type="z-plane" />
   <surface coeffs="275.7" id="22" type="z-plane" />
   <surface coeffs="0 0 25.4" id="23" type="z-cylinder" />
-  <surface coeffs="0 0 75" id="26" type="z-cylinder" />
-  <surface coeffs="220.8" id="27" type="z-plane" />
-  <surface coeffs="259.2" id="28" type="z-plane" />
-  <surface coeffs="0 0 105.4" id="29" type="z-cylinder" />
-  <surface coeffs="220.8" id="30" type="z-plane" />
-  <surface coeffs="259.2" id="31" type="z-plane" />
-  <surface coeffs="0 0 111.9" id="32" type="z-cylinder" />
-  <surface coeffs="214.3" id="33" type="z-plane" />
-  <surface coeffs="265.7" id="34" type="z-plane" />
-  <surface coeffs="0 0 68.5" id="35" type="z-cylinder" />
-  <surface coeffs="0 0 110.4" id="36" type="z-cylinder" />
-  <surface coeffs="215.8" id="37" type="z-plane" />
-  <surface coeffs="264.2" id="38" type="z-plane" />
-  <surface coeffs="0 0 70" id="39" type="z-cylinder" />
-  <surface coeffs="0 0 116.9" id="40" type="z-cylinder" />
-  <surface coeffs="199.3" id="41" type="z-plane" />
-  <surface coeffs="265.7" id="42" type="z-plane" />
-  <surface coeffs="0 0 53.5" id="43" type="z-cylinder" />
-  <surface coeffs="0 0 80.1" id="44" type="z-cylinder" />
-  <surface coeffs="0 0 80" id="45" type="z-cylinder" />
-  <surface coeffs="0" id="46" type="z-plane" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="47" type="z-cone" />
-  <surface coeffs="210" id="48" type="z-plane" />
-  <surface coeffs="0 0 25.5" id="49" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="50" type="z-cylinder" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="51" type="z-cone" />
-  <surface coeffs="210" id="52" type="z-plane" />
-  <surface coeffs="265.7" id="53" type="z-plane" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="54" type="z-cone" />
-  <surface coeffs="210" id="55" type="z-plane" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="56" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="57" type="z-plane" />
-  <surface coeffs="0 0 80.1" id="58" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="59" type="z-cylinder" />
-  <surface coeffs="0 0 85.1" id="60" type="z-cylinder" />
-  <surface coeffs="0 0 80.1" id="61" type="z-cylinder" />
-  <surface coeffs="0" id="62" type="z-plane" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="63" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="64" type="z-plane" />
-  <surface coeffs="0 0 30.5" id="65" type="z-cylinder" />
-  <surface coeffs="0 0 25.5" id="66" type="z-cylinder" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="67" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="68" type="z-plane" />
-  <surface coeffs="265.7" id="69" type="z-plane" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="70" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="71" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="72" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="73" type="z-plane" />
-  <surface coeffs="0 0 85.1" id="74" type="z-cylinder" />
-  <surface coeffs="0 0 25.5" id="75" type="z-cylinder" />
-  <surface coeffs="0 0 175" id="76" type="z-cylinder" />
-  <surface coeffs="0 0 85.1" id="77" type="z-cylinder" />
-  <surface coeffs="0" id="78" type="z-plane" />
-  <surface coeffs="130" id="79" type="z-plane" />
-  <surface coeffs="0 0 175" id="80" type="z-cylinder" />
-  <surface coeffs="0 0 0 0.41522491349480967" id="81" type="z-cone" />
-  <surface coeffs="0" id="82" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="83" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="84" type="z-plane" />
-  <surface coeffs="265.7" id="85" type="z-plane" />
-  <surface coeffs="0" id="86" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="87" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="88" type="z-plane" />
-  <surface coeffs="130" id="89" type="z-plane" />
-  <surface coeffs="0 0 0 0.41522491349480967" id="90" type="z-cone" />
-  <surface coeffs="0" id="91" type="z-plane" />
-  <surface coeffs="280.7" id="92" type="z-plane" />
-  <surface coeffs="284.51" id="93" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="94" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="95" type="z-cylinder" />
-  <surface coeffs="284.51" id="96" type="z-plane" />
-  <surface coeffs="399" id="97" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="98" type="z-cylinder" />
-  <surface coeffs="0 0 100.97" id="99" type="z-cylinder" />
+  <surface coeffs="0 0 25.4" id="24" type="z-cylinder" />
+  <surface coeffs="0" id="25" type="z-plane" />
+  <surface coeffs="284.51" id="26" type="z-plane" />
+  <surface coeffs="0 0 210 0.3152987888789835" id="27" type="z-cone" />
+  <surface coeffs="210" id="28" type="z-plane" />
+  <surface coeffs="0" id="29" type="z-plane" />
+  <surface coeffs="0 0 25.4" id="30" type="z-cylinder" />
+  <surface coeffs="0 0 80" id="31" type="z-cylinder" />
+  <surface coeffs="0 0 75" id="32" type="z-cylinder" />
+  <surface coeffs="220.8" id="33" type="z-plane" />
+  <surface coeffs="259.2" id="34" type="z-plane" />
+  <surface coeffs="0 0 105.4" id="35" type="z-cylinder" />
+  <surface coeffs="220.8" id="36" type="z-plane" />
+  <surface coeffs="259.2" id="37" type="z-plane" />
+  <surface coeffs="0 0 111.9" id="38" type="z-cylinder" />
+  <surface coeffs="214.3" id="39" type="z-plane" />
+  <surface coeffs="265.7" id="40" type="z-plane" />
+  <surface coeffs="0 0 68.5" id="41" type="z-cylinder" />
+  <surface coeffs="0 0 110.4" id="42" type="z-cylinder" />
+  <surface coeffs="215.8" id="43" type="z-plane" />
+  <surface coeffs="264.2" id="44" type="z-plane" />
+  <surface coeffs="0 0 70" id="45" type="z-cylinder" />
+  <surface coeffs="0 0 116.9" id="46" type="z-cylinder" />
+  <surface coeffs="199.3" id="47" type="z-plane" />
+  <surface coeffs="265.7" id="48" type="z-plane" />
+  <surface coeffs="0 0 53.5" id="49" type="z-cylinder" />
+  <surface coeffs="0 0 80.1" id="50" type="z-cylinder" />
+  <surface coeffs="0 0 80" id="51" type="z-cylinder" />
+  <surface coeffs="0" id="52" type="z-plane" />
+  <surface coeffs="0 0 210 0.3152987888789835" id="53" type="z-cone" />
+  <surface coeffs="210" id="54" type="z-plane" />
+  <surface coeffs="0 0 25.5" id="55" type="z-cylinder" />
+  <surface coeffs="0 0 25.4" id="56" type="z-cylinder" />
+  <surface coeffs="0 0 210 0.3152987888789835" id="57" type="z-cone" />
+  <surface coeffs="210" id="58" type="z-plane" />
+  <surface coeffs="265.7" id="59" type="z-plane" />
+  <surface coeffs="0 0 210 0.3152987888789835" id="60" type="z-cone" />
+  <surface coeffs="210" id="61" type="z-plane" />
+  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="62" type="z-cone" />
+  <surface coeffs="210.3325509523423" id="63" type="z-plane" />
+  <surface coeffs="0 0 80.1" id="64" type="z-cylinder" />
+  <surface coeffs="0 0 25.4" id="65" type="z-cylinder" />
+  <surface coeffs="0 0 85.1" id="66" type="z-cylinder" />
+  <surface coeffs="0 0 80.1" id="67" type="z-cylinder" />
+  <surface coeffs="0" id="68" type="z-plane" />
+  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="69" type="z-cone" />
+  <surface coeffs="210.3325509523423" id="70" type="z-plane" />
+  <surface coeffs="0 0 30.5" id="71" type="z-cylinder" />
+  <surface coeffs="0 0 25.5" id="72" type="z-cylinder" />
+  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="73" type="z-cone" />
+  <surface coeffs="210.3325509523423" id="74" type="z-plane" />
+  <surface coeffs="265.7" id="75" type="z-plane" />
+  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="76" type="z-cone" />
+  <surface coeffs="210.3325509523423" id="77" type="z-plane" />
+  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="78" type="z-cone" />
+  <surface coeffs="226.9600985694575" id="79" type="z-plane" />
+  <surface coeffs="0 0 85.1" id="80" type="z-cylinder" />
+  <surface coeffs="0 0 25.5" id="81" type="z-cylinder" />
+  <surface coeffs="0 0 175" id="82" type="z-cylinder" />
+  <surface coeffs="0 0 85.1" id="83" type="z-cylinder" />
+  <surface coeffs="0" id="84" type="z-plane" />
+  <surface coeffs="130" id="85" type="z-plane" />
+  <surface coeffs="0 0 175" id="86" type="z-cylinder" />
+  <surface coeffs="0 0 0 0.41522491349480967" id="87" type="z-cone" />
+  <surface coeffs="0" id="88" type="z-plane" />
+  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="89" type="z-cone" />
+  <surface coeffs="226.9600985694575" id="90" type="z-plane" />
+  <surface coeffs="265.7" id="91" type="z-plane" />
+  <surface coeffs="0" id="92" type="z-plane" />
+  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="93" type="z-cone" />
+  <surface coeffs="226.9600985694575" id="94" type="z-plane" />
+  <surface coeffs="130" id="95" type="z-plane" />
+  <surface coeffs="0 0 0 0.41522491349480967" id="96" type="z-cone" />
+  <surface coeffs="0" id="97" type="z-plane" />
+  <surface coeffs="0 0 175" id="98" type="z-cylinder" />
+  <surface coeffs="0" id="99" type="z-plane" />
+  <surface coeffs="265.7" id="100" type="z-plane" />
+  <surface coeffs="280.7" id="101" type="z-plane" />
+  <surface coeffs="284.51" id="102" type="z-plane" />
+  <surface coeffs="0 0 101.6" id="103" type="z-cylinder" />
+  <surface coeffs="0 0 25.4" id="104" type="z-cylinder" />
+  <surface coeffs="284.51" id="105" type="z-plane" />
+  <surface coeffs="400" id="106" type="z-plane" />
+  <surface coeffs="0 0 101.6" id="107" type="z-cylinder" />
+  <surface coeffs="0 0 100.97" id="108" type="z-cylinder" />
+  <surface coeffs="0 0 100.97" id="109" type="z-cylinder" />
+  <surface coeffs="284.51" id="110" type="z-plane" />
+  <surface coeffs="400" id="111" type="z-plane" />
+  <surface coeffs="0 0 101.6" id="112" type="z-cylinder" />
+  <surface coeffs="280.7" id="113" type="z-plane" />
+  <surface coeffs="400" id="114" type="z-plane" />
+  <surface coeffs="0 0 25.4" id="115" type="z-cylinder" />
+  <surface coeffs="265.7" id="116" type="z-plane" />
+  <surface coeffs="280.7" id="117" type="z-plane" />
 </geometry>

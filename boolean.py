@@ -31,7 +31,6 @@ root_cells = []
 c = {}
 
 # Merge and split regions via boolean operations
-
 coil = r[2002] &~ r[2001]
 
 shield = (r[1001] | r[1002]) &~ r[3001] &~ r[5001] &~ r[5002] &~ r[5003]
@@ -49,7 +48,9 @@ breeder = r[6000] | r[6001] | r[6002]
 
 expander_tank = r[7001] | r[7002]
 
-#c[1001] = openmc.Cell(1001, "Vacuum chamber", m.stainless, chamber)
+vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] | r[7901] | r[7902] | r[7903]
+
+c[1000] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
 #c[1002] = openmc.Cell(1002, "Deuterium neutron gas fill", m.deuterium, d2_fill)
 c[2001] = openmc.Cell(2001, "CFS coil", m.rebco, coil)
 c[3001] = openmc.Cell(3001, "Shield", m.cooled_tungsten_carbide, shield)
