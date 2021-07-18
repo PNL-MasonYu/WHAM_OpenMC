@@ -20,7 +20,7 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
 if not os.path.isdir('./plots'):
     os.makedirs('./plots')
 
-sp = openmc.StatePoint("statepoint.100.h5")
+sp = openmc.StatePoint("statepoint.10.h5")
 r_bounds, z_bounds = plasma_boundary()
 
 #

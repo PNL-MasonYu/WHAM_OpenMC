@@ -56,10 +56,12 @@ fw_end = 130
 fw_radius = 80
 # Breeder blanket outer radius in cm
 breeder_OR = 175
-# Angle between axis to the expanding portion of shield in degree
+# Angle between axis and the expanding portion of shield in degree
 expand_angle = 17.5
 # Virtex of the cone for the expanding portion of shield in cm
 expand_virtex = 210
+# Angle between axis and the outer cone of the shield
+shield_angle = 30
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -68,6 +70,7 @@ cryo_zmax = coil_zmax + cryostat_dist + cryostat_thickness
 
 expand_tan = np.tan(expand_angle*np.pi/180)
 expand_sin = np.sin(expand_angle*np.pi/180)
+shield_tan = np.tan(shield_angle*np.pi/180)
 ##########################Universe Cell############################
 
 r[1] = -rpp(-199, 199, -239, 239, -199, 199)
@@ -86,7 +89,8 @@ r[1001] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, exp
 r[1001] &= +openmc.ZPlane(fw_end)
 r[1001] &= -openmc.ZPlane(cryo_zmax)
 r[1001] &= +openmc.ZCylinder(0, 0, throat_IR)
-r[1001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, 120/289, True)
+r[1001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
+r[1001] &= -openmc.ZCylinder(0, 0, breeder_OR)
 
 # Extended shield on the back of the magnets
 r[1002] = -openmc.ZCylinder(coil_radius + coil_dr*coil_nr + 20)
@@ -170,7 +174,7 @@ r[6000] &= -openmc.ZPlane(fw_end)
 
 # Breeder cone
 r[6001] = -openmc.ZCylinder(0, 0, breeder_OR)
-r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 0, 120/289, True)
+r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
 r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[6001] &= -openmc.ZPlane(cryo_zmax)
 r[6001] &= +p_vacz1
@@ -178,7 +182,7 @@ r[6001] &= +p_vacz1
 # Breeder small cone
 r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[6002] &= -openmc.ZPlane(fw_end)
-r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, 120/289, True)
+r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
 
 # Vacuum around the breeder
 r[6901] = +openmc.ZCylinder(0, 0, breeder_OR)

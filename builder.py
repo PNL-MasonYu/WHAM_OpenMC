@@ -21,7 +21,7 @@ settings.run_mode = 'fixed source'
 settings.source = worst_source
 
 settings.particles = int(5e5)
-settings.batches = 5
+settings.batches = 20
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -33,8 +33,10 @@ settings.export_to_xml("./")
 
 # Set OPENMC_CROSS_SECTIONS environment variable to the path to cross_sections.xml, or
 # modify this on different machines to point to the correct cross_sections.xml file
-# ENDF/B-VIII.0 cross sections
-materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
+# ENDF/B-VIII.0 cross sections on local machine
+#materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
+# ENDF/B-VIII.0 cross sections on cluster
+materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.html"
 
 materials.export_to_xml("./")
 
@@ -145,10 +147,10 @@ geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
                                    origin=(0, 0, 200), 
-                                   width=(150, 150), 
+                                   width=(450, 450), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
+#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
 # %%

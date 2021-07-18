@@ -1,114 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
-<geometry>
-  <cell id="1000" material="0" name="Remaining vacuum" region="-9 7 -8 ~(-105 106 -107)" universe="0" />
-  <cell id="1001" material="0" name="Vacuum" region="(-21 7 -22) | (-23 -24 7 25 -26) | (-37 38 -39 40 ~(-30 31 -32 ~(-27 28 -29))) | (89 7 -90) | (-98 99 -8) | (100 101 -8) | (102 103 -104)" universe="0" />
-  <cell id="2001" material="20" name="CFS coil" region="-30 31 -32 ~(-27 28 -29)" universe="0" />
-  <cell id="3001" material="5" name="Shield" region="((((10 -11) | 11) 12 -13 14 -15 16) | (-17 18 -19 20)) ~(-41 42 -43 44) ~(-45 46 7 -47 -48) ~(-49 50 ((51 -52) | 52) -53) ~(((54 -55) | 55) (-56 -57) -58 59) ~(-60 61 7 -62 -63) ~(-64 65 ((66 -67) | 67) -68) ~(((69 -70) | 70) (-71 -72) -73 74)" universe="0" />
-  <cell id="3002" material="5" name="Crispy shield" region="-41 42 -43 44 ~(-33 34 -35 36)" universe="0" />
-  <cell id="4001" material="298" name="Cryostat" region="-33 34 -35 36 ~(-37 38 -39 40)" universe="0" />
-  <cell id="5000" material="21" name="First Wall" region="(-45 46 7 -47 -48) | (-49 50 ((51 -52) | 52) -53) | (((54 -55) | 55) (-56 -57) -58 59)" universe="0" />
-  <cell id="5100" material="900" name="First Wall structure" region="(-60 61 7 -62 -63) | (-64 65 ((66 -67) | 67) -68) | (((69 -70) | 70) (-71 -72) -73 74)" universe="0" />
-  <cell id="6000" material="1000" name="Breeder blanket" region="(-75 76 7 -77) | (-78 ((79 80) | -80) ((81 -82) | 82) -83 7) | (((84 -85) | 85) -86 -87 88)" universe="0" />
-  <cell id="7000" material="298" name="End expander tank" region="(91 -92 -93 94) | (95 -8 -96 97)" universe="0" />
-  <surface boundary="reflective" coeffs="0" id="7" type="z-plane" />
-  <surface boundary="vacuum" coeffs="400" id="8" type="z-plane" />
-  <surface boundary="vacuum" coeffs="0 0 800" id="9" type="z-cylinder" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="10" type="z-cone" />
-  <surface coeffs="210" id="11" type="z-plane" />
-  <surface coeffs="130" id="12" type="z-plane" />
-  <surface coeffs="265.7" id="13" type="z-plane" />
-  <surface coeffs="0 0 25.4" id="14" type="z-cylinder" />
-  <surface coeffs="0 0 0 0.41522491349480967" id="15" type="z-cone" />
-  <surface coeffs="0" id="16" type="z-plane" />
-  <surface coeffs="125.4 0.0 1.0" id="17" type="z-cylinder" />
-  <surface coeffs="265.7" id="18" type="z-plane" />
-  <surface coeffs="275.7" id="19" type="z-plane" />
-  <surface coeffs="0 0 25.4" id="20" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="21" type="z-cylinder" />
-  <surface coeffs="284.51" id="22" type="z-plane" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="23" type="z-cone" />
-  <surface coeffs="210" id="24" type="z-plane" />
-  <surface coeffs="0 0 25.4" id="25" type="z-cylinder" />
-  <surface coeffs="0 0 80" id="26" type="z-cylinder" />
-  <surface coeffs="0 0 75" id="27" type="z-cylinder" />
-  <surface coeffs="220.8" id="28" type="z-plane" />
-  <surface coeffs="259.2" id="29" type="z-plane" />
-  <surface coeffs="0 0 105.4" id="30" type="z-cylinder" />
-  <surface coeffs="220.8" id="31" type="z-plane" />
-  <surface coeffs="259.2" id="32" type="z-plane" />
-  <surface coeffs="0 0 111.9" id="33" type="z-cylinder" />
-  <surface coeffs="214.3" id="34" type="z-plane" />
-  <surface coeffs="265.7" id="35" type="z-plane" />
-  <surface coeffs="0 0 68.5" id="36" type="z-cylinder" />
-  <surface coeffs="0 0 110.4" id="37" type="z-cylinder" />
-  <surface coeffs="215.8" id="38" type="z-plane" />
-  <surface coeffs="264.2" id="39" type="z-plane" />
-  <surface coeffs="0 0 70" id="40" type="z-cylinder" />
-  <surface coeffs="0 0 116.9" id="41" type="z-cylinder" />
-  <surface coeffs="199.3" id="42" type="z-plane" />
-  <surface coeffs="265.7" id="43" type="z-plane" />
-  <surface coeffs="0 0 53.5" id="44" type="z-cylinder" />
-  <surface coeffs="0 0 80.1" id="45" type="z-cylinder" />
-  <surface coeffs="0 0 80" id="46" type="z-cylinder" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="47" type="z-cone" />
-  <surface coeffs="210" id="48" type="z-plane" />
-  <surface coeffs="0 0 25.5" id="49" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="50" type="z-cylinder" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="51" type="z-cone" />
-  <surface coeffs="210" id="52" type="z-plane" />
-  <surface coeffs="265.7" id="53" type="z-plane" />
-  <surface coeffs="0 0 210 0.3152987888789835" id="54" type="z-cone" />
-  <surface coeffs="210" id="55" type="z-plane" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="56" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="57" type="z-plane" />
-  <surface coeffs="0 0 80.1" id="58" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="59" type="z-cylinder" />
-  <surface coeffs="0 0 85.1" id="60" type="z-cylinder" />
-  <surface coeffs="0 0 80.1" id="61" type="z-cylinder" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="62" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="63" type="z-plane" />
-  <surface coeffs="0 0 30.5" id="64" type="z-cylinder" />
-  <surface coeffs="0 0 25.5" id="65" type="z-cylinder" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="66" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="67" type="z-plane" />
-  <surface coeffs="265.7" id="68" type="z-plane" />
-  <surface coeffs="0 0 210.3325509523423 0.3152987888789835" id="69" type="z-cone" />
-  <surface coeffs="210.3325509523423" id="70" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="71" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="72" type="z-plane" />
-  <surface coeffs="0 0 85.1" id="73" type="z-cylinder" />
-  <surface coeffs="0 0 25.5" id="74" type="z-cylinder" />
-  <surface coeffs="0 0 175" id="75" type="z-cylinder" />
-  <surface coeffs="0 0 85.1" id="76" type="z-cylinder" />
-  <surface coeffs="130" id="77" type="z-plane" />
-  <surface coeffs="0 0 175" id="78" type="z-cylinder" />
-  <surface coeffs="0 0 0 0.41522491349480967" id="79" type="z-cone" />
-  <surface coeffs="0" id="80" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="81" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="82" type="z-plane" />
-  <surface coeffs="265.7" id="83" type="z-plane" />
-  <surface coeffs="0 0 226.9600985694575 0.3152987888789835" id="84" type="z-cone" />
-  <surface coeffs="226.9600985694575" id="85" type="z-plane" />
-  <surface coeffs="130" id="86" type="z-plane" />
-  <surface coeffs="0 0 0 0.41522491349480967" id="87" type="z-cone" />
-  <surface coeffs="0" id="88" type="z-plane" />
-  <surface coeffs="0 0 175" id="89" type="z-cylinder" />
-  <surface coeffs="265.7" id="90" type="z-plane" />
-  <surface coeffs="280.7" id="91" type="z-plane" />
-  <surface coeffs="284.51" id="92" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="93" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="94" type="z-cylinder" />
-  <surface coeffs="284.51" id="95" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="96" type="z-cylinder" />
-  <surface coeffs="0 0 100.97" id="97" type="z-cylinder" />
-  <surface coeffs="0 0 100.97" id="98" type="z-cylinder" />
-  <surface coeffs="284.51" id="99" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="100" type="z-cylinder" />
-  <surface coeffs="280.7" id="101" type="z-plane" />
-  <surface coeffs="0 0 25.4" id="102" type="z-cylinder" />
-  <surface coeffs="265.7" id="103" type="z-plane" />
-  <surface coeffs="280.7" id="104" type="z-plane" />
-  <surface coeffs="0 0 399" id="105" type="z-cylinder" />
-  <surface coeffs="0" id="106" type="z-plane" />
-  <surface coeffs="400" id="107" type="z-plane" />
-</geometry>
+<settings>
+  <run_mode>fixed source</run_mode>
+  <particles>500000</particles>
+  <batches>20</batches>
+  <source strength="1.0">
+    <space origin="0.0 0.0 0.0" type="cylindrical">
+      <r parameters="0 10" type="uniform" />
+      <phi parameters="0 6.283185307179586" type="uniform" />
+      <z parameters="85 90" type="uniform" />
+    </space>
+    <angle type="isotropic" />
+    <energy parameters="14100000.0 40000.0" type="normal" />
+  </source>
+  <output>
+    <tallies>false</tallies>
+  </output>
+  <photon_transport>true</photon_transport>
+</settings>
