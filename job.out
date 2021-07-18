@@ -1,0 +1,163 @@
+                                %%%%%%%%%%%%%%%
+                           %%%%%%%%%%%%%%%%%%%%%%%%
+                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                                    %%%%%%%%%%%%%%%%%%%%%%%%
+                                     %%%%%%%%%%%%%%%%%%%%%%%%
+                 ###############      %%%%%%%%%%%%%%%%%%%%%%%%
+                ##################     %%%%%%%%%%%%%%%%%%%%%%%
+                ###################     %%%%%%%%%%%%%%%%%%%%%%%
+                ####################     %%%%%%%%%%%%%%%%%%%%%%
+                #####################     %%%%%%%%%%%%%%%%%%%%%
+                ######################     %%%%%%%%%%%%%%%%%%%%
+                #######################     %%%%%%%%%%%%%%%%%%
+                 #######################     %%%%%%%%%%%%%%%%%
+                 ######################     %%%%%%%%%%%%%%%%%
+                  ####################     %%%%%%%%%%%%%%%%%
+                    #################     %%%%%%%%%%%%%%%%%
+                     ###############     %%%%%%%%%%%%%%%%
+                       ############     %%%%%%%%%%%%%%%
+                          ########     %%%%%%%%%%%%%%
+                                      %%%%%%%%%%%
+
+                   | The OpenMC Monte Carlo Code
+         Copyright | 2011-2021 MIT and OpenMC contributors
+           License | https://docs.openmc.org/en/latest/license.html
+           Version | 0.12.2
+          Git SHA1 | cbfcf908f8abdc1ef6603f67872dcf64c5c657b1
+         Date/Time | 2021-07-18 02:15:33
+     MPI Processes | 4
+    OpenMP Threads | 20
+
+ Reading settings XML file...
+ Reading cross sections XML file...
+ Reading materials XML file...
+ Reading geometry XML file...
+ Reading N14 from /home/myu233/nuclear_data/endfb80_hdf5/N14.h5
+ Reading N from /home/myu233/nuclear_data/endfb80_hdf5/photon/N.h5 
+ Reading H2 from /home/myu233/nuclear_data/endfb80_hdf5/H2.h5
+ Reading H from /home/myu233/nuclear_data/endfb80_hdf5/photon/H.h5 
+ Reading W186 from /home/myu233/nuclear_data/endfb80_hdf5/W186.h5
+ Reading W from /home/myu233/nuclear_data/endfb80_hdf5/photon/W.h5 
+ Reading W182 from /home/myu233/nuclear_data/endfb80_hdf5/W182.h5
+ Reading W184 from /home/myu233/nuclear_data/endfb80_hdf5/W184.h5
+ Reading W180 from /home/myu233/nuclear_data/endfb80_hdf5/W180.h5
+ Reading W183 from /home/myu233/nuclear_data/endfb80_hdf5/W183.h5
+ Reading H1 from /home/myu233/nuclear_data/endfb80_hdf5/H1.h5
+ Reading O17 from /home/myu233/nuclear_data/endfb80_hdf5/O17.h5
+ Reading O from /home/myu233/nuclear_data/endfb80_hdf5/photon/O.h5 
+ Reading O18 from /home/myu233/nuclear_data/endfb80_hdf5/O18.h5
+ Reading O16 from /home/myu233/nuclear_data/endfb80_hdf5/O16.h5
+ Reading C12 from /home/myu233/nuclear_data/endfb80_hdf5/C12.h5
+ Reading C from /home/myu233/nuclear_data/endfb80_hdf5/photon/C.h5 
+ Reading C13 from /home/myu233/nuclear_data/endfb80_hdf5/C13.h5
+ Reading N15 from /home/myu233/nuclear_data/endfb80_hdf5/N15.h5
+ Reading Ar36 from /home/myu233/nuclear_data/endfb80_hdf5/Ar36.h5
+ Reading Ar from /home/myu233/nuclear_data/endfb80_hdf5/photon/Ar.h5 
+ Reading Ar38 from /home/myu233/nuclear_data/endfb80_hdf5/Ar38.h5
+ Reading Ar40 from /home/myu233/nuclear_data/endfb80_hdf5/Ar40.h5
+ Reading Fe58 from /home/myu233/nuclear_data/endfb80_hdf5/Fe58.h5
+ Reading Fe from /home/myu233/nuclear_data/endfb80_hdf5/photon/Fe.h5 
+ Reading Fe57 from /home/myu233/nuclear_data/endfb80_hdf5/Fe57.h5
+ Reading Fe56 from /home/myu233/nuclear_data/endfb80_hdf5/Fe56.h5
+ Reading Fe54 from /home/myu233/nuclear_data/endfb80_hdf5/Fe54.h5
+ Reading Cr50 from /home/myu233/nuclear_data/endfb80_hdf5/Cr50.h5
+ Reading Cr from /home/myu233/nuclear_data/endfb80_hdf5/photon/Cr.h5 
+ Reading Cr52 from /home/myu233/nuclear_data/endfb80_hdf5/Cr52.h5
+ Reading Cr54 from /home/myu233/nuclear_data/endfb80_hdf5/Cr54.h5
+ Reading Cr53 from /home/myu233/nuclear_data/endfb80_hdf5/Cr53.h5
+ Reading Mn55 from /home/myu233/nuclear_data/endfb80_hdf5/Mn55.h5
+ Reading Mn from /home/myu233/nuclear_data/endfb80_hdf5/photon/Mn.h5 
+ Reading V50 from /home/myu233/nuclear_data/endfb80_hdf5/V50.h5
+ Reading V from /home/myu233/nuclear_data/endfb80_hdf5/photon/V.h5 
+ Reading V51 from /home/myu233/nuclear_data/endfb80_hdf5/V51.h5
+ Reading Ta180 from /home/myu233/nuclear_data/endfb80_hdf5/Ta180.h5
+ Reading Ta from /home/myu233/nuclear_data/endfb80_hdf5/photon/Ta.h5 
+ Reading Ta181 from /home/myu233/nuclear_data/endfb80_hdf5/Ta181.h5
+ Reading P31 from /home/myu233/nuclear_data/endfb80_hdf5/P31.h5
+ Reading P from /home/myu233/nuclear_data/endfb80_hdf5/photon/P.h5 
+ Reading S33 from /home/myu233/nuclear_data/endfb80_hdf5/S33.h5
+ Reading S from /home/myu233/nuclear_data/endfb80_hdf5/photon/S.h5 
+ Reading S34 from /home/myu233/nuclear_data/endfb80_hdf5/S34.h5
+ Reading S32 from /home/myu233/nuclear_data/endfb80_hdf5/S32.h5
+ Reading S36 from /home/myu233/nuclear_data/endfb80_hdf5/S36.h5
+ Reading B11 from /home/myu233/nuclear_data/endfb80_hdf5/B11.h5
+ Reading B from /home/myu233/nuclear_data/endfb80_hdf5/photon/B.h5 
+ Reading B10 from /home/myu233/nuclear_data/endfb80_hdf5/B10.h5
+ Reading Ti47 from /home/myu233/nuclear_data/endfb80_hdf5/Ti47.h5
+ Reading Ti from /home/myu233/nuclear_data/endfb80_hdf5/photon/Ti.h5 
+ Reading Ti50 from /home/myu233/nuclear_data/endfb80_hdf5/Ti50.h5
+ Reading Ti46 from /home/myu233/nuclear_data/endfb80_hdf5/Ti46.h5
+ Reading Ti49 from /home/myu233/nuclear_data/endfb80_hdf5/Ti49.h5
+ Reading Ti48 from /home/myu233/nuclear_data/endfb80_hdf5/Ti48.h5
+ Reading Nb93 from /home/myu233/nuclear_data/endfb80_hdf5/Nb93.h5
+ Reading Nb from /home/myu233/nuclear_data/endfb80_hdf5/photon/Nb.h5 
+ Reading Mo100 from /home/myu233/nuclear_data/endfb80_hdf5/Mo100.h5
+ Reading Mo from /home/myu233/nuclear_data/endfb80_hdf5/photon/Mo.h5 
+ Reading Mo96 from /home/myu233/nuclear_data/endfb80_hdf5/Mo96.h5
+ Reading Mo92 from /home/myu233/nuclear_data/endfb80_hdf5/Mo92.h5
+ Reading Mo98 from /home/myu233/nuclear_data/endfb80_hdf5/Mo98.h5
+ Reading Mo95 from /home/myu233/nuclear_data/endfb80_hdf5/Mo95.h5
+ Reading Mo97 from /home/myu233/nuclear_data/endfb80_hdf5/Mo97.h5
+ Reading Mo94 from /home/myu233/nuclear_data/endfb80_hdf5/Mo94.h5
+ Reading Ni60 from /home/myu233/nuclear_data/endfb80_hdf5/Ni60.h5
+ Reading Ni from /home/myu233/nuclear_data/endfb80_hdf5/photon/Ni.h5 
+ Reading Ni62 from /home/myu233/nuclear_data/endfb80_hdf5/Ni62.h5
+ Reading Ni64 from /home/myu233/nuclear_data/endfb80_hdf5/Ni64.h5
+ Reading Ni58 from /home/myu233/nuclear_data/endfb80_hdf5/Ni58.h5
+ Reading Ni61 from /home/myu233/nuclear_data/endfb80_hdf5/Ni61.h5
+ Reading Mg24 from /home/myu233/nuclear_data/endfb80_hdf5/Mg24.h5
+ Reading Mg from /home/myu233/nuclear_data/endfb80_hdf5/photon/Mg.h5 
+ Reading Mg25 from /home/myu233/nuclear_data/endfb80_hdf5/Mg25.h5
+ Reading Mg26 from /home/myu233/nuclear_data/endfb80_hdf5/Mg26.h5
+ Reading Al27 from /home/myu233/nuclear_data/endfb80_hdf5/Al27.h5
+ Reading Al from /home/myu233/nuclear_data/endfb80_hdf5/photon/Al.h5 
+ Reading Si28 from /home/myu233/nuclear_data/endfb80_hdf5/Si28.h5
+ Reading Si from /home/myu233/nuclear_data/endfb80_hdf5/photon/Si.h5 
+ Reading Si29 from /home/myu233/nuclear_data/endfb80_hdf5/Si29.h5
+ Reading Si30 from /home/myu233/nuclear_data/endfb80_hdf5/Si30.h5
+ Reading Cu63 from /home/myu233/nuclear_data/endfb80_hdf5/Cu63.h5
+ Reading Cu from /home/myu233/nuclear_data/endfb80_hdf5/photon/Cu.h5 
+ Reading Cu65 from /home/myu233/nuclear_data/endfb80_hdf5/Cu65.h5
+ Reading Zn64 from /home/myu233/nuclear_data/endfb80_hdf5/Zn64.h5
+ Reading Zn from /home/myu233/nuclear_data/endfb80_hdf5/photon/Zn.h5 
+ Reading Zn66 from /home/myu233/nuclear_data/endfb80_hdf5/Zn66.h5
+ Reading Zn67 from /home/myu233/nuclear_data/endfb80_hdf5/Zn67.h5
+ Reading Zn68 from /home/myu233/nuclear_data/endfb80_hdf5/Zn68.h5
+ Reading Zn70 from /home/myu233/nuclear_data/endfb80_hdf5/Zn70.h5
+ Reading Y89 from /home/myu233/nuclear_data/endfb80_hdf5/Y89.h5
+ Reading Y from /home/myu233/nuclear_data/endfb80_hdf5/photon/Y.h5 
+ Reading Ba130 from /home/myu233/nuclear_data/endfb80_hdf5/Ba130.h5
+ Reading Ba from /home/myu233/nuclear_data/endfb80_hdf5/photon/Ba.h5 
+ Reading Ba136 from /home/myu233/nuclear_data/endfb80_hdf5/Ba136.h5
+ Reading Ba138 from /home/myu233/nuclear_data/endfb80_hdf5/Ba138.h5
+ Reading Ba137 from /home/myu233/nuclear_data/endfb80_hdf5/Ba137.h5
+ Reading Ba135 from /home/myu233/nuclear_data/endfb80_hdf5/Ba135.h5
+ Reading Ba132 from /home/myu233/nuclear_data/endfb80_hdf5/Ba132.h5
+ Reading Ba134 from /home/myu233/nuclear_data/endfb80_hdf5/Ba134.h5
+ Reading Cl35 from /home/myu233/nuclear_data/endfb80_hdf5/Cl35.h5
+ Reading Cl from /home/myu233/nuclear_data/endfb80_hdf5/photon/Cl.h5 
+ Reading Cl37 from /home/myu233/nuclear_data/endfb80_hdf5/Cl37.h5
+ Reading Li6 from /home/myu233/nuclear_data/endfb80_hdf5/Li6.h5
+ Reading Li from /home/myu233/nuclear_data/endfb80_hdf5/photon/Li.h5 
+ Reading Li7 from /home/myu233/nuclear_data/endfb80_hdf5/Li7.h5
+ Reading Pb208 from /home/myu233/nuclear_data/endfb80_hdf5/Pb208.h5
+ Reading Pb from /home/myu233/nuclear_data/endfb80_hdf5/photon/Pb.h5 
+ Reading Pb207 from /home/myu233/nuclear_data/endfb80_hdf5/Pb207.h5
+ Reading Pb206 from /home/myu233/nuclear_data/endfb80_hdf5/Pb206.h5
+ Reading Pb204 from /home/myu233/nuclear_data/endfb80_hdf5/Pb204.h5
+ Reading c_H_in_H2O from /home/myu233/nuclear_data/endfb80_hdf5/c_H_in_H2O.h5
+ Reading c_Al27 from /home/myu233/nuclear_data/endfb80_hdf5/c_Al27.h5
+ Reading c_Fe56 from /home/myu233/nuclear_data/endfb80_hdf5/c_Fe56.h5
+ Minimum neutron data temperature: 250.0 K
+ Maximum neutron data temperature: 2500.0 K
+ Reading tallies XML file...
+ Preparing distributed cell instances...
+ Writing summary.h5 file...
+ Maximum neutron transport energy: 20000000.0 eV for H1
+
+ ===============>     FIXED SOURCE TRANSPORT SIMULATION     <===============
+
+ Simulating batch 1

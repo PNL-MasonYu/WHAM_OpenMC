@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <materials>
-  <cross_sections>/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.html</cross_sections>
+  <cross_sections>/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml</cross_sections>
   <material id="0" name="vacuum">
     <density units="g/cm3" value="1e-20" />
     <nuclide ao="1" name="N14" />
