@@ -30,3 +30,10 @@ for n in range(ndfz.shape[1]):
     vns_sources.append(fusion_source)
 # %%
 
+worst_source = openmc.Source()
+z_uniform = openmc.stats.Uniform(85, 90)
+r_uniform = openmc.stats.Uniform(0, 10)
+phi_uniform = openmc.stats.Uniform(0, 2*np.pi)
+worst_source.space = openmc.stats.CylindricalIndependent(r_uniform, phi_uniform, z_uniform)
+worst_source.energy = openmc.stats.Normal(14.1e6, 0.04e6)
+worst_source.angle = openmc.stats.Isotropic()

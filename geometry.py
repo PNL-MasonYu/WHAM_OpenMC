@@ -71,14 +71,14 @@ expand_sin = np.sin(expand_angle*np.pi/180)
 ##########################Universe Cell############################
 
 r[1] = -rpp(-199, 199, -239, 239, -199, 199)
-p_vacx1 = openmc.XPlane(-400, boundary_type='vacuum')
-p_vacx2 = openmc.XPlane(400, boundary_type='vacuum')
-p_vacy1 = openmc.YPlane(-400, boundary_type='vacuum')
-p_vacy2 = openmc.YPlane(400, boundary_type='vacuum')
-p_vacz1 = openmc.ZPlane(-0.001, boundary_type='reflective')
+#p_vacx1 = openmc.XPlane(-400, boundary_type='vacuum')
+#p_vacx2 = openmc.XPlane(400, boundary_type='vacuum')
+#p_vacy1 = openmc.YPlane(-400, boundary_type='vacuum')
+#p_vacy2 = openmc.YPlane(400, boundary_type='vacuum')
+p_vacz1 = openmc.ZPlane(0, boundary_type='reflective')
 p_vacz2 = openmc.ZPlane(400, boundary_type='vacuum')
-r[1000] = +p_vacx1 & -p_vacx2 & +p_vacy1 & -p_vacy2 & +p_vacz1 & -p_vacz2
-#r[1000] = -rpp(-400, 240, -240, 240, -200, 200, boundary_type='vacuum')
+#r[1000] = +p_vacx1 & -p_vacx2 & +p_vacy1 & -p_vacy2 & +p_vacz1 & -p_vacz2
+r[1000] = -openmc.ZCylinder(0, 0, 800, boundary_type='vacuum') & +p_vacz1 & -p_vacz2
 
 ############################Shield##################################
 # The conical shield itself
@@ -96,12 +96,12 @@ r[1002] &= +openmc.ZCylinder(0, 0, throat_IR)
 
 # vacuum inside the throat
 r[1901] = -openmc.ZCylinder(0, 0, throat_IR)
-r[1901] &= +openmc.ZPlane(0)
+r[1901] &= +p_vacz1
 r[1901] &= -openmc.ZPlane(cryo_zmax + 15+3.81)
 
 # vacuum inside the expanding portion
 r[1902] = -openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, expand_tan, False)
-r[1902] &= +openmc.ZPlane(0)
+r[1902] &= +p_vacz1
 r[1902] &= +openmc.ZCylinder(0, 0, throat_IR)
 r[1902] &= -openmc.ZCylinder(0, 0, fw_radius)
 
@@ -129,7 +129,7 @@ r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-
 # First wall cylinder
 r[5001] = -openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
 r[5001] &= +openmc.ZCylinder(0, 0, fw_radius)
-r[5001] &= +openmc.ZPlane(0)
+r[5001] &= +p_vacz1
 r[5001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210, expand_tan, False)
 
 # First wall throat cylinder
@@ -147,7 +147,7 @@ r[5003] &= +openmc.ZCylinder(0, 0, throat_IR)
 # First wall cylinder support
 r[5101] = -openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness)
 r[5101] &= +openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
-r[5101] &= +openmc.ZPlane(0)
+r[5101] &= +p_vacz1
 r[5101] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210+fw_thickness/expand_sin, expand_tan, False)
 
 # First wall throat cylinder support
@@ -165,7 +165,7 @@ r[5103] &= +openmc.ZCylinder(0, 0, throat_IR+fw_thickness)
 # Breeder cylinder
 r[6000] = -openmc.ZCylinder(0, 0, breeder_OR)
 r[6000] &= +openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness)
-r[6000] &= +openmc.ZPlane(0)
+r[6000] &= +p_vacz1
 r[6000] &= -openmc.ZPlane(fw_end)
 
 # Breeder cone
@@ -173,7 +173,7 @@ r[6001] = -openmc.ZCylinder(0, 0, breeder_OR)
 r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 0, 120/289, True)
 r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[6001] &= -openmc.ZPlane(cryo_zmax)
-r[6001] &= +openmc.ZPlane(0)
+r[6001] &= +p_vacz1
 
 # Breeder small cone
 r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
@@ -182,7 +182,7 @@ r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, 120/289, True)
 
 # Vacuum around the breeder
 r[6901] = +openmc.ZCylinder(0, 0, breeder_OR)
-r[6901] &= +openmc.ZPlane(0)
+r[6901] &= +p_vacz1
 r[6901] &= -openmc.ZPlane(cryo_zmax)
 
 # End Tank plate
@@ -193,19 +193,19 @@ r[7001] &= +openmc.ZCylinder(0, 0, throat_IR)
 
 # End Tank wall
 r[7002] = +openmc.ZPlane(cryo_zmax + 15+3.81)
-r[7002] &= -openmc.ZPlane(400)
+r[7002] &= -p_vacz2
 r[7002] &= -openmc.ZCylinder(0, 0, 101.6)
 r[7002] &= +openmc.ZCylinder(0, 0, 100.97)
 
 # End Tank vacuum
 r[7901] = -openmc.ZCylinder(0, 0, 100.97)
 r[7901] &= +openmc.ZPlane(cryo_zmax+15+3.81)
-r[7901] &= -openmc.ZPlane(400)
+r[7901] &= -p_vacz2
 
 # Vacuum around end tank
 r[7902] = +openmc.ZCylinder(0, 0, 101.6)
 r[7902] &= +openmc.ZPlane(cryo_zmax+15)
-r[7902] &= -openmc.ZPlane(400)
+r[7902] &= -p_vacz2
 
 # Vacuum behind magnets
 r[7903] = +openmc.ZCylinder(0, 0, throat_IR)

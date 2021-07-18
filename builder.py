@@ -7,7 +7,7 @@ from openmc import tallies
 
 from material import materials
 from boolean import c, root_cells, root
-from source import vns_sources
+from source import vns_sources, worst_source
 import plotting as p
 
 working_directory = "./test_run"
@@ -16,23 +16,15 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-settings.source = vns_sources
+#settings.source = vns_sources
 # Alternatively use the worst-case scenario source
-"""
-worst_source = openmc.Source()
-z_uniform = openmc.stats.Uniform(85, 90)
-r_uniform = openmc.stats.Uniform(0, 10)
-phi_uniform = openmc.stats.Uniform(0, 2*np.pi)
-worst_source.space = openmc.stats.CylindricalIndependent(r_uniform, phi_uniform, z_uniform)
-worst_source.energy = openmc.stats.Normal(14.1e6, 0.04e6)
-worst_source.angle = openmc.stats.Isotropic()
 settings.source = worst_source
-"""
-settings.particles = int(5e6)
-settings.batches = 100
+
+settings.particles = int(5e5)
+settings.batches = 5
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
-settings.verbosity = 7
+#settings.verbosity = 7
 #settings.seed = 53713
 settings.survival_bias = True
 settings.photon_transport = True
@@ -42,7 +34,7 @@ settings.export_to_xml("./")
 # Set OPENMC_CROSS_SECTIONS environment variable to the path to cross_sections.xml, or
 # modify this on different machines to point to the correct cross_sections.xml file
 # ENDF/B-VIII.0 cross sections
-#materials.cross_sections = "/home/mason/nuclear_data/endfb80_hdf5/cross_sections.xml"
+materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
 
 materials.export_to_xml("./")
 
@@ -70,77 +62,77 @@ coil_filter = openmc.CellFilter([c[2001].id])
 openmc.AggregateScore
 # Mesh surface tally for neutron current
 mesh_surface = openmc.MeshSurfaceFilter(mesh)
-total_current = openmc.Tally(name='total neutron current')
+total_current = openmc.Tally(1,name='total neutron current')
 total_current.filters = [mesh_surface]
 total_current.scores = ['current']
 tallies_file.append(total_current)
 
-fast_current = openmc.Tally(name='fast neutron current')
+fast_current = openmc.Tally(2,name='fast neutron current')
 fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6])]
 fast_current.scores = ['current']
 tallies_file.append(fast_current)
 
-thermal_flux = openmc.Tally(name='thermal flux')
+thermal_flux = openmc.Tally(3,name='thermal flux')
 thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
 thermal_flux.scores = ['flux']
 tallies_file.append(thermal_flux)
 
-epithermal_flux = openmc.Tally(name='epithermal flux')
+epithermal_flux = openmc.Tally(4,name='epithermal flux')
 epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5])]
 epithermal_flux.scores = ['flux']
 tallies_file.append(epithermal_flux)
 
-fast_flux = openmc.Tally(name='fast flux')
+fast_flux = openmc.Tally(5,name='fast flux')
 fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e5 ,20.0e6])]
 fast_flux.scores = ['flux']
 tallies_file.append(fast_flux)
 
-heat_load = openmc.Tally(name='neutron heat load')
+heat_load = openmc.Tally(6,name='neutron heat load')
 heat_load.filters = [full_mesh_filter]
 heat_load.scores = ['heating']
 tallies_file.append(heat_load)
 
-local_heat_load = openmc.Tally(name='neutron local heat load')
+local_heat_load = openmc.Tally(7,name='neutron local heat load')
 local_heat_load.filters = [full_mesh_filter]
 local_heat_load.scores = ['heating-local']
-tallies_file.append(local_heat_load)
+#tallies_file.append(local_heat_load)
 
-damage_energy = openmc.Tally(name='neutron damage_energy')
+damage_energy = openmc.Tally(8,name='neutron damage_energy')
 damage_energy.filters = [full_mesh_filter]
 damage_energy.scores = ['damage-energy']
 tallies_file.append(damage_energy)
 
-radiative_capture = openmc.Tally(name='neutron radiative capture')
+radiative_capture = openmc.Tally(9,name='neutron radiative capture')
 radiative_capture.filters = [full_mesh_filter]
 radiative_capture.scores = ['(n,gamma)']
-tallies_file.append(radiative_capture)
+#tallies_file.append(radiative_capture)
 
-absorption = openmc.Tally(name='neutron absorption')
+absorption = openmc.Tally(10,name='neutron absorption')
 absorption.filters = [full_mesh_filter]
 absorption.scores = ['absorption']
 tallies_file.append(absorption)
 
-avg_coil_flux = openmc.Tally(name='Average neutron flux')
+avg_coil_flux = openmc.Tally(11,name='Average neutron flux')
 avg_coil_flux.filters = [coil_filter, log_energy_filter]
 avg_coil_flux.scores = ['flux']
 tallies_file.append(avg_coil_flux)
 
-breeder_reaction = openmc.Tally(name='Breeder Li-6(n,alpha)T reaction')
+breeder_reaction = openmc.Tally(12,name='Breeder Li-6(n,alpha)T reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
-breeder_reaction.scores = ['(n,alpha)']
+breeder_reaction.scores = ['(n,a)']
 tallies_file.append(breeder_reaction)
 
-multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
+multiplier_reaction = openmc.Tally(13,name='Breeder Pb(n,2n) reaction')
 multiplier_reaction.filters = [openmc.CellFilter(c[6000].id)]
 multiplier_reaction.scores = ['(n,2n)', '(n,3n)']
-tallies_file.append(breeder_reaction)
+tallies_file.append(multiplier_reaction)
 
-breeder_mesh = openmc.Tally(name='Breeder mesh')
+breeder_mesh = openmc.Tally(14,name='Breeder mesh')
 breeder_mesh.filters = [breeder_mesh_filter]
-breeder_mesh.scores = ['(n,alpha)']
+breeder_mesh.scores = ['(n,a)']
 tallies_file.append(breeder_mesh)
 
-multiplier_mesh = openmc.Tally(name='Multiplier mesh')
+multiplier_mesh = openmc.Tally(15,name='Multiplier mesh')
 multiplier_mesh.filters = [breeder_mesh_filter]
 multiplier_mesh.scores = ['(n,2n)', '(n,3n)']
 tallies_file.append(multiplier_mesh)
@@ -153,10 +145,10 @@ geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
                                    origin=(0, 0, 200), 
-                                   width=(400, 400), 
+                                   width=(150, 150), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
-openmc.plot_inline(chamber_geometry_plot)
+#openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
+openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
 # %%

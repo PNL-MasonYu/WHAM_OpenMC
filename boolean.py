@@ -50,7 +50,10 @@ expander_tank = r[7001] | r[7002]
 
 vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] | r[7901] | r[7902] | r[7903]
 
-c[1000] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
+model_enclosure = -openmc.ZCylinder(0, 0, 399) & +openmc.ZPlane(0) & -openmc.ZPlane(400)
+
+c[1000] = openmc.Cell(1000, "Remaining vacuum", m.vacuum, r[1000]&~model_enclosure)
+c[1001] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
 #c[1002] = openmc.Cell(1002, "Deuterium neutron gas fill", m.deuterium, d2_fill)
 c[2001] = openmc.Cell(2001, "CFS coil", m.rebco, coil)
 c[3001] = openmc.Cell(3001, "Shield", m.cooled_tungsten_carbide, shield)
