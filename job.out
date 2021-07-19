@@ -27,8 +27,8 @@
            License | https://docs.openmc.org/en/latest/license.html
            Version | 0.12.2
           Git SHA1 | cbfcf908f8abdc1ef6603f67872dcf64c5c657b1
-         Date/Time | 2021-07-18 02:15:33
-     MPI Processes | 4
+         Date/Time | 2021-07-18 22:43:27
+     MPI Processes | 8
     OpenMP Threads | 20
 
  Reading settings XML file...
@@ -161,3 +161,69 @@
  ===============>     FIXED SOURCE TRANSPORT SIMULATION     <===============
 
  Simulating batch 1
+ Simulating batch 2
+ Simulating batch 3
+ Simulating batch 4
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc386
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc387
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc388
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc390
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc392
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc401
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
+------------------------------------------------------------
+A process or daemon was unable to complete a TCP connection
+to another process:
+  Local host:    hpc385
+  Remote host:   hpc402
+This is usually caused by a firewall on the remote host. Please
+check that any firewall (e.g., iptables) has been disabled and
+try again.
+------------------------------------------------------------
