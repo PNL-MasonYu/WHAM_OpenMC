@@ -27,8 +27,8 @@
            License | https://docs.openmc.org/en/latest/license.html
            Version | 0.12.2
           Git SHA1 | cbfcf908f8abdc1ef6603f67872dcf64c5c657b1
-         Date/Time | 2021-07-18 22:43:27
-     MPI Processes | 8
+         Date/Time | 2021-07-20 14:25:59
+     MPI Processes | 4
     OpenMP Threads | 20
 
  Reading settings XML file...
@@ -164,66 +164,201 @@
  Simulating batch 2
  Simulating batch 3
  Simulating batch 4
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc386
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc387
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc388
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc390
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc392
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc401
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
-------------------------------------------------------------
-A process or daemon was unable to complete a TCP connection
-to another process:
-  Local host:    hpc385
-  Remote host:   hpc402
-This is usually caused by a firewall on the remote host. Please
-check that any firewall (e.g., iptables) has been disabled and
-try again.
-------------------------------------------------------------
+ Simulating batch 5
+ Simulating batch 6
+ Simulating batch 7
+ Simulating batch 8
+ Simulating batch 9
+ Simulating batch 10
+ Simulating batch 11
+ Simulating batch 12
+ Simulating batch 13
+ Simulating batch 14
+ Simulating batch 15
+ Simulating batch 16
+ Simulating batch 17
+ Simulating batch 18
+ Simulating batch 19
+ Simulating batch 20
+ Simulating batch 21
+ Simulating batch 22
+ Simulating batch 23
+ Simulating batch 24
+ Simulating batch 25
+ Simulating batch 26
+ Simulating batch 27
+ Simulating batch 28
+ Simulating batch 29
+ Simulating batch 30
+ Simulating batch 31
+ Simulating batch 32
+ Simulating batch 33
+ Simulating batch 34
+ Simulating batch 35
+ Simulating batch 36
+ Simulating batch 37
+ Simulating batch 38
+ Simulating batch 39
+ Simulating batch 40
+ Simulating batch 41
+ Simulating batch 42
+ Simulating batch 43
+ Simulating batch 44
+ Simulating batch 45
+ Simulating batch 46
+ Simulating batch 47
+ Simulating batch 48
+ Simulating batch 49
+ Simulating batch 50
+ Simulating batch 51
+ Simulating batch 52
+ Simulating batch 53
+ Simulating batch 54
+ Simulating batch 55
+ Simulating batch 56
+ Simulating batch 57
+ Simulating batch 58
+ Simulating batch 59
+ Simulating batch 60
+ Simulating batch 61
+ Simulating batch 62
+ Simulating batch 63
+ Simulating batch 64
+ Simulating batch 65
+ Simulating batch 66
+ Simulating batch 67
+ Simulating batch 68
+ Simulating batch 69
+ Simulating batch 70
+ Simulating batch 71
+ Simulating batch 72
+ Simulating batch 73
+ Simulating batch 74
+ Simulating batch 75
+ Simulating batch 76
+ Simulating batch 77
+ Simulating batch 78
+ Simulating batch 79
+ Simulating batch 80
+ Simulating batch 81
+ Simulating batch 82
+ Simulating batch 83
+ Simulating batch 84
+ Simulating batch 85
+ Simulating batch 86
+ Simulating batch 87
+ Simulating batch 88
+ Simulating batch 89
+ Simulating batch 90
+ Simulating batch 91
+ Simulating batch 92
+ Simulating batch 93
+ Simulating batch 94
+ Simulating batch 95
+ Simulating batch 96
+ Simulating batch 97
+ Simulating batch 98
+ Simulating batch 99
+ Simulating batch 100
+ Simulating batch 101
+ Simulating batch 102
+ Simulating batch 103
+ Simulating batch 104
+ Simulating batch 105
+ Simulating batch 106
+ Simulating batch 107
+ Simulating batch 108
+ Simulating batch 109
+ Simulating batch 110
+ Simulating batch 111
+ Simulating batch 112
+ Simulating batch 113
+ Simulating batch 114
+ Simulating batch 115
+ Simulating batch 116
+ Simulating batch 117
+ Simulating batch 118
+ Simulating batch 119
+ Simulating batch 120
+ Simulating batch 121
+ Simulating batch 122
+ Simulating batch 123
+ Simulating batch 124
+ Simulating batch 125
+ Simulating batch 126
+ Simulating batch 127
+ Simulating batch 128
+ Simulating batch 129
+ Simulating batch 130
+ Simulating batch 131
+ Simulating batch 132
+ Simulating batch 133
+ Simulating batch 134
+ Simulating batch 135
+ Simulating batch 136
+ Simulating batch 137
+ Simulating batch 138
+ Simulating batch 139
+ Simulating batch 140
+ Simulating batch 141
+ Simulating batch 142
+ Simulating batch 143
+ Simulating batch 144
+ Simulating batch 145
+ Simulating batch 146
+ Simulating batch 147
+ Simulating batch 148
+ Simulating batch 149
+ Simulating batch 150
+ Simulating batch 151
+ Simulating batch 152
+ Simulating batch 153
+ Simulating batch 154
+ Simulating batch 155
+ Simulating batch 156
+ Simulating batch 157
+ Simulating batch 158
+ Simulating batch 159
+ Simulating batch 160
+ Simulating batch 161
+ Simulating batch 162
+ Simulating batch 163
+ Simulating batch 164
+ Simulating batch 165
+ Simulating batch 166
+ Simulating batch 167
+ Simulating batch 168
+ Simulating batch 169
+ Simulating batch 170
+ Simulating batch 171
+ Simulating batch 172
+ Simulating batch 173
+ Simulating batch 174
+ Simulating batch 175
+ Simulating batch 176
+ Simulating batch 177
+ Simulating batch 178
+ Simulating batch 179
+ Simulating batch 180
+ Simulating batch 181
+ Simulating batch 182
+ Simulating batch 183
+ Simulating batch 184
+ Simulating batch 185
+ Simulating batch 186
+ Simulating batch 187
+ Simulating batch 188
+ Simulating batch 189
+ Simulating batch 190
+ Simulating batch 191
+ Simulating batch 192
+ Simulating batch 193
+ Simulating batch 194
+ Simulating batch 195
+ Simulating batch 196
+ Simulating batch 197
+ Simulating batch 198
+ Simulating batch 199
+ Simulating batch 200
+ Simulating batch 201
+ Simulating batch 202

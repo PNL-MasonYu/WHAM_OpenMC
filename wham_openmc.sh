@@ -2,7 +2,7 @@
 #This file is called submit-script.sh
 #SBATCH --partition=pre       # default "univ2", if not specified
 #SBATCH --time=1-00:00:00       # run time in days-hh:mm:ss
-#SBATCH --nodes=8
+#SBATCH --nodes=4
 #SBATCH --ntasks-per-node=20    # cpus per node (by default, "ntasks"="cpus")
 #SBATCH --mem=64000             # RAM per node
 #SBATCH --error=job.err
@@ -14,4 +14,4 @@
 # Example for code compiled with a software module:
 module load openmpi hdf5
 #/software/myu233/openmc/build/bin/openmc -s 20
-mpiexec -n 8 --bind-to numa /software/myu233/openmc/build/bin/openmc -s 20
+mpiexec -n 4 /software/myu233/openmc/build/bin/openmc -s 20
