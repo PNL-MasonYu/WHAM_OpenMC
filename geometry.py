@@ -184,6 +184,12 @@ r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+
 r[6002] &= -openmc.ZPlane(fw_end)
 r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
 
+# Breeder reflector
+r[6100] = +openmc.ZCylinder(0, 0, breeder_OR)
+r[6100] &= -openmc.ZCylinder(0, 0, breeder_OR+10)
+r[6100] &= +openmc.ZPlane(0)
+r[6100] &= -openmc.ZPlane(cryo_zmin)
+
 # Vacuum around the breeder
 r[6901] = +openmc.ZCylinder(0, 0, breeder_OR)
 r[6901] &= +p_vacz1

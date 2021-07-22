@@ -191,5 +191,6 @@ def surf_to_grid():
     
     return
 # %%
-plot_fast_flux()
+#plot_fast_flux()
+#plot_local_heat()
 # %%

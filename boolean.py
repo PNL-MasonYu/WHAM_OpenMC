@@ -46,9 +46,11 @@ first_wall_support = r[5101] | r[5102] | r[5103]
 
 breeder = r[6000] | r[6001] | r[6002]
 
+reflector = r[6100]
+
 expander_tank = r[7001] | r[7002]
 
-vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] | r[7901] | r[7902] | r[7903]
+vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] &~ r[6100] | r[7901] | r[7902] | r[7903] 
 
 model_enclosure = -openmc.ZCylinder(0, 0, 399) & +openmc.ZPlane(0) & -openmc.ZPlane(400)
 
@@ -63,6 +65,7 @@ c[4001] = openmc.Cell(4001, "Cryostat", m.stainless, cryostat)
 c[5000] = openmc.Cell(5000, "First Wall", m.tungsten, first_wall)
 c[5100] = openmc.Cell(5100, "First Wall structure", m.rafm_steel, first_wall_support)
 c[6000] = openmc.Cell(6000, "Breeder blanket", m.LiPb_breeder, breeder)
+c[6100] = openmc.Cell(6100, "Breeder outer reflector", m.tungsten_carbide, reflector)
 c[7000] = openmc.Cell(7000, "End expander tank", m.stainless, expander_tank)
 
 all_cells = [c[key] for key in c.keys()]

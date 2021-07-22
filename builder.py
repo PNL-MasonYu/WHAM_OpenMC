@@ -20,8 +20,8 @@ settings.run_mode = 'fixed source'
 # Alternatively use the worst-case scenario source
 settings.source = worst_source
 
-settings.particles = int(5e5)
-settings.batches = 20
+settings.particles = int(25000)
+settings.batches = 400
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7

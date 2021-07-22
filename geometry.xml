@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <geometry>
-  <cell id="1000" material="0" name="Remaining vacuum" region="-9 7 -8 ~(-106 107 -108)" universe="0" />
-  <cell id="1001" material="0" name="Vacuum" region="(-22 7 -23) | (-24 -25 7 26 -27) | (-38 39 -40 41 ~(-31 32 -33 ~(-28 29 -30))) | (90 7 -91) | (-99 100 -8) | (101 102 -8) | (103 104 -105)" universe="0" />
+  <cell id="1000" material="0" name="Remaining vacuum" region="-9 7 -8 ~(-110 111 -112)" universe="0" />
+  <cell id="1001" material="0" name="Vacuum" region="(-22 7 -23) | (-24 -25 7 26 -27) | (-38 39 -40 41 ~(-31 32 -33 ~(-28 29 -30))) | (94 7 -95 ~(90 -91 92 -93)) | (-103 104 -8) | (105 106 -8) | (107 108 -109)" universe="0" />
   <cell id="2001" material="20" name="CFS coil" region="-31 32 -33 ~(-28 29 -30)" universe="0" />
   <cell id="3001" material="5" name="Shield" region="((((10 -11) | 11) 12 -13 14 -15 16 -17) | (-18 19 -20 21)) ~(-42 43 -44 45) ~(-46 47 7 -48 -49) ~(-50 51 ((52 -53) | 53) -54) ~(((55 -56) | 56) (-57 -58) -59 60) ~(-61 62 7 -63 -64) ~(-65 66 ((67 -68) | 68) -69) ~(((70 -71) | 71) (-72 -73) -74 75)" universe="0" />
   <cell id="3002" material="5" name="Crispy shield" region="-42 43 -44 45 ~(-34 35 -36 37)" universe="0" />
@@ -9,7 +9,8 @@
   <cell id="5000" material="21" name="First Wall" region="(-46 47 7 -48 -49) | (-50 51 ((52 -53) | 53) -54) | (((55 -56) | 56) (-57 -58) -59 60)" universe="0" />
   <cell id="5100" material="900" name="First Wall structure" region="(-61 62 7 -63 -64) | (-65 66 ((67 -68) | 68) -69) | (((70 -71) | 71) (-72 -73) -74 75)" universe="0" />
   <cell id="6000" material="1000" name="Breeder blanket" region="(-76 77 7 -78) | (-79 ((80 81) | -81) ((82 -83) | 83) -84 7) | (((85 -86) | 86) -87 -88 89)" universe="0" />
-  <cell id="7000" material="298" name="End expander tank" region="(92 -93 -94 95) | (96 -8 -97 98)" universe="0" />
+  <cell id="6100" material="22" name="Breeder outer reflector" region="90 -91 92 -93" universe="0" />
+  <cell id="7000" material="298" name="End expander tank" region="(96 -97 -98 99) | (100 -8 -101 102)" universe="0" />
   <surface boundary="reflective" coeffs="0" id="7" type="z-plane" />
   <surface boundary="vacuum" coeffs="400" id="8" type="z-plane" />
   <surface boundary="vacuum" coeffs="0 0 800" id="9" type="z-cylinder" />
@@ -94,22 +95,26 @@
   <surface coeffs="0 0 0 0.5773502691896257" id="88" type="z-cone" />
   <surface coeffs="0" id="89" type="z-plane" />
   <surface coeffs="0 0 175" id="90" type="z-cylinder" />
-  <surface coeffs="265.7" id="91" type="z-plane" />
-  <surface coeffs="280.7" id="92" type="z-plane" />
-  <surface coeffs="284.51" id="93" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="94" type="z-cylinder" />
-  <surface coeffs="0 0 25.4" id="95" type="z-cylinder" />
-  <surface coeffs="284.51" id="96" type="z-plane" />
-  <surface coeffs="0 0 101.6" id="97" type="z-cylinder" />
-  <surface coeffs="0 0 100.97" id="98" type="z-cylinder" />
-  <surface coeffs="0 0 100.97" id="99" type="z-cylinder" />
+  <surface coeffs="0 0 185" id="91" type="z-cylinder" />
+  <surface coeffs="0" id="92" type="z-plane" />
+  <surface coeffs="214.3" id="93" type="z-plane" />
+  <surface coeffs="0 0 175" id="94" type="z-cylinder" />
+  <surface coeffs="265.7" id="95" type="z-plane" />
+  <surface coeffs="280.7" id="96" type="z-plane" />
+  <surface coeffs="284.51" id="97" type="z-plane" />
+  <surface coeffs="0 0 101.6" id="98" type="z-cylinder" />
+  <surface coeffs="0 0 25.4" id="99" type="z-cylinder" />
   <surface coeffs="284.51" id="100" type="z-plane" />
   <surface coeffs="0 0 101.6" id="101" type="z-cylinder" />
-  <surface coeffs="280.7" id="102" type="z-plane" />
-  <surface coeffs="0 0 25.4" id="103" type="z-cylinder" />
-  <surface coeffs="265.7" id="104" type="z-plane" />
-  <surface coeffs="280.7" id="105" type="z-plane" />
-  <surface coeffs="0 0 399" id="106" type="z-cylinder" />
-  <surface coeffs="0" id="107" type="z-plane" />
-  <surface coeffs="400" id="108" type="z-plane" />
+  <surface coeffs="0 0 100.97" id="102" type="z-cylinder" />
+  <surface coeffs="0 0 100.97" id="103" type="z-cylinder" />
+  <surface coeffs="284.51" id="104" type="z-plane" />
+  <surface coeffs="0 0 101.6" id="105" type="z-cylinder" />
+  <surface coeffs="280.7" id="106" type="z-plane" />
+  <surface coeffs="0 0 25.4" id="107" type="z-cylinder" />
+  <surface coeffs="265.7" id="108" type="z-plane" />
+  <surface coeffs="280.7" id="109" type="z-plane" />
+  <surface coeffs="0 0 399" id="110" type="z-cylinder" />
+  <surface coeffs="0" id="111" type="z-plane" />
+  <surface coeffs="400" id="112" type="z-plane" />
 </geometry>

@@ -2,7 +2,7 @@
 <settings>
   <run_mode>fixed source</run_mode>
   <particles>25000</particles>
-  <batches>300</batches>
+  <batches>400</batches>
   <source strength="1.0">
     <space origin="0.0 0.0 0.0" type="cylindrical">
       <r parameters="0 10" type="uniform" />
