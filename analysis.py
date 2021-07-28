@@ -17,10 +17,26 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
     z_bounds = solzz[-1] * 100
     return r_bounds, z_bounds
 
+def aggregate_rectangular(result, r_bins=200, dim=1):
+    """
+    aggegate the cylindrical tally in the r direction
+    The z-dimension should be specified in the dim variable
+    The center of the tally will be the axis of revolution
+    """
+    center = result.shape[dim-1]/2
+    print(center)
+
+def surf_to_grid():
+    """
+    This converts the dataframe for the mesh surface tally into grids of U, V vectors at each cell
+    Returns the U, V vectors on each point in the grid
+    """
+    
+
 if not os.path.isdir('./plots'):
     os.makedirs('./plots')
 
-sp = openmc.StatePoint("statepoint.10.h5")
+sp = openmc.StatePoint("statepoint.50.h5")
 r_bounds, z_bounds = plasma_boundary()
 
 #
@@ -29,7 +45,7 @@ extent=(-200, 200, 0, 400)
 background_plot = p.slice_plot(basis="xz", origin=(0, 0, 200), cwd='./background',
                                width=(400, 400), color=p.material_color)
 background_plot.export_to_xml()
-openmc.plot_inline(background_plot)
+#openmc.plot(background_plot)
 background_image = plt.imread('./background.png')
 # %%
 def plot_thermal_flux():
@@ -75,6 +91,7 @@ def plot_fast_flux():
     fast_flux = fastflux_tally.get_slice(scores=['flux'])
     fast_flux.mean.shape = mesh_shape
     fig3 = plt.figure(num=3, figsize=(15, 15))
+    aggregate_rectangular(fast_flux.mean)
     plt.plot(r_bounds, z_bounds, "g-")
     plt.plot(-r_bounds, z_bounds, "g-")
     plt.imshow(background_image, extent=extent)
@@ -183,14 +200,7 @@ def plot_coil_flux_energy():
             [flux[0], flux[1], flux[2]])
     return fig8
 
-def surf_to_grid():
-    """
-    This converts the dataframe for the mesh surface tally into grids of U, V vectors at each cell
-    Returns the U, V vectors on each point in the grid
-    """
-    
-    return
 # %%
-#plot_fast_flux()
+plot_fast_flux()
 #plot_local_heat()
 # %%

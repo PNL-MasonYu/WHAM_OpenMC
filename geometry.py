@@ -60,6 +60,8 @@ breeder_OR = 175
 expand_angle = 17.5
 # Virtex of the cone for the expanding portion of shield in cm
 expand_virtex = 210
+# Virtex of the outer cone of the shield
+shield_virtex = -30
 # Angle between axis and the outer cone of the shield
 shield_angle = 30
 
@@ -73,6 +75,7 @@ expand_sin = np.sin(expand_angle*np.pi/180)
 shield_tan = np.tan(shield_angle*np.pi/180)
 ##########################Universe Cell############################
 
+# IMPORTANT: use p_vacz1 instead of ZPlane(0)
 r[1] = -rpp(-199, 199, -239, 239, -199, 199)
 #p_vacx1 = openmc.XPlane(-400, boundary_type='vacuum')
 #p_vacx2 = openmc.XPlane(400, boundary_type='vacuum')
@@ -89,7 +92,7 @@ r[1001] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, exp
 r[1001] &= +openmc.ZPlane(fw_end)
 r[1001] &= -openmc.ZPlane(cryo_zmax)
 r[1001] &= +openmc.ZCylinder(0, 0, throat_IR)
-r[1001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
+r[1001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, shield_virtex, shield_tan, True)
 r[1001] &= -openmc.ZCylinder(0, 0, breeder_OR)
 
 # Extended shield on the back of the magnets
@@ -127,24 +130,24 @@ r[4002] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_dist)
 
 # Close shield
 r[3001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist+5)
-r[3001] &= +openmc.ZPlane(cryo_zmin-15) & -openmc.ZPlane(cryo_zmax)
-r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-15)
+r[3001] &= +openmc.ZPlane(cryo_zmin-5) & -openmc.ZPlane(cryo_zmax)
+r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-5)
 
 # First wall cylinder
 r[5001] = -openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
 r[5001] &= +openmc.ZCylinder(0, 0, fw_radius)
 r[5001] &= +p_vacz1
-r[5001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210, expand_tan, False)
+r[5001] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, expand_tan, False)
 
 # First wall throat cylinder
 r[5002] = -openmc.ZCylinder(0, 0, throat_IR+fw_thickness)
 r[5002] &= +openmc.ZCylinder(0, 0, throat_IR)
-r[5002] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 210, expand_tan, False)
+r[5002] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, expand_tan, False)
 r[5002] &= -openmc.ZPlane(cryo_zmax)
 
 # First wall exanding
-r[5003] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210, expand_tan, False)
-r[5003] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210+fw_thickness/expand_sin, expand_tan, False)
+r[5003] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex, expand_tan, False)
+r[5003] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+fw_thickness/expand_sin, expand_tan, False)
 r[5003] &= -openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
 r[5003] &= +openmc.ZCylinder(0, 0, throat_IR)
 
@@ -152,19 +155,20 @@ r[5003] &= +openmc.ZCylinder(0, 0, throat_IR)
 r[5101] = -openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness)
 r[5101] &= +openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
 r[5101] &= +p_vacz1
-r[5101] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210+fw_thickness/expand_sin, expand_tan, False)
+r[5101] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+fw_thickness/expand_sin, expand_tan, False)
 
 # First wall throat cylinder support
 r[5102] = -openmc.ZCylinder(0, 0, throat_IR+fw_thickness+fw_support_thickness)
 r[5102] &= +openmc.ZCylinder(0, 0, throat_IR+fw_thickness)
-r[5102] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+fw_thickness/expand_sin, expand_tan, False)
+r[5102] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+fw_thickness/expand_sin, expand_tan, False)
 r[5102] &= -openmc.ZPlane(cryo_zmax)
 
 # First wall exanding support
-r[5103] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+fw_thickness/expand_sin, expand_tan, False)
-r[5103] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
+r[5103] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+fw_thickness/expand_sin, expand_tan, False)
+r[5103] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[5103] &= -openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness)
 r[5103] &= +openmc.ZCylinder(0, 0, throat_IR+fw_thickness)
+r[5103] &= +p_vacz1
 
 # Breeder cylinder
 r[6000] = -openmc.ZCylinder(0, 0, breeder_OR)
@@ -174,20 +178,20 @@ r[6000] &= -openmc.ZPlane(fw_end)
 
 # Breeder cone
 r[6001] = -openmc.ZCylinder(0, 0, breeder_OR)
-r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
-r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
+r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, shield_virtex, shield_tan, True)
+r[6001] &= +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[6001] &= -openmc.ZPlane(cryo_zmax)
 r[6001] &= +p_vacz1
 
 # Breeder small cone
-r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, 210+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
+r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+(fw_thickness+fw_support_thickness)/expand_sin, expand_tan, False)
 r[6002] &= -openmc.ZPlane(fw_end)
-r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, 0, shield_tan, True)
+r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, shield_virtex, shield_tan, True)
 
 # Breeder reflector
 r[6100] = +openmc.ZCylinder(0, 0, breeder_OR)
 r[6100] &= -openmc.ZCylinder(0, 0, breeder_OR+10)
-r[6100] &= +openmc.ZPlane(0)
+r[6100] &= +p_vacz1
 r[6100] &= -openmc.ZPlane(cryo_zmin)
 
 # Vacuum around the breeder

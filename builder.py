@@ -16,12 +16,12 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-#settings.source = vns_sources
+settings.source = vns_sources
 # Alternatively use the worst-case scenario source
-settings.source = worst_source
+#settings.source = worst_source
 
 settings.particles = int(25000)
-settings.batches = 400
+settings.batches = 150
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -36,7 +36,7 @@ settings.export_to_xml("./")
 # ENDF/B-VIII.0 cross sections on local machine
 #materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
 # ENDF/B-VIII.0 cross sections on cluster
-materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.html"
+materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml"
 
 materials.export_to_xml("./")
 
@@ -150,6 +150,10 @@ chamber_geometry_plot = p.slice_plot(basis='yz',
                                    width=(450, 450), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
+
+# Plot geometry
+openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
+# Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
 #openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
