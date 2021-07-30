@@ -61,7 +61,6 @@ breeder_mesh.width = [2, 2, 2]
 breeder_mesh_filter = openmc.MeshFilter(breeder_mesh)
 
 coil_filter = openmc.CellFilter([c[2001].id])
-openmc.AggregateScore
 # Mesh surface tally for neutron current
 mesh_surface = openmc.MeshSurfaceFilter(mesh)
 total_current = openmc.Tally(1,name='total neutron current')

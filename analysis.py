@@ -17,7 +17,7 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
     z_bounds = solzz[-1] * 100
     return r_bounds, z_bounds
 
-def aggregate_rectangular(result, r_bins=200, dim=1):
+def aggregate_rectangular(result, r_bins=100, dim=1):
     """
     aggegate the cylindrical tally in the r direction
     The z-dimension should be specified in the dim variable
@@ -25,21 +25,21 @@ def aggregate_rectangular(result, r_bins=200, dim=1):
     """
     center = result.shape[dim-1]/2
     z_length = result.shape[dim]
-    aggregate = np.zeros((z_length, r_bins))
-    print(z_length)    
+    aggregate = np.zeros((z_length, r_bins*2))
     for z in range(z_length):
         slice = result[z, :, :]
         R = []
         W = []
         for x in range(int(center*2)):
             for y in range(int(center*2)):
-                r = np.sqrt(x**2 + y**2)
+                r = np.sqrt((x-center)**2 + (y-center)**2)
                 R.append(r)
                 W.append(slice[x, y])
-        hist = np.histogram(R, bins=r_bins, range=(0, center*2), weights=W)[0]
-        edges = np.histogram(R, bins=r_bins, range=(0, center*2), weights=W)[1]
+        hist = np.histogram(R, bins=r_bins, range=(0, int(center*2)), weights=W)[0]
+        edges = np.histogram(R, bins=r_bins, range=(0, int(center*2)), weights=W)[1]
         for r in range(r_bins):
-            aggregate[z, r] = hist[r]
+            aggregate[z, int(center-r)] = hist[r]
+            aggregate[z, int(center+r)] = hist[r]
     return aggregate, edges
 
 def surf_to_grid():
