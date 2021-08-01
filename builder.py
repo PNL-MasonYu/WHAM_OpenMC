@@ -16,12 +16,12 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-settings.source = vns_sources
+#settings.source = vns_sources
 # Alternatively use the worst-case scenario source
-#settings.source = worst_source
+settings.source = worst_source
 
 settings.particles = int(25000)
-settings.batches = 150
+settings.batches = 300
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7

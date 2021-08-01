@@ -1,12 +1,12 @@
 #!/bin/sh
 #This file is called submit-script.sh
 #SBATCH --partition=univ2       # default "univ2", if not specified
-#SBATCH --time=2-00:00:00       # run time in days-hh:mm:ss
+#SBATCH --time=5-00:00:00       # run time in days-hh:mm:ss
 #SBATCH --nodes=5
 #SBATCH --ntasks-per-node=20    # cpus per node (by default, "ntasks"="cpus")
-#SBATCH --mem=64000             # RAM per node
+#SBATCH --mem=128000             # RAM per node
 #SBATCH --error=univ2job.err
-#SBATCH --output=unIv2job.out
+#SBATCH --output=univ2job.out
 # Make sure to change the above two lines to reflect your appropriate
 # file locations for standard error and output
 
