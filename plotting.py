@@ -15,7 +15,7 @@ from boolean import root
 material_color = {m.vacuum: 'black', m.air: 'azure', m.aluminum_6061: 'lightgrey',
                   m.deuterium: 'grey', m.stainless: 'teal', m.tungsten: 'green',
                   m.rebco: 'orange', m.crispy: 'brown', m.rafm_steel: 'azure', 
-                  m.tungsten_carbide: 'darkgreen', m.LiPb_breeder: 'grey',
+                  m.tungsten_carbide: 'olive', m.LiPb_breeder: 'grey',
                   m.cooled_tungsten_carbide: 'darkgreen', m.water: 'blue'}
 
 for material in m.materials_list:
@@ -44,6 +44,7 @@ def slice_plot(basis = 'yz', origin=(0, 0, 78-26.51125), width=(150, 150), pixel
     plot.show_overlaps = True
     plot.overlap_color = 'red'
     plot.background = 'magenta'
+    plot.mask_background = 'black'
     plot.filename = cwd
     plots = openmc.Plots([plot])
     return plots

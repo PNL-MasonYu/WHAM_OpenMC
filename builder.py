@@ -16,17 +16,17 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-#settings.source = vns_sources
+settings.source = vns_sources
 # Alternatively use the worst-case scenario source
-settings.source = worst_source
+#settings.source = worst_source
 
 settings.particles = int(25000)
-settings.batches = 300
+settings.batches = 200
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
 #settings.seed = 53713
-settings.survival_bias = True
+#settings.survival_bias = True
 settings.photon_transport = True
 settings.export_to_xml(working_directory)
 settings.export_to_xml("./")
@@ -36,7 +36,7 @@ settings.export_to_xml("./")
 # ENDF/B-VIII.0 cross sections on local machine
 #materials.cross_sections = "/mnt/d/endfb80_hdf5/cross_sections.xml"
 # ENDF/B-VIII.0 cross sections on cluster
-materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml"
+#materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml"
 
 materials.export_to_xml("./")
 
@@ -48,16 +48,16 @@ log_energy_filter = openmc.EnergyFilter(np.logspace(-4, 7, 1000))
 energy_filter = openmc.EnergyFilter([0., 0.5, 1.0e6, 20.0e6])
 # Full mesh tally covering the whole irradiator for both thermal and fast flux
 mesh = openmc.RegularMesh(mesh_id=1)
-mesh.dimension = [200, 200, 200]
-mesh.lower_left = [-200, -200, 0]
+mesh.dimension = [250, 250, 150]
+mesh.lower_left = [-250, -250, 0]
 mesh.width = [2, 2, 2]
 full_mesh_filter = openmc.MeshFilter(mesh)
 
 # Mesh tally covering a quarter of the device, focused on the breeder
 breeder_mesh = openmc.RegularMesh(mesh_id=2)
-breeder_mesh.dimension = [100, 100, 100]
-breeder_mesh.lower_left = [0, 0, 0]
-breeder_mesh.width = [2, 2, 2]
+breeder_mesh.dimension = [125, 125, 60]
+breeder_mesh.lower_left = [-200, -200, 0]
+breeder_mesh.width = [4, 4, 4]
 breeder_mesh_filter = openmc.MeshFilter(breeder_mesh)
 
 coil_filter = openmc.CellFilter([c[2001].id])
@@ -71,7 +71,7 @@ tallies_file.append(total_current)
 fast_current = openmc.Tally(2,name='fast neutron current')
 fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6])]
 fast_current.scores = ['current']
-tallies_file.append(fast_current)
+#tallies_file.append(fast_current)
 
 thermal_flux = openmc.Tally(3,name='thermal flux')
 thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
@@ -120,7 +120,7 @@ tallies_file.append(avg_coil_flux)
 
 breeder_reaction = openmc.Tally(12,name='Breeder Li-6(n,alpha)T reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
-breeder_reaction.scores = ['(n,a)']
+breeder_reaction.scores = ['(n,a)', '(n,Xt)']
 tallies_file.append(breeder_reaction)
 
 multiplier_reaction = openmc.Tally(13,name='Breeder Pb(n,2n) reaction')
@@ -130,13 +130,23 @@ tallies_file.append(multiplier_reaction)
 
 breeder_mesh = openmc.Tally(14,name='Breeder mesh')
 breeder_mesh.filters = [breeder_mesh_filter]
-breeder_mesh.scores = ['(n,a)']
+breeder_mesh.scores = ['(n,Xt)']
 tallies_file.append(breeder_mesh)
 
 multiplier_mesh = openmc.Tally(15,name='Multiplier mesh')
 multiplier_mesh.filters = [breeder_mesh_filter]
 multiplier_mesh.scores = ['(n,2n)', '(n,3n)']
 tallies_file.append(multiplier_mesh)
+
+tritium_mesh = openmc.Tally(16, name='tritium production mesh')
+tritium_mesh.filters = [breeder_mesh_filter]
+tritium_mesh.scores = ['H3-production']
+tallies_file.append(tritium_mesh)
+
+nu_scatter_mesh = openmc.Tally(17, name='nu scatter mesh')
+nu_scatter_mesh.filters = [breeder_mesh_filter]
+nu_scatter_mesh.scores = ['nu-scatter']
+#tallies_file.append(nu_scatter_mesh)
 
 tallies_file.export_to_xml("./")
 
@@ -146,14 +156,15 @@ geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
                                    origin=(0, 0, 200), 
-                                   width=(450, 450), 
+                                   width=(550, 550), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 
 # Plot geometry
-openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
+#openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
+#openmc.plot_geometry()
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
+openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
 # %%

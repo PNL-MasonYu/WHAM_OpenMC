@@ -20,12 +20,13 @@ for n in range(ndfz.shape[1]):
     fusion_source = openmc.Source()
     fusion_source.angle = openmc.stats.Isotropic()
     #fusion_source.energy = openmc.stats.Normal(2.45e6, 0.04e6)
-    fusion_source.energy = openmc.stats.Normal(14.1e6, 0.1e6)
+    fusion_source.energy = openmc.stats.Normal(14.1e6, 0.05e6)
     r_tabular = openmc.stats.Tabular(solrz[:, n]*100, ndfz[:, n])
     z_thickness = solzz[0, 1]*100 - solzz[0, 0]*100
     z_uniform = openmc.stats.Uniform(z_thickness*n, z_thickness*(n+1))
     phi_uniform = openmc.stats.Uniform(0, 2*np.pi)
     fusion_source.space = openmc.stats.CylindricalIndependent(r_tabular, phi_uniform ,z_uniform)
+    # Normalization so the total source strength remains 1 when integrated across all space
     fusion_source.strength = flux_neutron_f[midpt_index+n] / strength_sum
     vns_sources.append(fusion_source)
 # %%

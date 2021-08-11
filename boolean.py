@@ -1,3 +1,4 @@
+from os import remove
 import openmc
 from openmc.data.photon import CM_PER_ANGSTROM
 from geometry import r
@@ -44,9 +45,9 @@ first_wall = r[5001] | r[5002] | r[5003]
 
 first_wall_support = r[5101] | r[5102] | r[5103]
 
-breeder = r[6000] | r[6001] | r[6002]
+breeder = r[6000] | r[6001] | r[6002] | r[6003]
 
-reflector = r[6100]
+reflector = r[6100] | r[6101]
 
 expander_tank = r[7001] | r[7002]
 
@@ -54,8 +55,8 @@ vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] &~ r[6100] | r[7901] | 
 
 model_enclosure = -openmc.ZCylinder(0, 0, 399) & +openmc.ZPlane(0) & -openmc.ZPlane(400)
 
-c[1000] = openmc.Cell(1000, "Remaining vacuum", m.vacuum, r[1000]&~model_enclosure)
-c[1001] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
+#c[1000] = openmc.Cell(1000, "Remaining vacuum", None, r[1000]&~model_enclosure)
+#c[1001] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
 #c[1002] = openmc.Cell(1002, "Deuterium neutron gas fill", m.deuterium, d2_fill)
 c[2001] = openmc.Cell(2001, "CFS coil", m.rebco, coil)
 c[3001] = openmc.Cell(3001, "Shield", m.cooled_tungsten_carbide, shield)
@@ -72,3 +73,4 @@ all_cells = [c[key] for key in c.keys()]
 root_cells.extend(all_cells)
 root.add_cells(root_cells)
 
+root = remove_void(root)

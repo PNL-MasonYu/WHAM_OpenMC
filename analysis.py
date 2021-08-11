@@ -17,30 +17,34 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
     z_bounds = solzz[-1] * 100
     return r_bounds, z_bounds
 
-def aggregate_rectangular(result, r_bins=100, dim=1):
+def aggregate_rectangular(result, r_bins=150, dim=0):
     """
     aggegate the cylindrical tally in the r direction
     The z-dimension should be specified in the dim variable
     The center of the tally will be the axis of revolution
     """
-    center = result.shape[dim-1]/2
+    center = result.shape[dim-1]/2 - 25
     z_length = result.shape[dim]
-    aggregate = np.zeros((z_length, r_bins*2))
-    edges = np.linspace(0, int(center), num=r_bins+1)
+    aggregate = np.zeros((z_length, r_bins*2+2))
+    edges = np.linspace(0, int(center), num=r_bins)
+    print(center)
+    #print(z_length)
+    print(result.shape[dim-1])
     for z in range(z_length):
         slice = result[z, :, :]
+        #print(slice.shape)
         R = []
         W = {}
-        for x in range(int(center*2)):
-            for y in range(int(center*2)):
+        for x in range(result.shape[dim-1]):
+            for y in range(result.shape[dim-1]):
                 r = np.sqrt((x-center)**2 + (y-center)**2)
                 R.append(r)
                 W[r] = slice[x, y]
-        for i in range(r_bins):
+        for i in range(r_bins-1):
             binned_r = [radius for radius in R if (radius <= edges[i+1] and radius >= edges[i])]
             binned_w = [W[radius] for radius in binned_r]
-            aggregate[z, int(center-edges[i])] = np.average(binned_w)
-            aggregate[z, int(center+edges[i])] = np.average(binned_w)
+            aggregate[z, int(r_bins-i)] = np.mean(binned_w)
+            aggregate[z, int(r_bins+i)] = np.mean(binned_w)
     return aggregate
 
 def surf_to_grid():
@@ -53,17 +57,17 @@ def surf_to_grid():
 if not os.path.isdir('./plots'):
     os.makedirs('./plots')
 
-sp = openmc.StatePoint("statepoint.150.h5")
+sp = openmc.StatePoint("statepoint.200.h5")
 r_bounds, z_bounds = plasma_boundary()
 
 #
-mesh_shape = (200, 200, 200)
-extent=(-200, 200, 0, 400)
-background_plot = p.slice_plot(basis="xz", origin=(0, 0, 200), cwd='./background',
-                               width=(400, 400), color=p.material_color)
+mesh_shape = (150, 250, 250)
+extent=(-250, 250, 0, 300)
+background_plot = p.slice_plot(basis="xz", origin=(0, 0, 150), cwd='./background',
+                               width=(500, 300), color=p.material_color)
 background_plot.export_to_xml()
-#openmc.plot(background_plot)
-background_image = plt.imread('./background.png')
+#openmc.plot_geometry(background_plot)
+background_image = plt.imread('./background.ppm')
 # %%
 def plot_thermal_flux():
     thermalflux_tally = sp.get_tally(name='thermal flux')
@@ -72,14 +76,14 @@ def plot_thermal_flux():
     fig1 = plt.figure(num=1, figsize=(10, 10))
     data = aggregate_rectangular(thermal_flux.mean)
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2), cmap='Spectral_r', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17), cmap='Spectral_r', origin='lower', 
                     alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=0.1, vmax=1e6))
-    CS = plt.contour(np.multiply(data, 4.2e17*2), np.logspace(-1, 6, 8), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17), np.logspace(-1, 6, 8), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.colorbar(im, label='Thermal neutron flux $[n/cm^2-s]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
-    plt.title('DT Thermal Flux (<0.5 eV)\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Thermal Flux (<0.5 eV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
     fig1.savefig('./plots/DT strict thermal flux yz')
@@ -92,11 +96,11 @@ def plot_epithermal_flux():
     data = aggregate_rectangular(epithermal_flux.mean)
     fig2 = plt.figure(num=2, figsize=(15, 15))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2), cmap='Spectral_r', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17), cmap='Spectral_r', origin='lower', 
                     alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e10, vmax=1e16))
-    CS = plt.contour(np.multiply(data, 4.2e17*2), np.logspace(10, 17, 16), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17), np.logspace(10, 17, 16), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Epithermal Flux (0.5 eV - 100 keV)\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Epithermal Flux (0.5 eV - 100 keV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Epithermal neutron flux $[n/cm^2-s]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -115,11 +119,11 @@ def plot_fast_flux():
     plt.plot(r_bounds, z_bounds, "g-")
     plt.plot(-r_bounds, z_bounds, "g-")
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2), cmap='Spectral_r', origin='lower', 
-                    alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e10, vmax=1e16))
-    CS = plt.contour(np.multiply(data, 4.2e17*2), np.logspace(10, 17, 12), origin="lower",
+    im = plt.imshow(np.multiply(data, 4.2e17), cmap='Spectral_r', origin='lower', 
+                    alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e8, vmax=1e15))
+    CS = plt.contour(np.multiply(data, 4.2e17), np.logspace(8, 15, 12), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Fast Flux (>100 keV)\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Fast Flux (>100 keV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Fast neutron flux $[n/cm^2-s]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -133,14 +137,15 @@ def plot_total_heat():
     heat = heat_tally.get_slice(scores=['heating'])
     heat.mean.shape = mesh_shape
     normalized_heat = np.add(heat.mean, 1e-10)
-    data = aggregate_rectangular(heat.mean)
-    fig4 = plt.figure(num=4, figsize=(15, 15))
+    data = aggregate_rectangular(normalized_heat)
+    #data = heat.mean[:, 100, :]
+    fig4 = plt.figure(num=4, figsize=(15, 20))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2*1.602e-19/8), cmap='plasma', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17*1.602e-19/8), cmap='plasma', origin='lower', 
                     alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e-5, vmax=1e1))
-    CS = plt.contour(np.multiply(data, 4.2e17*2*1.602e-19/8), np.logspace(-3, 1, 10), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17*1.602e-19/8), np.logspace(-5, 1, 10), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Nuclear Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Neutron Nuclear Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Total Nuclear Heating $[W/cm^3]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -154,14 +159,14 @@ def plot_local_heat():
     local_heat = local_heat_tally.get_slice(scores=['heating-local'])
     local_heat.mean.shape = mesh_shape
     normalized_local_heat = np.add(local_heat.mean, 1e-10)
-    data = aggregate_rectangular(local_heat.mean)
+    data = aggregate_rectangular(normalized_local_heat)
     fig5 = plt.figure(num=5, figsize=(15, 15))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2*1.602e-19/8), cmap='plasma', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17*1.602e-19/8), cmap='plasma', origin='lower', 
                     alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e-5, vmax=1e1))
-    CS = plt.contour(np.multiply(data, 4.2e17*2*1.602e-19/8), np.logspace(-3, 1, 10), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17*1.602e-19/8), np.logspace(-3, 1, 10), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Local Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Neutron Local Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron local energy deposition $[W/cm^3]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -178,11 +183,11 @@ def plot_radiative_capture():
     data = aggregate_rectangular(radiative_capture.mean)
     fig6 = plt.figure(num=6, figsize=(15, 15))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2*1.602e-19/8), cmap='viridis', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17*1.602e-19/8), cmap='viridis', origin='lower', 
                     alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e-12, vmax=1e-6))
-    CS = plt.contour(np.multiply(data, 4.2e17*2*1.602e-19/8), np.logspace(-12, -6, 10), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17*1.602e-19/8), np.logspace(-12, -6, 10), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Radiative Capture\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Neutron Radiative Capture\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron radiative capture $[#/cm^3-s]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -196,14 +201,14 @@ def plot_absorption():
     absorption = absorption_tally.get_slice(scores=['absorption'])
     absorption.mean.shape = mesh_shape
     absorption = np.add(absorption.mean, 1e-15)
-    data = aggregate_rectangular(absorption.mean)
+    data = aggregate_rectangular(absorption)
     fig7 = plt.figure(num=7, figsize=(15, 15))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17*2*1.602e-19/8), cmap='viridis', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17*1.602e-19/8), cmap='viridis', origin='lower', 
                     alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e-12, vmax=1e-6))
-    CS = plt.contour(np.multiply(data, 4.2e17*2*1.602e-19/8), np.logspace(-12, -6, 10), origin="lower",
+    CS = plt.contour(np.multiply(data, 4.2e17*1.602e-19/8), np.logspace(-12, -6, 10), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Absorption\n 4.2e17 n/s Source Rate\n Tungsten shield')
+    plt.title('DT Neutron Absorption\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron absorption $[#/cm^3-s]$', orientation='vertical',
                 shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
@@ -215,19 +220,31 @@ def plot_absorption():
 def plot_coil_flux_energy():
     avg_coil_flux_tally = sp.get_tally(name='Average neutron flux')
     avg_coil_flux = avg_coil_flux_tally.get_slice(scores=['flux'])
-
     fig8 = plt.figure(num=8, figsize=(15, 15))
-    flux = np.multiply(avg_coil_flux.mean, 4.2e17*2)[0]
-    print(flux)
-    plt.hist(["<0.5 eV", "0.5 eV - 100 keV", ">100 keV"],
-            [flux[0], flux[1], flux[2]])
+    flux = np.multiply(avg_coil_flux.mean, 4.2e17)
+    plt.plot(np.logspace(-4, 7, 999), flux[:, 0, 0])
+    plt.title('Neutron energy spectrum through coil \n 4.2e17 n/s Source Rate')
+    plt.xlabel('Neutron energy (eV)')
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.ylabel('Neutron flux (n/cm2-s)')
     return fig8
 
+def get_tbr():
+    li6_breeding_tally = sp.get_tally(name='Breeder Li-6(n,alpha)T reaction')
+    li6_breeding = li6_breeding_tally.get_slice(scores=['(n,Xt)'])
+    breeding_dataframe = li6_breeding.get_pandas_dataframe()
+    
+    print("tritium production by Li-6:")
+    print(breeding_dataframe)
+
 # %%
-#plot_fast_flux()
-#plot_total_heat()
-#plot_thermal_flux()
-#plot_epithermal_flux()
+plot_fast_flux()
+plot_total_heat()
+plot_thermal_flux()
+plot_epithermal_flux()
 #plot_radiative_capture()
 plot_absorption()
+get_tbr()
+plot_coil_flux_energy()
 # %%

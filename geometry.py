@@ -40,7 +40,7 @@ coil_dz = 2.4
 coil_dr = 1.9
 
 # Throat inner radius in cm
-throat_IR = 25.4
+throat_IR = 28
 # Cryostat clearance in cm
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 5
@@ -51,19 +51,19 @@ fw_thickness = 0.1
 # First wall support structure thickness in cm
 fw_support_thickness = 5
 # First wall cylinder end location in cm
-fw_end = 130
+fw_end = 140
 # First wall inner radius in cm
-fw_radius = 80
+fw_radius = 75
 # Breeder blanket outer radius in cm
 breeder_OR = 175
 # Angle between axis and the expanding portion of shield in degree
-expand_angle = 17.5
+expand_angle = 10.5
 # Virtex of the cone for the expanding portion of shield in cm
-expand_virtex = 210
+expand_virtex = 230
 # Virtex of the outer cone of the shield
 shield_virtex = -30
 # Angle between axis and the outer cone of the shield
-shield_angle = 30
+shield_angle = 17.5
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -76,7 +76,7 @@ shield_tan = np.tan(shield_angle*np.pi/180)
 ##########################Universe Cell############################
 
 # IMPORTANT: use p_vacz1 instead of ZPlane(0)
-r[1] = -rpp(-199, 199, -239, 239, -199, 199)
+#r[1] = -rpp(-199, 199, -239, 239, -199, 199)
 #p_vacx1 = openmc.XPlane(-400, boundary_type='vacuum')
 #p_vacx2 = openmc.XPlane(400, boundary_type='vacuum')
 #p_vacy1 = openmc.YPlane(-400, boundary_type='vacuum')
@@ -188,11 +188,23 @@ r[6002] = +openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+(fw_
 r[6002] &= -openmc.ZPlane(fw_end)
 r[6002] &= -openmc.model.surface_composite.ZConeOneSided(0, 0, shield_virtex, shield_tan, True)
 
+# Breeder Extension
+r[6003] = +p_vacz1
+r[6003] &= -openmc.ZCylinder(0, 0, breeder_OR+80)
+r[6003] &= +openmc.ZCylinder(0, 0, breeder_OR)
+r[6003] &= -openmc.ZPlane(cryo_zmax-10)
+
 # Breeder reflector
-r[6100] = +openmc.ZCylinder(0, 0, breeder_OR)
-r[6100] &= -openmc.ZCylinder(0, 0, breeder_OR+10)
+r[6100] = +openmc.ZCylinder(0, 0, breeder_OR+80)
+r[6100] &= -openmc.ZCylinder(0, 0, breeder_OR+80+20)
 r[6100] &= +p_vacz1
-r[6100] &= -openmc.ZPlane(cryo_zmin)
+r[6100] &= -openmc.ZPlane(cryo_zmax-10)
+
+# Breeder reflector for extension
+r[6101] = +openmc.ZCylinder(0, 0, breeder_OR)
+r[6101] &= -openmc.ZCylinder(0, 0, breeder_OR+80+20)
+r[6101] &= +openmc.ZPlane(cryo_zmax-10)
+r[6101] &= -openmc.ZPlane(cryo_zmax)
 
 # Vacuum around the breeder
 r[6901] = +openmc.ZCylinder(0, 0, breeder_OR)
@@ -225,3 +237,4 @@ r[7902] &= -p_vacz2
 r[7903] = +openmc.ZCylinder(0, 0, throat_IR)
 r[7903] &= +openmc.ZPlane(cryo_zmax)
 r[7903] &= -openmc.ZPlane(cryo_zmax+15)
+

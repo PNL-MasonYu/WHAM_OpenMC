@@ -145,9 +145,10 @@ cooled_rafm_steel.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
 
 LiPb_breeder = openmc.Material(1000, name = "lead lithium eutectic breeder")
 # Should double check this number... Varies with temperature
-LiPb_breeder.set_density('g/cm3', 9.8)
-LiPb_breeder.add_element('Li', 15, enrichment=90, enrichment_target='Li6')
-LiPb_breeder.add_element('Pb', 85)
+LiPb_breeder.set_density('kg/m3', 9865)
+LiPb_breeder.add_element('Li', 17, percent_type='ao', enrichment=90,
+                          enrichment_target='Li6', enrichment_type='ao')
+LiPb_breeder.add_element('Pb', 83)
 
 # Shield material with structural support and coolant mixed in
 cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water, rafm_steel], [0.75, 0.15, 0.1], 'vo')
