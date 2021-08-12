@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <tallies>
   <mesh id="1">
-    <dimension>250 250 150</dimension>
-    <lower_left>-250 -250 0</lower_left>
+    <dimension>275 275 150</dimension>
+    <lower_left>-275 -275 0</lower_left>
     <width>2 2 2</width>
   </mesh>
   <mesh id="2">

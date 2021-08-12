@@ -20,8 +20,8 @@ settings.source = vns_sources
 # Alternatively use the worst-case scenario source
 #settings.source = worst_source
 
-settings.particles = int(25000)
-settings.batches = 200
+settings.particles = int(100000)
+settings.batches = 250
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -48,8 +48,8 @@ log_energy_filter = openmc.EnergyFilter(np.logspace(-4, 7, 1000))
 energy_filter = openmc.EnergyFilter([0., 0.5, 1.0e6, 20.0e6])
 # Full mesh tally covering the whole irradiator for both thermal and fast flux
 mesh = openmc.RegularMesh(mesh_id=1)
-mesh.dimension = [250, 250, 150]
-mesh.lower_left = [-250, -250, 0]
+mesh.dimension = [275, 275, 150]
+mesh.lower_left = [-275, -275, 0]
 mesh.width = [2, 2, 2]
 full_mesh_filter = openmc.MeshFilter(mesh)
 
@@ -155,7 +155,7 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 200), 
+                                   origin=(0, 0, 275), 
                                    width=(550, 550), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")

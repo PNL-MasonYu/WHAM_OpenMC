@@ -17,13 +17,13 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
     z_bounds = solzz[-1] * 100
     return r_bounds, z_bounds
 
-def aggregate_rectangular(result, r_bins=150, dim=0):
+def aggregate_rectangular(result, r_bins=100, dim=0):
     """
     aggegate the cylindrical tally in the r direction
     The z-dimension should be specified in the dim variable
     The center of the tally will be the axis of revolution
     """
-    center = result.shape[dim-1]/2 - 25
+    center = result.shape[dim-1]/2
     z_length = result.shape[dim]
     aggregate = np.zeros((z_length, r_bins*2+2))
     edges = np.linspace(0, int(center), num=r_bins)
@@ -81,7 +81,7 @@ def plot_thermal_flux():
     CS = plt.contour(np.multiply(data, 4.2e17), np.logspace(-1, 6, 8), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.colorbar(im, label='Thermal neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.title('DT Thermal Flux (<0.5 eV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.xlabel('y (cm)')
@@ -102,7 +102,7 @@ def plot_epithermal_flux():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Epithermal Flux (0.5 eV - 100 keV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Epithermal neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
@@ -125,7 +125,7 @@ def plot_fast_flux():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Fast Flux (>100 keV)\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Fast neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
@@ -147,7 +147,7 @@ def plot_total_heat():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Neutron Nuclear Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Total Nuclear Heating $[W/cm^3]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
@@ -168,7 +168,7 @@ def plot_local_heat():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Neutron Local Heating with Gamma\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron local energy deposition $[W/cm^3]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
@@ -189,7 +189,7 @@ def plot_radiative_capture():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Neutron Radiative Capture\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron radiative capture $[#/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
@@ -210,7 +210,7 @@ def plot_absorption():
                     extent=extent, cmap='flag', linewidths=0.5)
     plt.title('DT Neutron Absorption\n 4.2e17 n/s Source Rate\n Tungsten carbide shield')
     plt.colorbar(im, label='Neutron absorption $[#/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
+                shrink=0.5, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e')
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
