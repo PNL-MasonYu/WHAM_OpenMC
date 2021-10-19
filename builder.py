@@ -3,7 +3,6 @@ import openmc
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-from openmc import tallies
 
 from material import materials
 from boolean import c, root_cells, root
@@ -20,12 +19,13 @@ settings.source = vns_sources
 # Alternatively use the worst-case scenario source
 #settings.source = worst_source
 
-settings.particles = int(100000)
-settings.batches = 250
+settings.particles = int(500000)
+settings.batches = 500
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
 #settings.seed = 53713
+#settings.trace = (1, 1, 52687)
 #settings.survival_bias = True
 settings.photon_transport = True
 settings.export_to_xml(working_directory)
@@ -46,16 +46,18 @@ tallies_file = openmc.Tallies()
 
 log_energy_filter = openmc.EnergyFilter(np.logspace(-4, 7, 1000))
 energy_filter = openmc.EnergyFilter([0., 0.5, 1.0e6, 20.0e6])
-# Full mesh tally covering the whole irradiator for both thermal and fast flux
+all_cell_id = [c for c in c.keys()]
+all_cell_filter = openmc.CellFilter(all_cell_id)
+# Full mesh tally covering the whole device for both thermal and fast flux
 mesh = openmc.RegularMesh(mesh_id=1)
-mesh.dimension = [275, 275, 150]
+mesh.dimension = [275, 275, 160]
 mesh.lower_left = [-275, -275, 0]
-mesh.width = [2, 2, 2]
+mesh.width = [2, 2, 4]
 full_mesh_filter = openmc.MeshFilter(mesh)
 
 # Mesh tally covering a quarter of the device, focused on the breeder
 breeder_mesh = openmc.RegularMesh(mesh_id=2)
-breeder_mesh.dimension = [125, 125, 60]
+breeder_mesh.dimension = [125, 125, 120]
 breeder_mesh.lower_left = [-200, -200, 0]
 breeder_mesh.width = [4, 4, 4]
 breeder_mesh_filter = openmc.MeshFilter(breeder_mesh)
@@ -71,12 +73,12 @@ tallies_file.append(total_current)
 fast_current = openmc.Tally(2,name='fast neutron current')
 fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6])]
 fast_current.scores = ['current']
-#tallies_file.append(fast_current)
+tallies_file.append(fast_current)
 
-thermal_flux = openmc.Tally(3,name='thermal flux')
-thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0., 0.5])]
-thermal_flux.scores = ['flux']
-tallies_file.append(thermal_flux)
+photon_flux = openmc.Tally(3,name='photon flux')
+photon_flux.filters = [full_mesh_filter, openmc.ParticleFilter('photon')]
+photon_flux.scores = ['flux']
+tallies_file.append(photon_flux)
 
 epithermal_flux = openmc.Tally(4,name='epithermal flux')
 epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5])]
@@ -87,6 +89,16 @@ fast_flux = openmc.Tally(5,name='fast flux')
 fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e5 ,20.0e6])]
 fast_flux.scores = ['flux']
 tallies_file.append(fast_flux)
+
+strict_fast_flux = openmc.Tally(19,name='strict fast flux')
+strict_fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e6 ,20.0e6])]
+strict_fast_flux.scores = ['flux']
+tallies_file.append(strict_fast_flux)
+
+multiplying_flux = openmc.Tally(18,name='Pb multiplying flux')
+multiplying_flux.filters = [full_mesh_filter, openmc.EnergyFilter([5e6 ,20.0e6])]
+multiplying_flux.scores = ['flux']
+tallies_file.append(multiplying_flux)
 
 heat_load = openmc.Tally(6,name='neutron heat load')
 heat_load.filters = [full_mesh_filter]
@@ -129,24 +141,29 @@ multiplier_reaction.scores = ['(n,2n)', '(n,3n)']
 tallies_file.append(multiplier_reaction)
 
 breeder_mesh = openmc.Tally(14,name='Breeder mesh')
-breeder_mesh.filters = [breeder_mesh_filter]
+breeder_mesh.filters = [full_mesh_filter]
 breeder_mesh.scores = ['(n,Xt)']
 tallies_file.append(breeder_mesh)
 
 multiplier_mesh = openmc.Tally(15,name='Multiplier mesh')
-multiplier_mesh.filters = [breeder_mesh_filter]
+multiplier_mesh.filters = [full_mesh_filter]
 multiplier_mesh.scores = ['(n,2n)', '(n,3n)']
 tallies_file.append(multiplier_mesh)
 
-tritium_mesh = openmc.Tally(16, name='tritium production mesh')
-tritium_mesh.filters = [breeder_mesh_filter]
-tritium_mesh.scores = ['H3-production']
-tallies_file.append(tritium_mesh)
+helium_mesh = openmc.Tally(16, name='helium production mesh')
+helium_mesh.filters = [full_mesh_filter]
+helium_mesh.scores = ['He4-production']
+tallies_file.append(helium_mesh)
 
-nu_scatter_mesh = openmc.Tally(17, name='nu scatter mesh')
-nu_scatter_mesh.filters = [breeder_mesh_filter]
-nu_scatter_mesh.scores = ['nu-scatter']
-#tallies_file.append(nu_scatter_mesh)
+inverse_velocity_mesh = openmc.Tally(17, name='inverse-velocity mesh')
+inverse_velocity_mesh.filters = [full_mesh_filter, openmc.ParticleFilter('neutron')]
+inverse_velocity_mesh.scores = ['inverse-velocity']
+tallies_file.append(inverse_velocity_mesh)
+
+all_spectrum = openmc.Tally(20, name="neutron spectrum all cell")
+all_spectrum.filters = [all_cell_filter, openmc.ParticleFilter('neutron'), log_energy_filter]
+all_spectrum.scores = ['flux']
+tallies_file.append(all_spectrum)
 
 tallies_file.export_to_xml("./")
 
@@ -155,16 +172,18 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 275), 
-                                   width=(550, 550), 
+                                   origin=(0, 0, 200), 
+                                   width=(200, 400), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 
 # Plot geometry
 #openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
 #openmc.plot_geometry()
+#r_bounds, z_bounds = a.plasma_boundary()
+#p.plot_geometry(r_bounds, z_bounds)
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc")
+openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%

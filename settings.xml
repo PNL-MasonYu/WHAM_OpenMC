@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>fixed source</run_mode>
-  <particles>100000</particles>
-  <batches>250</batches>
+  <particles>500000</particles>
+  <batches>500</batches>
   <source strength="0.06907607795493992">
     <space origin="0.0 0.0 0.0" type="cylindrical">
       <r interpolation="linear-linear" type="tabular">

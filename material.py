@@ -1,4 +1,5 @@
 import openmc
+import matplotlib.pyplot as plt
 
 vacuum = openmc.Material(0, name='vacuum')
 vacuum.set_density('g/cm3', 1e-20)
@@ -47,7 +48,7 @@ stainless.add_nuclide('Ni60', 2.27057109e-02)
 stainless.add_nuclide('Ni61', 9.87005296e-04)
 stainless.add_nuclide('Ni62', 3.14709137e-03)
 stainless.add_nuclide('Ni64', 8.01362752e-04)
-stainless.add_s_alpha_beta('c_Fe56')
+#stainless.add_s_alpha_beta('c_Fe56')
 
 aluminum_6061 = openmc.Material(13, name='aluminum_6061')
 aluminum_6061.set_density('g/cm3', 2.7)
@@ -89,6 +90,10 @@ rebco.add_element('Ba', 15.3846153)
 rebco.add_element('Cu', 23.0769230)
 rebco.add_element('O', 53.8461538)
 
+magnet = openmc.Material(31, name="homogenized CFS magnet")
+magnet.set_density("g/cm3", 8.96)
+magnet.add_element("Cu", 100)
+
 tungsten = openmc.Material(21, name="tungsten")
 tungsten.set_density("g/cm3", 19.25)
 tungsten.add_element("W", 100)
@@ -109,7 +114,7 @@ crispy.add_nuclide('Cl37', 6.51683424e-04)
 
 # This water does not have the S_ab scattering kernels, meant for mixing
 water = openmc.Material(101, name="water")
-water.set_density('g/cm3', 1.4)
+water.set_density('g/cm3', 1)
 water.add_element('H', 66.666)
 water.add_element('O', 33.333)
 
@@ -151,11 +156,43 @@ LiPb_breeder.add_element('Li', 17, percent_type='ao', enrichment=90,
 LiPb_breeder.add_element('Pb', 83)
 
 # Shield material with structural support and coolant mixed in
-cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water, rafm_steel], [0.75, 0.15, 0.1], 'vo')
-cooled_tungsten_carbide.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
+cooled_tungsten_carbide = openmc.Material.mix_materials([tungsten_carbide, water, rafm_steel], [0.35, 0.6, 0.05], 'vo')
+cooled_tungsten_carbide.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.1)
+
+helium_8mpa = openmc.Material(1100, name="helium gas 8 MPa, 450C")
+helium_8mpa.set_density("kg/m3", 5.323)
+helium_8mpa.add_element("He", 100)
+
+he_cooled_rafm = openmc.Material.mix_materials([helium_8mpa, rafm_steel], [0.45, 0.55], 'vo')
+
+rings = openmc.Material.mix_materials([stainless, vacuum], [0.1, 0.9], 'vo')
+
+tungsten_boride = openmc.Material(1200, name="tungsten boride WB")
+tungsten_boride.set_density("g/cm3", 15.43)
+tungsten_boride.add_elements_from_formula('WB')
+
+w2b5 = openmc.Material(1201, name="tungsten boride W2B5")
+w2b5.set_density("g/cm3", 12.91)
+w2b5.add_elements_from_formula("W2B5")
+
+cooled_w2b5 = openmc.Material.mix_materials([w2b5, water], [0.9, 0.1], 'vo')
+
+TiH2 = openmc.Material(1300, name="titanium hydride")
+TiH2.set_density("g/cm3", 3.75)
+TiH2.add_elements_from_formula("TiH2")
+
+cooled_TiH2 = openmc.Material.mix_materials([TiH2, water], [0.95, 0.05], 'vo')
 
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
-                  rebco, tungsten, crispy, water,
+                  rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
-                  rafm_steel, LiPb_breeder]
+                  rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
+                  TiH2, cooled_TiH2]
 materials = openmc.Materials(materials_list)
+
+"""
+fig=openmc.plot_xs(tungsten_boride, ['slowing-down power'])
+plt.title("tungsten boride slowing-down power")
+plt.xlabel("Energy (MeV)")
+fig.savefig("./plots/WB slowing")
+"""
