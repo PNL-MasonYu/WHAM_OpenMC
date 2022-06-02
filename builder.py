@@ -20,7 +20,7 @@ settings.source = vns_sources
 #settings.source = worst_source
 
 settings.particles = int(500000)
-settings.batches = 500
+settings.batches = 100
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -158,12 +158,27 @@ tallies_file.append(helium_mesh)
 inverse_velocity_mesh = openmc.Tally(17, name='inverse-velocity mesh')
 inverse_velocity_mesh.filters = [full_mesh_filter, openmc.ParticleFilter('neutron')]
 inverse_velocity_mesh.scores = ['inverse-velocity']
-tallies_file.append(inverse_velocity_mesh)
+#tallies_file.append(inverse_velocity_mesh)
 
 all_spectrum = openmc.Tally(20, name="neutron spectrum all cell")
 all_spectrum.filters = [all_cell_filter, openmc.ParticleFilter('neutron'), log_energy_filter]
 all_spectrum.scores = ['flux']
 tallies_file.append(all_spectrum)
+
+central_dpa = openmc.Tally(21, name="damage energy for test region around central cylinder")
+central_dpa.filters = [openmc.CellFilter([c[5201].id])]
+central_dpa.scores = ['damage-energy']
+tallies_file.append(central_dpa)
+"""
+expanding_dpa = openmc.Tally(22, name="damage energy for test region around expanding chamfer")
+expanding_dpa.filters = [openmc.CellFilter([c[5203].id])]
+expanding_dpa.scores = ['damage-energy']
+tallies_file.append(expanding_dpa)
+"""
+all_gamma_spectrum = openmc.Tally(23, name="neutron spectrum all cell")
+all_gamma_spectrum.filters = [all_cell_filter, openmc.ParticleFilter('photon'), log_energy_filter]
+all_gamma_spectrum.scores = ['flux']
+tallies_file.append(all_gamma_spectrum)
 
 tallies_file.export_to_xml("./")
 
@@ -172,8 +187,8 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 200), 
-                                   width=(200, 400), 
+                                   origin=(0, 0, 250), 
+                                   width=(500, 500), 
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 

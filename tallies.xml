@@ -35,11 +35,14 @@
   <filter id="14" type="cell">
     <bins>6000</bins>
   </filter>
-  <filter id="16" type="particle">
+  <filter id="3" type="cell">
+    <bins>1001 2001 6000 3001 3002 4001 5000 5001 5002 5100 5101 5102 5201 5203 6100 7000 7100</bins>
+  </filter>
+  <filter id="17" type="particle">
     <bins>neutron</bins>
   </filter>
-  <filter id="3" type="cell">
-    <bins>1001 2001 6000 3001 3002 4001 5000 5100 6100 7000 7100</bins>
+  <filter id="18" type="cell">
+    <bins>5201</bins>
   </filter>
   <tally id="1" name="total neutron current">
     <filters>7</filters>
@@ -105,12 +108,16 @@
     <filters>4</filters>
     <scores>He4-production</scores>
   </tally>
-  <tally id="17" name="inverse-velocity mesh">
-    <filters>4 16</filters>
-    <scores>inverse-velocity</scores>
-  </tally>
   <tally id="20" name="neutron spectrum all cell">
-    <filters>3 16 1</filters>
+    <filters>3 17 1</filters>
+    <scores>flux</scores>
+  </tally>
+  <tally id="21" name="damage energy for test region around central cylinder">
+    <filters>18</filters>
+    <scores>damage-energy</scores>
+  </tally>
+  <tally id="23" name="neutron spectrum all cell">
+    <filters>3 9 1</filters>
     <scores>flux</scores>
   </tally>
 </tallies>

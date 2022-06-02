@@ -58,5 +58,5 @@ def export_source(path, vns_source):
     np.savetxt(path, source_array, delimiter=",")
     np.savetxt("./data_files/WHAM VNS source radial position.csv", solrz, delimiter=",")
     np.savetxt("./data_files/WHAM VNS source axial position.csv", solzz, delimiter=",")
-export_source("./data_files/WHAM VNS source 4e17.csv", source_distribution)
+#export_source("./data_files/WHAM VNS source 4e17.csv", source_distribution)
 # %%

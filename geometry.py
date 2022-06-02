@@ -43,13 +43,13 @@ coil_dr = 1.9
 throat_IR = 28
 # Cryostat clearance in cm
 # This is the distance from coil pack to cryostat in all directions
-cryostat_dist = 5
+cryostat_dist = 3
 # Cryostat thickness in cm
-cryostat_thickness = 1.5
+cryostat_thickness = 1
 # First wall thickness in cm
 fw_thickness = 0.1
 # First wall support structure thickness in cm
-fw_support_thickness = 5
+fw_support_thickness = 2
 # Shield end location in cm
 sh_end = 132.5
 # First wall inner radius in cm
@@ -75,6 +75,9 @@ end_thickness = 120
 # Expander tank radius
 expand_tank_radius = 150
 
+# Thickness for the testing region
+test_thickness = 5
+
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
 coil_zmax = coil_z+(coil_dz*coil_nz/2)
@@ -87,7 +90,6 @@ chamfer_tan = np.tan((shield_angle+30)*np.pi/180)
 end_tan = np.tan(end_angle*np.pi/180)
 ##########################Universe Cell############################
 
-# IMPORTANT: use p_vacz1 instead of ZPlane(0)
 #r[1] = -rpp(-199, 199, -239, 239, -199, 199)
 #p_vacx1 = openmc.XPlane(-400, boundary_type='vacuum')
 #p_vacx2 = openmc.XPlane(400, boundary_type='vacuum')
@@ -115,6 +117,12 @@ throat_inner_cyl = openmc.ZCylinder(0, 0, throat_IR)
 chamber_outer_cyl = openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness)
 chamber_fw_cyl = openmc.ZCylinder(0, 0, fw_radius+fw_thickness)
 chamber_inner_cyl = openmc.ZCylinder(0, 0, fw_radius)
+
+test_outer_cyl = openmc.ZCylinder(0, 0, fw_radius+fw_thickness+fw_support_thickness+test_thickness)
+test_throat_outer_cyl = openmc.ZCylinder(0, 0, throat_IR+fw_thickness+fw_support_thickness+test_thickness)
+test_expand_cone_outer = openmc.model.surface_composite.ZConeOneSided(0, 0, 
+                         expand_virtex+(fw_thickness+fw_support_thickness+test_thickness)/expand_sin/2,
+                         expand_tan, False)
 
 # shield planes
 cryo_max_zplane = openmc.ZPlane(cryo_zmax)
@@ -215,8 +223,27 @@ r[5102] &= -shield_max_zplane
 r[5103] = +expand_cone_inner
 r[5103] &= -expand_cone_outer
 r[5103] &= -chamber_outer_cyl
-r[5103] &= +throat_fw_cylinder
+r[5103] &= +throat_outer_cyl
 r[5103] &= +p_vacz1
+
+# Material testing cylinder region
+r[5201] = -test_outer_cyl
+r[5201] &= +chamber_outer_cyl
+r[5201] &= +p_vacz1
+r[5201] &= -expand_cone_outer
+
+# Material testing throat region
+r[5202] = -test_outer_cyl
+r[5202] &= +throat_outer_cyl
+r[5202] &= +expand_cone_inner
+r[5202] &= -shield_max_zplane
+
+# Material testing expander region
+r[5203] = +expand_cone_outer
+r[5203] &= -test_expand_cone_outer
+r[5203] &= -test_outer_cyl
+r[5203] &= +throat_outer_cyl
+r[5203] &= -shield_min_zplane
 
 # Breeder cylinder
 r[6000] = -tank_outer_cyl

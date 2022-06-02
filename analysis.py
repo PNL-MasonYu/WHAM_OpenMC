@@ -254,7 +254,7 @@ def plot_damage_energy():
     data = aggregate_rectangular(slice)
     fig = plt.figure(figsize=(15, 10))
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, 4.2e17/16), cmap='viridis', origin='lower', 
+    im = plt.imshow(np.multiply(data, 4.2e17/16*), cmap='viridis', origin='lower', 
                     alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e13, vmax=19))
     CS = plt.contour(np.multiply(data, 4.2e17/16), np.logspace(13, 19, 10), origin="lower",
                     extent=extent, cmap='flag', linewidths=0.5)
@@ -350,6 +350,7 @@ def plot_n3n():
     plt.ylabel('z (cm)')
     fig.savefig('./plots/n3n yz')
     return fig
+
 def plot_wall_load():
     fastflux_tally = sp.get_tally(name='fast flux')
     fast_flux = fastflux_tally.get_slice(scores=['flux'])

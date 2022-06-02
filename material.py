@@ -1,5 +1,6 @@
 import openmc
 import matplotlib.pyplot as plt
+from pkg_resources import ZipProvider
 
 vacuum = openmc.Material(0, name='vacuum')
 vacuum.set_density('g/cm3', 1e-20)
@@ -181,18 +182,28 @@ TiH2 = openmc.Material(1300, name="titanium hydride")
 TiH2.set_density("g/cm3", 3.75)
 TiH2.add_elements_from_formula("TiH2")
 
+zirconium_hydride = openmc.Material(1400, name="zirconium hydride ZrH2")
+zirconium_hydride.set_density("g/cm3", 5.56)
+zirconium_hydride.add_elements_from_formula("ZrH2")
+
 cooled_TiH2 = openmc.Material.mix_materials([TiH2, water], [0.95, 0.05], 'vo')
 
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
                   rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
-                  TiH2, cooled_TiH2]
+                  TiH2, cooled_TiH2, zirconium_hydride]
 materials = openmc.Materials(materials_list)
 
-"""
-fig=openmc.plot_xs(tungsten_boride, ['slowing-down power'])
-plt.title("tungsten boride slowing-down power")
+fig=openmc.plot_xs(tungsten_carbide, ['absorption'])
+openmc.plot_xs(tungsten_boride, ["absorption"], axis=fig.get_axes()[0])
+openmc.plot_xs(w2b5, ["absorption"], axis=fig.get_axes()[0])
+openmc.plot_xs(zirconium_hydride, ["absorption"], axis=fig.get_axes()[0])
+openmc.plot_xs(TiH2, ["absorption"], axis=fig.get_axes()[0])
+plt.title("Neutron shield absorption macroscopic cross section")
 plt.xlabel("Energy (MeV)")
-fig.savefig("./plots/WB slowing")
-"""
+plt.xlim([1e-1, 20])
+plt.ylim([1e-3, 5e2])
+plt.legend(["WC", "WB", "W2B5", "ZrH2", "TiH2"], loc='upper left')
+#plt.xscale("linear")
+fig.savefig("./plots/Shield material absorption")
