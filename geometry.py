@@ -29,15 +29,41 @@ r = {}
 # Magnet coil inner radius in cm
 coil_radius = 75
 # Magnet coil z-position from the center of machine to center of coil in cm
-coil_z = 240
+coil_z = 230
 # Number of coil windings in Z
-coil_nz = 16
+coil_nz = 120
 # Number of coil windings in r
-coil_nr = 16
+coil_nr = 30
 # Conductor thickness in Z (cm)
-coil_dz = 2.4
+coil_dz = 1
 # Conductor thickness in r (cm)
-coil_dr = 1.9
+coil_dr = 1
+
+# Divertor coil inner radius in cm
+divertor_radius = 85
+# Divertor coil z-position (to center of coil)
+divertor_z = 150
+# Divertor coil windings in z
+divertor_nz = 25
+# Divertor coil windings in r
+divertor_nr = 45
+# Divertor conductor thickness in Z (cm)
+divertor_dz = 1
+# Divertor conductor thickness in R (cm)
+divertor_dr = 1
+
+# Midplane coil inner radius in cm
+midplane_radius = 120
+# Midplane coil z-position (to beginning of coil)
+midplane_z = 0
+# Midplane coil windings in z (on one side)
+midplane_nz = 20
+# Midplane coil windings in r
+midplane_nr = 16
+# Midplane conductor thickness in Z (cm)
+midplane_dz = 5
+# Midplane conductor thickness in R (cm)
+midplane_dr = 1
 
 # Throat inner radius in cm
 throat_IR = 28
@@ -46,14 +72,16 @@ throat_IR = 28
 cryostat_dist = 3
 # Cryostat thickness in cm
 cryostat_thickness = 1
+# Close shield thickness in cm
+close_shield_thickness = 2.54
 # First wall thickness in cm
 fw_thickness = 0.1
 # First wall support structure thickness in cm
 fw_support_thickness = 2
 # Shield end location in cm
-sh_end = 132.5
+sh_end = 100
 # First wall inner radius in cm
-fw_radius = 77.5
+fw_radius = 70
 # Breeder cylinder outer radius in cm
 breeder_OR = 175
 # Breeder blanket radial extension thickness
@@ -63,9 +91,11 @@ expand_angle = 7.5
 # Virtex of the cone for the expanding portion of shield in cm
 expand_virtex = 250
 # Virtex of the outer cone of the shield
-shield_virtex = -30
+shield_virtex = -90
 # Angle between axis and the outer cone of the shield
-shield_angle = 20
+shield_outer_angle = 20
+# Angle between axis and the inner cone of the shield
+shield_inner_angle = 50
 # End expander angle
 end_angle = 8
 # End expander breeder radius
@@ -83,10 +113,14 @@ cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
 coil_zmax = coil_z+(coil_dz*coil_nz/2)
 cryo_zmax = coil_zmax + cryostat_dist + cryostat_thickness
 
+divertor_zmin = divertor_z-(divertor_dz*divertor_nz/2)
+divertor_zmax = divertor_z+(divertor_dz*divertor_nz/2)
+
+
 expand_tan = np.tan(expand_angle*np.pi/180)
 expand_sin = np.sin(expand_angle*np.pi/180)
-shield_tan = np.tan(shield_angle*np.pi/180)
-chamfer_tan = np.tan((shield_angle+30)*np.pi/180)
+shield_tan = np.tan(shield_outer_angle*np.pi/180)
+chamfer_tan = np.tan((shield_inner_angle)*np.pi/180)
 end_tan = np.tan(end_angle*np.pi/180)
 ##########################Universe Cell############################
 
@@ -167,12 +201,31 @@ r[1902] &= +p_vacz1
 r[1902] &= +throat_inner_cyl
 r[1902] &= -chamber_inner_cyl
 
-# Coil itself
+# Mirror coil (inner and outer)
 r[2001] = -openmc.ZCylinder(0, 0, coil_radius)
 r[2001] &= +openmc.ZPlane(coil_zmin) & -openmc.ZPlane(coil_zmax)
 
 r[2002] = -openmc.ZCylinder(0, 0, coil_radius + coil_dr*coil_nr)
 r[2002] &= +openmc.ZPlane(coil_zmin) & -openmc.ZPlane(coil_zmax)
+
+# Divertor coil (inner and outer)
+r[2101] = -openmc.ZCylinder(0, 0, divertor_radius)
+r[2101] &= +openmc.ZPlane(divertor_zmin) & -openmc.ZPlane(divertor_zmax)
+
+r[2102] = -openmc.ZCylinder(0, 0, divertor_radius + divertor_dr*divertor_nr)
+r[2102] &= +openmc.ZPlane(divertor_zmin) & -openmc.ZPlane(divertor_zmax)
+
+# Central coil (inner and outer)
+r[2201] = -openmc.ZCylinder(0, 0, midplane_radius)
+r[2201] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+
+r[2202] = -openmc.ZCylinder(0, 0, midplane_radius + midplane_dr*midplane_nr)
+r[2202] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+
+# Close shield
+r[3001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist+close_shield_thickness)
+r[3001] &= +openmc.ZPlane(cryo_zmin-close_shield_thickness) & -cryo_max_zplane
+r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-close_shield_thickness)
 
 # Cryostat big doughnut
 r[4001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist)
@@ -183,11 +236,6 @@ r[4001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist)
 r[4002] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_dist)
 r[4002] &= +openmc.ZPlane(cryo_zmin+cryostat_thickness) & -openmc.ZPlane(cryo_zmax-cryostat_thickness)
 r[4002] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_dist)
-
-# Close shield
-r[3001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist+5)
-r[3001] &= +openmc.ZPlane(cryo_zmin-5) & -cryo_max_zplane
-r[3001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist-5)
 
 # First wall cylinder
 r[5001] = -chamber_fw_cyl

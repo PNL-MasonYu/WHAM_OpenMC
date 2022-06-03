@@ -84,18 +84,33 @@ aluminum_6061.add_nuclide('Zn70', 3.69565848e-06)
 aluminum_6061.add_s_alpha_beta('c_Al27')
 
 # This is basically YBCO for now
-rebco = openmc.Material(20, name="REBCO tape")
+rebco = openmc.Material(name="REBCO tape")
 rebco.set_density("g/cm3", 6.3)
 rebco.add_element('Y', 7.6923076)
 rebco.add_element('Ba', 15.3846153)
 rebco.add_element('Cu', 23.0769230)
 rebco.add_element('O', 53.8461538)
 
-magnet = openmc.Material(31, name="homogenized CFS magnet")
-magnet.set_density("g/cm3", 8.96)
-magnet.add_element("Cu", 100)
+# Hastelloy C-276 subtrate, composition from Haynes International
+hastelloy = openmc.Material(name="Hastelloy C-276")
+hastelloy.set_density("g/cm3", 8.89)
+hastelloy.add_element("Ni", 55, 'wo')
+hastelloy.add_element("Co", 2.5, 'wo')
+hastelloy.add_element("Cr", 16, 'wo')
+hastelloy.add_element("Mo", 16, 'wo')
+hastelloy.add_element("Fe", 5, 'wo')
+hastelloy.add_element("W", 4, 'wo')
+hastelloy.add_element("Mn", 1, "wo")
+hastelloy.add_element("V", 0.35, "wo")
+hastelloy.add_element("Cu", 0.15, "wo")
 
-tungsten = openmc.Material(21, name="tungsten")
+copper = openmc.Material(name="Copper")
+copper.set_density("g/cm3", 8.96)
+copper.add_element("Cu", 100)
+
+magnet = openmc.Material.mix_materials([hastelloy, copper, rebco], [0.55, 0.43, 0.02], 'vo')
+
+tungsten = openmc.Material(31, name="tungsten")
 tungsten.set_density("g/cm3", 19.25)
 tungsten.add_element("W", 100)
 
@@ -192,9 +207,9 @@ materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
                   rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
-                  TiH2, cooled_TiH2, zirconium_hydride]
+                  TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy]
 materials = openmc.Materials(materials_list)
-
+"""
 fig=openmc.plot_xs(tungsten_carbide, ['absorption'])
 openmc.plot_xs(tungsten_boride, ["absorption"], axis=fig.get_axes()[0])
 openmc.plot_xs(w2b5, ["absorption"], axis=fig.get_axes()[0])
@@ -207,3 +222,4 @@ plt.ylim([1e-3, 5e2])
 plt.legend(["WC", "WB", "W2B5", "ZrH2", "TiH2"], loc='upper left')
 #plt.xscale("linear")
 fig.savefig("./plots/Shield material absorption")
+"""

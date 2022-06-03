@@ -34,9 +34,14 @@ c = {}
 # Merge and split regions via boolean operations
 coil = r[2002] &~ r[2001]
 
+divertor_coil = r[2102] &~ r[2101]
+
+central_coil = r[2202] &~ r[2201]
+
 cryostat = r[4001] &~ r[4002]
 
 shield = (r[1001] | r[1002]) &~ r[3001]
+shield &= ~(divertor_coil)
 
 first_wall = r[5001] | r[5002] | r[5003]
 
@@ -45,6 +50,8 @@ first_wall_support = r[5101] | r[5102] | r[5103]
 breeder = r[6000] | r[6001] | r[6002] | r[6004] | r[6005] | r[6201]
 # Subtract the region in the cylinder for best shielding
 breeder &= ~(r[5201] | r[5203])
+breeder &= ~(central_coil)
+breeder &= ~(divertor_coil)
 
 reflector = r[6100] | r[6102] | r[6203] | r[6204]
 
@@ -62,10 +69,12 @@ model_enclosure = -openmc.ZCylinder(0, 0, 399) & +openmc.ZPlane(0) & -openmc.ZPl
 c[1001] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
 #c[1002] = openmc.Cell(1002, "Deuterium neutral gas fill", m.deuterium, d2_fill)
 
-c[2001] = openmc.Cell(2001, "CFS coil", m.rebco, coil)
-c[6000] = openmc.Cell(6000, "Breeder blanket", m.LiPb_breeder, breeder)
-c[3001] = openmc.Cell(3001, "Shield", m.cooled_tungsten_carbide, shield)
-c[3002] = openmc.Cell(3002, "Cryostat shield", m.tungsten_carbide, cryostat_shield)
+c[2001] = openmc.Cell(2001, "CFS coil", m.magnet, coil)
+c[2101] = openmc.Cell(2101, "Divertor coil", m.magnet, divertor_coil)
+c[2201] = openmc.Cell(2201, "Central coil", m.magnet, central_coil)
+c[6000] = openmc.Cell(6000, "Breeder blanket", m.tungsten, breeder)
+c[3001] = openmc.Cell(3001, "Shield", m.tungsten, shield)
+c[3002] = openmc.Cell(3002, "Cryostat shield", m.tungsten_boride, cryostat_shield)
 c[4001] = openmc.Cell(4001, "Cryostat", m.stainless, cryostat)
 c[5000] = openmc.Cell(5000, "First Wall Cylinder", m.tungsten, r[5001])
 c[5001] = openmc.Cell(5001, "First Wall Throat", m.tungsten, r[5002])

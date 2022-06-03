@@ -7,18 +7,20 @@
     <background>255 0 255</background>
     <color id="0" rgb="0 0 0" />
     <color id="1" rgb="128 128 128" />
-    <color id="2" rgb="0 128 0" />
+    <color id="2" rgb="255 165 0" />
+    <color id="3" rgb="0 128 0" />
     <color id="4" rgb="240 255 255" />
-    <color id="5" rgb="0 100 0" />
-    <color id="6" rgb="0 128 0" />
-    <color id="7" rgb="0 128 128" />
-    <color id="8" rgb="0 128 0" />
-    <color id="9" rgb="0 128 0" />
+    <color id="5" rgb="0 128 0" />
+    <color id="6" rgb="255 165 0" />
+    <color id="7" rgb="0 128 0" />
+    <color id="9" rgb="0 100 0" />
+    <color id="10" rgb="0 128 0" />
+    <color id="11" rgb="0 128 128" />
+    <color id="12" rgb="0 128 0" />
     <color id="13" rgb="211 211 211" />
-    <color id="20" rgb="255 165 0" />
-    <color id="21" rgb="128 0 128" />
+    <color id="14" rgb="0 128 0" />
     <color id="22" rgb="128 128 0" />
-    <color id="31" rgb="255 165 0" />
+    <color id="31" rgb="128 0 128" />
     <color id="81" rgb="165 42 42" />
     <color id="101" rgb="0 0 255" />
     <color id="298" rgb="0 128 128" />
@@ -27,6 +29,7 @@
     <color id="1200" rgb="255 255 0" />
     <color id="1201" rgb="255 255 0" />
     <color id="1300" rgb="238 130 238" />
+    <color id="1400" rgb="0 128 0" />
     <show_overlaps>true</show_overlaps>
     <overlap_color>255 0 0</overlap_color>
   </plot>
