@@ -135,6 +135,61 @@
     <nuclide ao="0.00014612724475732603" name="O18" />
     <sab fraction="0.099999" name="c_H_in_H2O" />
   </material>
+  <material id="8" name="EUROFER 97 RAFM Steel(0.85)-water(0.15)">
+    <density units="g/cm3" value="6.778300000000008" />
+    <nuclide ao="0.04269169655750312" name="Fe54" />
+    <nuclide ao="0.6701683363451055" name="Fe56" />
+    <nuclide ao="0.015477109496210284" name="Fe57" />
+    <nuclide ao="0.0020597191495664467" name="Fe58" />
+    <nuclide ao="0.003247624431907715" name="Cr50" />
+    <nuclide ao="0.06262720449369748" name="Cr52" />
+    <nuclide ao="0.00710142226180787" name="Cr53" />
+    <nuclide ao="0.001767694311038376" name="Cr54" />
+    <nuclide ao="0.0008346641623564426" name="C12" />
+    <nuclide ao="9.349988766135923e-06" name="C13" />
+    <nuclide ao="0.0040739913833032155" name="Mn55" />
+    <nuclide ao="4.1389155487741826e-06" name="V50" />
+    <nuclide ao="0.0016514273039608992" name="V51" />
+    <nuclide ao="1.1179941294100614e-05" name="W180" />
+    <nuclide ao="0.0024689037024472195" name="W182" />
+    <nuclide ao="0.0013332079993214987" name="W183" />
+    <nuclide ao="0.0028546116770936905" name="W184" />
+    <nuclide ao="0.0026487144249273376" name="W186" />
+    <nuclide ao="1.3645436477860611e-07" name="Ta180" />
+    <nuclide ao="0.001136036441377154" name="Ta181" />
+    <nuclide ao="0.00018990318400258015" name="N14" />
+    <nuclide ao="0.058839703984611996" name="O16" />
+    <nuclide ao="2.235343557477457e-05" name="O17" />
+    <nuclide ao="0.00011798367420522176" name="O18" />
+    <nuclide ao="0.00032462082735483787" name="P31" />
+    <nuclide ao="3.085220365121604e-05" name="S32" />
+    <nuclide ao="2.430403672322936e-07" name="S33" />
+    <nuclide ao="1.3621057453726263e-06" name="S34" />
+    <nuclide ao="4.732971662833536e-09" name="S36" />
+    <nuclide ao="1.6084961995432218e-05" name="B10" />
+    <nuclide ao="6.507024484327724e-05" name="B11" />
+    <nuclide ao="2.6781218256774126e-06" name="Ti46" />
+    <nuclide ao="2.4151789555199937e-06" name="Ti47" />
+    <nuclide ao="2.393104739259865e-05" name="Ti48" />
+    <nuclide ao="1.756198675989673e-06" name="Ti49" />
+    <nuclide ao="1.6815358856980601e-06" name="Ti50" />
+    <nuclide ao="9.738624820645136e-06" name="Nb93" />
+    <nuclide ao="6.3262106834910805e-06" name="Mo100" />
+    <nuclide ao="9.510740999842041e-06" name="Mo92" />
+    <nuclide ao="5.964583081817791e-06" name="Mo94" />
+    <nuclide ao="1.0305412785206683e-05" name="Mo95" />
+    <nuclide ao="1.0824806108974422e-05" name="Mo96" />
+    <nuclide ao="6.221033535428114e-06" name="Mo97" />
+    <nuclide ao="1.5771378276207445e-05" name="Mo98" />
+    <nuclide ao="0.0001182306108693762" name="Ni58" />
+    <nuclide ao="4.554221963527627e-05" name="Ni60" />
+    <nuclide ao="1.979688753894521e-06" name="Ni61" />
+    <nuclide ao="6.3121140240631964e-06" name="Ni62" />
+    <nuclide ao="1.6075093522280629e-06" name="Ni64" />
+    <nuclide ao="0.11792548257203858" name="H1" />
+    <nuclide ao="1.8368575377698612e-05" name="H2" />
+    <sab fraction="0.099999" name="c_H_in_H2O" />
+  </material>
   <material id="9" name="tungsten carbide(0.35)-water(0.6)-EUROFER 97 RAFM Steel(0.05)">
     <density units="g/cm3" value="6.460399999999998" />
     <nuclide ao="0.00020669036013937488" name="W180" />
@@ -319,7 +374,12 @@
     <nuclide ao="3.69565848e-06" name="Zn70" />
     <sab name="c_Al27" />
   </material>
-  <material id="14" name="titanium hydride(0.95)-water(0.05)">
+  <material id="14" name="pure tantalum">
+    <density units="g/cm3" value="16.69" />
+    <nuclide ao="0.01201" name="Ta180" />
+    <nuclide ao="99.98799000000001" name="Ta181" />
+  </material>
+  <material id="15" name="titanium hydride(0.95)-water(0.05)">
     <density units="g/cm3" value="3.6124999999999994" />
     <nuclide ao="0.026471275030296358" name="Ti46" />
     <nuclide ao="0.023872277118230895" name="Ti47" />
@@ -331,6 +391,24 @@
     <nuclide ao="0.01243972389709977" name="O16" />
     <nuclide ao="4.725900163850678e-06" name="O17" />
     <nuclide ao="2.4943774901759623e-05" name="O18" />
+  </material>
+  <material id="16" name="Pure FLiBe molten salt">
+    <density units="kg/m3" value="1940" />
+    <nuclide ao="0.021682857142857143" name="Li6" />
+    <nuclide ao="0.26403142857142853" name="Li7" />
+    <nuclide ao="0.14285714285714285" name="Be9" />
+    <nuclide ao="0.5714285714285714" name="F19" />
+  </material>
+  <material id="17" name="Pure Beryllium">
+    <density units="g/cm3" value="1.85" />
+    <nuclide ao="100.0" name="Be9" />
+  </material>
+  <material id="18" name="tantalum hydride, TaH0.55">
+    <density units="g/cm3" value="16.69" />
+    <nuclide ao="0.0078065" name="Ta180" />
+    <nuclide ao="64.9921935" name="Ta181" />
+    <nuclide ao="34.9945491" name="H1" />
+    <nuclide ao="0.0054509" name="H2" />
   </material>
   <material id="22" name="tungsten carbide">
     <density units="g/cm3" value="15.63" />
@@ -453,8 +531,8 @@
   </material>
   <material id="1000" name="lead lithium eutectic breeder">
     <density units="kg/m3" value="9865" />
-    <nuclide ao="15.3" name="Li6" />
-    <nuclide ao="1.6999999999999997" name="Li7" />
+    <nuclide ao="1.29013" name="Li6" />
+    <nuclide ao="15.70987" name="Li7" />
     <nuclide ao="1.162" name="Pb204" />
     <nuclide ao="20.003" name="Pb206" />
     <nuclide ao="18.343" name="Pb207" />

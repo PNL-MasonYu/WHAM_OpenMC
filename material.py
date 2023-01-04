@@ -167,8 +167,9 @@ cooled_rafm_steel.add_s_alpha_beta('c_H_in_H2O', 0.66666*0.15)
 LiPb_breeder = openmc.Material(1000, name = "lead lithium eutectic breeder")
 # Should double check this number... Varies with temperature
 LiPb_breeder.set_density('kg/m3', 9865)
-LiPb_breeder.add_element('Li', 17, percent_type='ao', enrichment=90,
-                          enrichment_target='Li6', enrichment_type='ao')
+#LiPb_breeder.add_element('Li', 17, percent_type='ao', enrichment=90,
+#                          enrichment_target='Li6', enrichment_type='ao')
+LiPb_breeder.add_element('Li', 17, percent_type='ao')
 LiPb_breeder.add_element('Pb', 83)
 
 # Shield material with structural support and coolant mixed in
@@ -201,25 +202,65 @@ zirconium_hydride = openmc.Material(1400, name="zirconium hydride ZrH2")
 zirconium_hydride.set_density("g/cm3", 5.56)
 zirconium_hydride.add_elements_from_formula("ZrH2")
 
+tantalum = openmc.Material(name="pure tantalum")
+tantalum.set_density("g/cm3", 16.69)
+tantalum.add_element("Tantalum", 100)
+
 cooled_TiH2 = openmc.Material.mix_materials([TiH2, water], [0.95, 0.05], 'vo')
 
-materials_list = [vacuum, air, deuterium, aluminum_6061, stainless,
+flibe = openmc.Material(name="Pure FLiBe molten salt")
+flibe.set_density("kg/m3", 1940)
+flibe.add_elements_from_formula("Li2BeF4")
+
+beryllium = openmc.Material(name="Pure Beryllium")
+beryllium.set_density("g/cm3", 1.85)
+beryllium.add_element("Be", 100)
+
+tantalum_hydride_55 = openmc.Material(name='tantalum hydride, TaH0.55')
+tantalum_hydride_55.set_density("g/cm3", 16.69)
+tantalum_hydride_55.add_element("Tantalum", 1/1.55)
+tantalum_hydride_55.add_element("Hydrogen", 0.55/1.55)
+tantalum_hydride_55.temperature = 500.0
+
+tantalum_hydride_46 = openmc.Material(name='tantalum hydride, TaH0.46')
+tantalum_hydride_46.set_density("g/cm3", 16.69)
+tantalum_hydride_46.add_element("Tantalum", 1/1.46)
+tantalum_hydride_46.add_element("Hydrogen", 0.46/1.46)
+tantalum_hydride_46.temperature = 500.0
+
+tantalum_hydride_39 = openmc.Material(name='tantalum hydride, TaH0.39')
+tantalum_hydride_39.set_density("g/cm3", 16.69)
+tantalum_hydride_39.add_element("Tantalum", 1/1.39)
+tantalum_hydride_39.add_element("Hydrogen", 0.39/1.39)
+tantalum_hydride_39.temperature = 500.0
+
+tantalum_hydride_30 = openmc.Material(name='tantalum hydride, TaH0.30')
+tantalum_hydride_30.set_density("g/cm3", 16.69)
+tantalum_hydride_30.add_element("Tantalum", 1/1.3)
+tantalum_hydride_30.add_element("Hydrogen", 0.3/1.3)
+tantalum_hydride_30.temperature = 500.0
+
+materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
                   rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
-                  TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy]
+                  TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
+                  tantalum_hydride_55, cooled_rafm_steel]
 materials = openmc.Materials(materials_list)
-"""
-fig=openmc.plot_xs(tungsten_carbide, ['absorption'])
-openmc.plot_xs(tungsten_boride, ["absorption"], axis=fig.get_axes()[0])
-openmc.plot_xs(w2b5, ["absorption"], axis=fig.get_axes()[0])
-openmc.plot_xs(zirconium_hydride, ["absorption"], axis=fig.get_axes()[0])
-openmc.plot_xs(TiH2, ["absorption"], axis=fig.get_axes()[0])
-plt.title("Neutron shield absorption macroscopic cross section")
+
+fig=openmc.plot_xs(tantalum_hydride_30, ['elastic'])
+openmc.plot_xs(tantalum_hydride_39, ["elastic"], axis=fig.get_axes()[0])
+openmc.plot_xs(tantalum_hydride_46, ["elastic"], axis=fig.get_axes()[0])
+openmc.plot_xs(tantalum_hydride_55, ["elastic"], axis=fig.get_axes()[0])
+#openmc.plot_xs(TiH2, ["damage"], axis=fig.get_axes()[0])
+#openmc.plot_xs(tantalum_hydride, ["damage"], axis=fig.get_axes()[0])
+plt.title("Tantalum hydride (500 K) elastic macroscopic cross section")
 plt.xlabel("Energy (MeV)")
-plt.xlim([1e-1, 20])
-plt.ylim([1e-3, 5e2])
-plt.legend(["WC", "WB", "W2B5", "ZrH2", "TiH2"], loc='upper left')
+plt.xlim([1e-2, 20])
+#plt.ylim([1e-1, 1e2])
+plt.legend(["TaH0.30", "TaH0.39", "TaH0.46", "TaH0.55"], loc='upper left')
 #plt.xscale("linear")
-fig.savefig("./plots/Shield material absorption")
-"""
+plt.ylim([1e-1, 5])
+plt.yscale("linear")
+fig.savefig("./plots/TaH elastic linear")
+plt.show()

@@ -2,15 +2,15 @@
 <settings>
   <run_mode>fixed source</run_mode>
   <particles>100000</particles>
-  <batches>300</batches>
+  <batches>100</batches>
   <source strength="1.0">
     <space origin="0.0 0.0 0.0" type="cylindrical">
-      <r parameters="0 10" type="uniform" />
+      <r parameters="0 135" type="uniform" />
       <phi parameters="0 6.283185307179586" type="uniform" />
-      <z parameters="85 90" type="uniform" />
+      <z parameters="0 160" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 40000.0" type="normal" />
+    <energy parameters="14100000.0 50000.0" type="normal" />
   </source>
   <output>
     <tallies>false</tallies>

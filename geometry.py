@@ -29,9 +29,9 @@ r = {}
 # Magnet coil inner radius in cm
 coil_radius = 75
 # Magnet coil z-position from the center of machine to center of coil in cm
-coil_z = 230
+coil_z = 250
 # Number of coil windings in Z
-coil_nz = 120
+coil_nz = 137
 # Number of coil windings in r
 coil_nr = 30
 # Conductor thickness in Z (cm)
@@ -42,11 +42,11 @@ coil_dr = 1
 # Divertor coil inner radius in cm
 divertor_radius = 85
 # Divertor coil z-position (to center of coil)
-divertor_z = 150
+divertor_z = 170
 # Divertor coil windings in z
-divertor_nz = 25
+divertor_nz = 1
 # Divertor coil windings in r
-divertor_nr = 45
+divertor_nr = 1
 # Divertor conductor thickness in Z (cm)
 divertor_dz = 1
 # Divertor conductor thickness in R (cm)
@@ -57,11 +57,11 @@ midplane_radius = 120
 # Midplane coil z-position (to beginning of coil)
 midplane_z = 0
 # Midplane coil windings in z (on one side)
-midplane_nz = 20
+midplane_nz = 40
 # Midplane coil windings in r
-midplane_nr = 16
+midplane_nr = 24
 # Midplane conductor thickness in Z (cm)
-midplane_dz = 5
+midplane_dz = 4
 # Midplane conductor thickness in R (cm)
 midplane_dr = 1
 
@@ -75,38 +75,38 @@ cryostat_thickness = 1
 # Close shield thickness in cm
 close_shield_thickness = 2.54
 # First wall thickness in cm
-fw_thickness = 0.1
+fw_thickness = 0.254
 # First wall support structure thickness in cm
-fw_support_thickness = 2
+fw_support_thickness = 2.54
 # Shield end location in cm
-sh_end = 100
+sh_end = 161
 # First wall inner radius in cm
-fw_radius = 70
+fw_radius = 65
 # Breeder cylinder outer radius in cm
-breeder_OR = 175
+breeder_OR = 150
 # Breeder blanket radial extension thickness
 breeder_extension = 75
 # Angle between axis and the expanding portion of shield in degree
-expand_angle = 7.5
+expand_angle = 10
 # Virtex of the cone for the expanding portion of shield in cm
 expand_virtex = 250
 # Virtex of the outer cone of the shield
-shield_virtex = -90
+shield_virtex = -45
 # Angle between axis and the outer cone of the shield
 shield_outer_angle = 20
 # Angle between axis and the inner cone of the shield
-shield_inner_angle = 50
+shield_inner_angle = 65
 # End expander angle
 end_angle = 8
 # End expander breeder radius
-end_radius = 450
+end_radius = 550
 # End expander breeder thickness
 end_thickness = 120
 # Expander tank radius
 expand_tank_radius = 150
 
 # Thickness for the testing region
-test_thickness = 5
+test_thickness = 3
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness

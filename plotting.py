@@ -12,12 +12,13 @@ from boolean import c
 from boolean import root
 
 # Colors of each material in plots
-material_color = {m.vacuum: 'black', m.air: 'azure', m.aluminum_6061: 'lightgrey',
-                  m.deuterium: 'grey', m.stainless: 'teal', m.tungsten: 'purple',
+material_color = {m.vacuum: 'black', m.air: 'azure', m.aluminum_6061: 'lightgrey', m.beryllium: 'brown',
+                  m.deuterium: 'black', m.stainless: 'teal', m.tungsten: 'olive', m.flibe: 'lightgrey',
                   m.rebco: 'orange', m.magnet: 'orange', m.crispy: 'brown', m.rafm_steel: 'azure',
-                  m.tungsten_carbide: 'olive', m.LiPb_breeder: 'grey', m.rings: 'teal',
+                  m.tungsten_carbide: 'olive', m.LiPb_breeder: 'grey', m.rings: 'teal', m.tantalum: 'brown',
                   m.cooled_tungsten_carbide: 'darkgreen', m.water: 'blue', m.he_cooled_rafm: 'green',
-                  m.tungsten_boride: 'yellow', m.w2b5: 'yellow', m.TiH2: 'violet', m.TiH2: 'violet'}
+                  m.tungsten_boride: 'yellow', m.w2b5: 'yellow', m.TiH2: 'violet', m.TiH2: 'violet',
+                  m.tantalum_hydride: 'blue'}
 
 for material in m.materials_list:
     if not material in material_color.keys():
@@ -34,7 +35,7 @@ def voxel_plot(origin=(0, 0, 60), width=(250, 250, 320), pixels=(500, 500, 640))
     plots = openmc.Plots([voxel])
     return plots
 
-def slice_plot(basis = 'yz', origin=(0, 0, 75), width=(150, 150), pixels=(2000, 2000), color=material_color, cwd='./outputs/slice'):
+def slice_plot(basis = 'yz', origin=(0, 0, 75), width=(150, 150), pixels=(3000, 3000), color=material_color, cwd='./outputs/slice'):
     plot = openmc.Plot()
     plot.basis = basis
     plot.origin = origin

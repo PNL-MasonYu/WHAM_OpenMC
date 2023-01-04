@@ -15,12 +15,12 @@ working_directory = "./test_run"
 settings = openmc.Settings()
 
 settings.run_mode = 'fixed source'
-#settings.source = vns_sources
+settings.source = vns_sources
 # Alternatively use the worst-case scenario source
-settings.source = worst_source
+#settings.source = worst_source
 
 settings.particles = int(100000)
-settings.batches = 300
+settings.batches = 40
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -66,12 +66,12 @@ coil_filter = openmc.CellFilter([c[2001].id])
 # Mesh surface tally for neutron current
 mesh_surface = openmc.MeshSurfaceFilter(mesh)
 total_current = openmc.Tally(1,name='total neutron current')
-total_current.filters = [mesh_surface]
+total_current.filters = [mesh_surface, openmc.ParticleFilter('neutron')]
 total_current.scores = ['current']
 tallies_file.append(total_current)
 
 fast_current = openmc.Tally(2,name='fast neutron current')
-fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6])]
+fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6]), openmc.ParticleFilter('neutron')]
 fast_current.scores = ['current']
 tallies_file.append(fast_current)
 
@@ -81,22 +81,22 @@ photon_flux.scores = ['flux']
 tallies_file.append(photon_flux)
 
 epithermal_flux = openmc.Tally(4,name='epithermal flux')
-epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5])]
+epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5]), openmc.ParticleFilter('neutron')]
 epithermal_flux.scores = ['flux']
 tallies_file.append(epithermal_flux)
 
 fast_flux = openmc.Tally(5,name='fast flux')
-fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e5 ,20.0e6])]
+fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e5 ,20.0e6]), openmc.ParticleFilter('neutron')]
 fast_flux.scores = ['flux']
 tallies_file.append(fast_flux)
 
 strict_fast_flux = openmc.Tally(19,name='strict fast flux')
-strict_fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e6 ,20.0e6])]
+strict_fast_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1.0e6 ,20.0e6]), openmc.ParticleFilter('neutron')]
 strict_fast_flux.scores = ['flux']
 tallies_file.append(strict_fast_flux)
 
 multiplying_flux = openmc.Tally(18,name='Pb multiplying flux')
-multiplying_flux.filters = [full_mesh_filter, openmc.EnergyFilter([5e6 ,20.0e6])]
+multiplying_flux.filters = [full_mesh_filter, openmc.EnergyFilter([5e6 ,20.0e6]), openmc.ParticleFilter('neutron')]
 multiplying_flux.scores = ['flux']
 tallies_file.append(multiplying_flux)
 
@@ -108,7 +108,7 @@ tallies_file.append(heat_load)
 local_heat_load = openmc.Tally(7,name='neutron local heat load')
 local_heat_load.filters = [full_mesh_filter]
 local_heat_load.scores = ['heating-local']
-#tallies_file.append(local_heat_load)
+tallies_file.append(local_heat_load)
 
 damage_energy = openmc.Tally(8,name='neutron damage_energy')
 damage_energy.filters = [full_mesh_filter]
@@ -118,7 +118,7 @@ tallies_file.append(damage_energy)
 radiative_capture = openmc.Tally(9,name='neutron radiative capture')
 radiative_capture.filters = [full_mesh_filter]
 radiative_capture.scores = ['(n,gamma)']
-#tallies_file.append(radiative_capture)
+tallies_file.append(radiative_capture)
 
 absorption = openmc.Tally(10,name='neutron absorption')
 absorption.filters = [full_mesh_filter]
@@ -126,7 +126,7 @@ absorption.scores = ['absorption']
 tallies_file.append(absorption)
 
 avg_coil_flux = openmc.Tally(11,name='Average neutron flux')
-avg_coil_flux.filters = [coil_filter, log_energy_filter]
+avg_coil_flux.filters = [coil_filter, log_energy_filter, openmc.ParticleFilter('neutron')]
 avg_coil_flux.scores = ['flux']
 tallies_file.append(avg_coil_flux)
 
@@ -194,11 +194,11 @@ chamber_geometry_plot.export_to_xml("./")
 
 # Plot geometry
 #openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
-#openmc.plot_geometry()
+openmc.plot_geometry()
 #r_bounds, z_bounds = a.plasma_boundary()
 #p.plot_geometry(r_bounds, z_bounds)
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%
