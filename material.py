@@ -238,16 +238,16 @@ tantalum_hydride_30 = openmc.Material(name='tantalum hydride, TaH0.30')
 tantalum_hydride_30.set_density("g/cm3", 16.69)
 tantalum_hydride_30.add_element("Tantalum", 1/1.3)
 tantalum_hydride_30.add_element("Hydrogen", 0.3/1.3)
-tantalum_hydride_30.temperature = 500.0
+#tantalum_hydride_30.temperature = 500.0
 
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
                   rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
                   TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
-                  tantalum_hydride_55, cooled_rafm_steel]
+                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel]
 materials = openmc.Materials(materials_list)
-
+"""
 fig=openmc.plot_xs(tantalum_hydride_30, ['elastic'])
 openmc.plot_xs(tantalum_hydride_39, ["elastic"], axis=fig.get_axes()[0])
 openmc.plot_xs(tantalum_hydride_46, ["elastic"], axis=fig.get_axes()[0])
@@ -264,3 +264,4 @@ plt.ylim([1e-1, 5])
 plt.yscale("linear")
 fig.savefig("./plots/TaH elastic linear")
 plt.show()
+"""

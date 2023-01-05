@@ -11,6 +11,24 @@ import threading
  
 import plotting as p
 
+source_rate = 1e19
+source_power = source_rate*1.6022e-13
+source_rate_title = "{:.0e} Source Rate ({:.1e} W)\n".format(source_rate, source_power)
+
+# Setting up the plot parameters
+plot_width = 275
+#plot_height = 640
+plot_height = 260*4
+mesh_shape = (260, 275, 275)
+extent=(-plot_width, plot_width, 0, plot_height)
+
+statepoint_name = "statepoint.40-BAM-AllW-FLIBE.h5"
+plot_dir = "./plots/"+statepoint_name.split(".")[1]
+if not os.path.isdir(plot_dir):
+    os.mkdir(plot_dir)
+sp = openmc.StatePoint("./" + statepoint_name, autolink=False)
+subtitle = "Monolithic Tungsten shield - FLiBe blanket"
+
 def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWrf_5keV.nc"):
     """
     returns the outer plasma boundary in the outermost r-z grid of the plasma
@@ -124,25 +142,8 @@ def plot_background(width, height):
 if not os.path.isdir('./plots'):
     os.makedirs('./plots')
 
-statepoint_name = "statepoint.100-infinite-FLIBE-4cmFW.h5"
-plot_dir = "./plots/"+statepoint_name.split(".")[1]
-if not os.path.isdir(plot_dir):
-    os.mkdir(plot_dir)
-sp = openmc.StatePoint("./" + statepoint_name, autolink=False)
-subtitle = "Infinite Cylinder - FLiBe blanket"
-
-source_rate = 1e19
-source_power = source_rate*1.6022e-13
-source_rate_title = "{:.0e} Source Rate ({:.1e} W)\n".format(source_rate, source_power)
-
-# Setting up the plot parameters
-plot_width = 275
-#plot_height = 640
-plot_height = 160
-mesh_shape = (160, 275, 275)
-extent=(-plot_width, plot_width, 0, plot_height)
 r_bounds, z_bounds = plasma_boundary()
-plot_background(plot_width, plot_height)
+#plot_background(plot_width, plot_height)
 # Read background image
 background_image = plt.imread('./background.ppm')
 # %%

@@ -39,6 +39,8 @@ divertor_coil = r[2102] &~ r[2101]
 central_coil = r[2202] &~ r[2201]
 
 cryostat = r[4001] &~ r[4002]
+mid_cryostat = r[4101] &~ r[4102]
+div_cryostat = r[4201] &~ r[4202]
 
 shield = (r[1001] | r[1002]) &~ r[3001]
 shield &= ~(divertor_coil)
@@ -50,14 +52,14 @@ first_wall_support = r[5101] | r[5102] | r[5103]
 breeder = r[6000] | r[6001] | r[6002] | r[6004] | r[6005] | r[6201]
 # Subtract the region in the cylinder for best shielding
 breeder &= ~(r[5201] | r[5203])
-breeder &= ~(central_coil)
-breeder &= ~(divertor_coil)
+breeder &= ~(r[4101])
+breeder &= ~(r[4201])
 
 reflector = r[6100] | r[6102] | r[6203] | r[6204]
 
 expander_tank = r[7001] | r[7002]
 
-vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | r[6901] | (r[7901] &~ r[7101]) | r[7902] | r[7903]
+vacuum = r[1901] | r[1902] | (r[4002] &~ coil) | (r[4102] &~ central_coil) | (r[4202] &~ divertor_coil) | r[6901] | (r[7901] &~ r[7101]) | r[7902] | r[7903]
 
 bias_rings = r[7101]
 
@@ -70,20 +72,22 @@ c[1001] = openmc.Cell(1001, "Vacuum", m.vacuum, vacuum)
 #c[1002] = openmc.Cell(1002, "Deuterium neutral gas fill", m.deuterium, d2_fill)
 
 c[2001] = openmc.Cell(2001, "CFS coil", m.magnet, coil)
-c[2101] = openmc.Cell(2101, "Divertor coil", m.tantalum_hydride, divertor_coil)
+c[2101] = openmc.Cell(2101, "Divertor coil", m.magnet, divertor_coil)
 c[2201] = openmc.Cell(2201, "Central coil", m.magnet, central_coil)
 c[6000] = openmc.Cell(6000, "Breeder blanket", m.flibe, breeder)
-c[3001] = openmc.Cell(3001, "Shield", m.tantalum_hydride, shield)
+c[3001] = openmc.Cell(3001, "Shield", m.tungsten, shield)
 c[3002] = openmc.Cell(3002, "Cryostat shield", m.tungsten, cryostat_shield)
 c[4001] = openmc.Cell(4001, "Cryostat", m.stainless, cryostat)
-c[5000] = openmc.Cell(5000, "First Wall Cylinder", m.tantalum, r[5001])
-c[5001] = openmc.Cell(5001, "First Wall Throat", m.tantalum, r[5002])
-c[5002] = openmc.Cell(5002, "First Wall Expanding", m.tantalum, r[5003])
+c[4101] = openmc.Cell(4101, "Central Cryostat", m.stainless, mid_cryostat)
+c[4201] = openmc.Cell(4201, "Divertor Cryostat", m.stainless, div_cryostat)
+c[5000] = openmc.Cell(5000, "First Wall Cylinder", m.rafm_steel, r[5001])
+c[5001] = openmc.Cell(5001, "First Wall Throat", m.rafm_steel, r[5002])
+c[5002] = openmc.Cell(5002, "First Wall Expanding", m.rafm_steel, r[5003])
 c[5100] = openmc.Cell(5100, "First Wall Cylinder structure", m.tungsten, r[5101])
 c[5101] = openmc.Cell(5101, "First Wall throat structure", m.tungsten, r[5102])
 c[5102] = openmc.Cell(5102, "First Wall expanding structure", m.tungsten, r[5103])
-c[5201] = openmc.Cell(5201, "Material testing - Central Cylinder", m.beryllium, r[5201])
-c[5203] = openmc.Cell(5203, "Material testing - Expanding", m.beryllium, r[5203])
+c[5201] = openmc.Cell(5201, "Material testing - Central Cylinder", m.tungsten, r[5201])
+c[5203] = openmc.Cell(5203, "Material testing - Expanding", m.tungsten, r[5203])
 c[6100] = openmc.Cell(6100, "Breeder outer reflector", m.tungsten, reflector)
 c[7000] = openmc.Cell(7000, "End expander tank", m.stainless, expander_tank)
 c[7100] = openmc.Cell(7100, "Bias rings", m.rings, bias_rings)

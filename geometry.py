@@ -29,41 +29,41 @@ r = {}
 # Magnet coil inner radius in cm
 coil_radius = 75
 # Magnet coil z-position from the center of machine to center of coil in cm
-coil_z = 250
+coil_z = 450
 # Number of coil windings in Z
-coil_nz = 137
+coil_nz = 1
 # Number of coil windings in r
-coil_nr = 30
+coil_nr = 1
 # Conductor thickness in Z (cm)
-coil_dz = 1
+coil_dz = 106
 # Conductor thickness in r (cm)
-coil_dr = 1
+coil_dr = 40
 
 # Divertor coil inner radius in cm
-divertor_radius = 85
+divertor_radius = 150
 # Divertor coil z-position (to center of coil)
-divertor_z = 170
+divertor_z = 225
 # Divertor coil windings in z
 divertor_nz = 1
 # Divertor coil windings in r
 divertor_nr = 1
 # Divertor conductor thickness in Z (cm)
-divertor_dz = 1
+divertor_dz = 21
 # Divertor conductor thickness in R (cm)
-divertor_dr = 1
+divertor_dr = 16
 
 # Midplane coil inner radius in cm
-midplane_radius = 120
+midplane_radius = 150
 # Midplane coil z-position (to beginning of coil)
-midplane_z = 0
+midplane_z = 75 - 21/2
 # Midplane coil windings in z (on one side)
-midplane_nz = 40
+midplane_nz = 1
 # Midplane coil windings in r
-midplane_nr = 24
+midplane_nr = 1
 # Midplane conductor thickness in Z (cm)
-midplane_dz = 4
+midplane_dz = 21
 # Midplane conductor thickness in R (cm)
-midplane_dr = 1
+midplane_dr = 16
 
 # Throat inner radius in cm
 throat_IR = 28
@@ -78,8 +78,8 @@ close_shield_thickness = 2.54
 fw_thickness = 0.254
 # First wall support structure thickness in cm
 fw_support_thickness = 2.54
-# Shield end location in cm
-sh_end = 161
+# Shield end location (min z) in cm
+sh_end = 325
 # First wall inner radius in cm
 fw_radius = 65
 # Breeder cylinder outer radius in cm
@@ -89,9 +89,9 @@ breeder_extension = 75
 # Angle between axis and the expanding portion of shield in degree
 expand_angle = 10
 # Virtex of the cone for the expanding portion of shield in cm
-expand_virtex = 250
+expand_virtex = 450
 # Virtex of the outer cone of the shield
-shield_virtex = -45
+shield_virtex = 125
 # Angle between axis and the outer cone of the shield
 shield_outer_angle = 20
 # Angle between axis and the inner cone of the shield
@@ -99,7 +99,7 @@ shield_inner_angle = 65
 # End expander angle
 end_angle = 8
 # End expander breeder radius
-end_radius = 550
+end_radius = 850
 # End expander breeder thickness
 end_thickness = 120
 # Expander tank radius
@@ -113,9 +113,18 @@ cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
 coil_zmax = coil_z+(coil_dz*coil_nz/2)
 cryo_zmax = coil_zmax + cryostat_dist + cryostat_thickness
 
+midplane_coil_zmin = midplane_z
+midplane_cryo_zmin = midplane_coil_zmin - cryostat_dist - cryostat_thickness
+midplane_coil_zmax = midplane_z+(midplane_dz*midplane_nz)
+midplane_cryo_zmax = midplane_coil_zmax + cryostat_dist + cryostat_thickness
+
 divertor_zmin = divertor_z-(divertor_dz*divertor_nz/2)
 divertor_zmax = divertor_z+(divertor_dz*divertor_nz/2)
 
+divertor_coil_zmin = divertor_zmin
+divertor_cryo_zmin = divertor_coil_zmin - cryostat_dist - cryostat_thickness
+divertor_coil_zmax = divertor_zmax
+divertor_cryo_zmax = divertor_coil_zmax + cryostat_dist + cryostat_thickness
 
 expand_tan = np.tan(expand_angle*np.pi/180)
 expand_sin = np.sin(expand_angle*np.pi/180)
@@ -130,9 +139,10 @@ end_tan = np.tan(end_angle*np.pi/180)
 #p_vacy1 = openmc.YPlane(-400, boundary_type='vacuum')
 #p_vacy2 = openmc.YPlane(400, boundary_type='vacuum')
 p_vacz1 = openmc.ZPlane(0, boundary_type='reflective')
-p_vacz2 = openmc.ZPlane(1000, boundary_type='vacuum')
+p_vacz2 = openmc.ZPlane(1500, boundary_type='vacuum')
+p_vaccyl = openmc.ZCylinder(0, 0, 800, boundary_type='vacuum')
 #r[1000] = +p_vacx1 & -p_vacx2 & +p_vacy1 & -p_vacy2 & +p_vacz1 & -p_vacz2
-r[1000] = -openmc.ZCylinder(0, 0, 800, boundary_type='vacuum') & +p_vacz1 & -p_vacz2
+r[1000] = -p_vaccyl & +p_vacz1 & -p_vacz2
 
 # conical surfaces
 expand_cone_outer = openmc.model.surface_composite.ZConeOneSided(0, 0, expand_virtex+(fw_thickness+fw_support_thickness)/expand_sin/2, expand_tan, False)
@@ -164,15 +174,18 @@ shield_max_zplane = openmc.ZPlane(cryo_zmax+15)
 shield_min_zplane = openmc.ZPlane(sh_end)
 
 # breeder and end tank cylinders
-tank_outer_cyl = openmc.ZCylinder(0, 0, expand_tank_radius+0.7)
 breeder_inner_cyl = openmc.ZCylinder(0, 0, breeder_OR+breeder_extension)
 reflector_outer_cyl = openmc.ZCylinder(0, 0, breeder_OR+breeder_extension+10)
 
 # end tank faces
-end_inner_cyl = openmc.ZCylinder(0, 0, expand_tank_radius)
+tank_inner_cyl = openmc.ZCylinder(0, 0, expand_tank_radius)
+tank_outer_cyl = openmc.ZCylinder(0, 0, expand_tank_radius+0.7)
 end_ring_sph = openmc.Sphere(0, 0, 75, end_radius+end_thickness)
 end_breeder_sph = openmc.Sphere(0, 0, 75, end_radius)
+end_reflector_sph = openmc.Sphere(0, 0, 75, end_radius+end_thickness+10)
 end_breeder_cyl = openmc.ZCylinder(0, 0, expand_tank_radius+0.7+end_thickness)
+end_reflector_zmin = openmc.ZPlane(end_radius+end_thickness+50)
+end_reflector_zmax = openmc.ZPlane(end_radius+end_thickness+60)
 
 ############################Shield##################################
 # The conical shield itself
@@ -217,10 +230,12 @@ r[2102] &= +openmc.ZPlane(divertor_zmin) & -openmc.ZPlane(divertor_zmax)
 
 # Central coil (inner and outer)
 r[2201] = -openmc.ZCylinder(0, 0, midplane_radius)
-r[2201] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+#r[2201] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+r[2201] &= +openmc.ZPlane(midplane_z) & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
 
 r[2202] = -openmc.ZCylinder(0, 0, midplane_radius + midplane_dr*midplane_nr)
-r[2202] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+#r[2202] &= +p_vacz1 & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
+r[2202] &= +openmc.ZPlane(midplane_z) & -openmc.ZPlane(midplane_z+midplane_dz*midplane_nz)
 
 # Close shield
 r[3001] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_thickness+cryostat_dist+close_shield_thickness)
@@ -236,6 +251,26 @@ r[4001] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_thickness-cryostat_dist)
 r[4002] = -openmc.ZCylinder(0, 0, coil_radius+coil_dr*coil_nr+cryostat_dist)
 r[4002] &= +openmc.ZPlane(cryo_zmin+cryostat_thickness) & -openmc.ZPlane(cryo_zmax-cryostat_thickness)
 r[4002] &= +openmc.ZCylinder(0, 0, coil_radius-cryostat_dist)
+
+# Central coil cryostat big doughnut
+r[4101] = -openmc.ZCylinder(0, 0, midplane_radius+midplane_dr*midplane_nr+cryostat_thickness+cryostat_dist)
+r[4101] &= +openmc.ZPlane(midplane_cryo_zmin) & -openmc.ZPlane(midplane_cryo_zmax)
+r[4101] &= +openmc.ZCylinder(0, 0, midplane_radius-cryostat_thickness-cryostat_dist)
+
+# Cryostat small doughnut
+r[4102] = -openmc.ZCylinder(0, 0, midplane_radius+midplane_dr*midplane_nr+cryostat_dist)
+r[4102] &= +openmc.ZPlane(midplane_cryo_zmin+cryostat_thickness) & -openmc.ZPlane(midplane_cryo_zmax-cryostat_thickness)
+r[4102] &= +openmc.ZCylinder(0, 0, midplane_radius-cryostat_dist)
+
+# Divertor coil cryostat big doughnut
+r[4201] = -openmc.ZCylinder(0, 0, divertor_radius+divertor_dr*divertor_nr+cryostat_thickness+cryostat_dist)
+r[4201] &= +openmc.ZPlane(divertor_cryo_zmin) & -openmc.ZPlane(divertor_cryo_zmax)
+r[4201] &= +openmc.ZCylinder(0, 0, divertor_radius-cryostat_thickness-cryostat_dist)
+
+# Divertor small doughnut
+r[4202] = -openmc.ZCylinder(0, 0, divertor_radius+divertor_dr*divertor_nr+cryostat_dist)
+r[4202] &= +openmc.ZPlane(divertor_cryo_zmin+cryostat_thickness) & -openmc.ZPlane(divertor_cryo_zmax-cryostat_thickness)
+r[4202] &= +openmc.ZCylinder(0, 0, divertor_radius-cryostat_dist)
 
 # First wall cylinder
 r[5001] = -chamber_fw_cyl
@@ -321,7 +356,7 @@ r[6003] &= -cryo_max_zplane
 r[6004] = -end_ring_sph
 r[6004] &= +end_breeder_sph
 r[6004] &= -end_cone
-r[6004] &= -end_inner_cyl
+r[6004] &= -tank_inner_cyl
 
 # Breeder wedge to fill chamfer
 r[6005] = +shield_min_zplane
@@ -342,15 +377,15 @@ r[6101] &= -openmc.ZPlane(cryo_zmax+10)
 
 # Breeder reflector behind the end cell breeders
 r[6102] = +end_ring_sph
-r[6102] &= -openmc.Sphere(0, 0, 75, end_radius+end_thickness+10)
+r[6102] &= -end_reflector_sph
 r[6102] &= -end_cone
-r[6102] &= -end_inner_cyl
+r[6102] &= -tank_inner_cyl
 
 # Breeder to the side of the expanding tank
 r[6201] = -breeder_inner_cyl
 r[6201] &= +tank_outer_cyl
 r[6201] &= +p_vacz1
-r[6201] &= -openmc.ZPlane(end_radius+end_thickness+50)
+r[6201] &= -end_reflector_zmin
 
 # Breeder between the end tank and the main breeder
 r[6202] = -shield_max_zplane
@@ -361,21 +396,21 @@ r[6202] &= +shield_cone
 
 # Breeder reflector around the side of the expanding tank
 r[6203] = -reflector_outer_cyl
-r[6203] &= -openmc.ZPlane(end_radius+end_thickness+50)
+r[6203] &= -end_reflector_zmin
 r[6203] &= +cryo_max_zplane
 r[6203] &= +breeder_inner_cyl
 
 # Breeder reflector around the end of the expanding tank
 r[6204] = -reflector_outer_cyl
-r[6204] &= +openmc.ZPlane(end_radius+end_thickness+50)
-r[6204] &= -openmc.ZPlane(end_radius+end_thickness+60)
+r[6204] &= +end_reflector_zmin
+r[6204] &= -end_reflector_zmax
 r[6204] &= +tank_outer_cyl
 
 # Vacuum around the breeder
 r[6901] = +reflector_outer_cyl
 r[6901] &= +p_vacz1
 r[6901] &= -p_vacz2
-r[6901] &= -openmc.ZCylinder(0, 0, 800, boundary_type='vacuum')
+r[6901] &= -p_vaccyl
 
 # End Tank plate
 r[7001] = +shield_max_zplane
@@ -385,28 +420,28 @@ r[7001] &= +throat_inner_cyl
 
 # End Tank wall
 r[7002] = +openmc.ZPlane(cryo_zmax+15+3.81)
-r[7002] &= -p_vacz2
+r[7002] &= -end_reflector_sph
 r[7002] &= -tank_outer_cyl
-r[7002] &= +end_inner_cyl
+r[7002] &= +tank_inner_cyl
 
 # End cell converter/bias rings
 r[7101] = -openmc.Sphere(0, 0, 75, end_radius-25)
 r[7101] &= +openmc.Sphere(0, 0, 75, end_radius-50)
 r[7101] &= -end_cone
-r[7101] &= -end_inner_cyl
+r[7101] &= -tank_inner_cyl
 
 # End Tank vacuum
-r[7901] = -end_inner_cyl
+r[7901] = -tank_inner_cyl
 r[7901] &= +openmc.ZPlane(cryo_zmax+15+3.81)
 r[7901] &= -end_breeder_sph
 
 # End Tank vacuum beyond blanket
 r[7902] = -p_vacz2
-r[7902] &= -end_inner_cyl
-r[7902] &= +openmc.Sphere(0, 0, 75, end_radius+end_thickness+10)
+r[7902] &= -tank_outer_cyl
+r[7902] &= +end_reflector_sph
 
 # Vacuum around end tank
 r[7903] = -p_vacz2
 r[7903] &= +tank_outer_cyl
 r[7903] &= -reflector_outer_cyl
-r[7903] &= +openmc.ZPlane(end_radius+end_thickness+60)
+r[7903] &= +end_reflector_zmax
