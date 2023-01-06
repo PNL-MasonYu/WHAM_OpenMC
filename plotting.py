@@ -55,7 +55,7 @@ def plot_geometry(r_bounds, z_bounds):
     fig = plt.figure(num=1, figsize=(15, 10))
     plt.plot(r_bounds, z_bounds, "g-")
     plt.plot(-r_bounds, z_bounds, "g-")
-    background_image = plt.imread('./slice.ppm')
+    background_image = plt.imread('./slice.png')
     extent=(-275, 275, 0, 300)
     plt.imshow(background_image, extent=extent)
     plt.xlabel('y (cm)')

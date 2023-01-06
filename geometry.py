@@ -53,7 +53,7 @@ divertor_dz = 21
 divertor_dr = 16
 
 # Midplane coil inner radius in cm
-midplane_radius = 150
+midplane_radius = 150.01
 # Midplane coil z-position (to beginning of coil)
 midplane_z = 75 - 21/2
 # Midplane coil windings in z (on one side)
@@ -66,7 +66,7 @@ midplane_dz = 21
 midplane_dr = 16
 
 # Throat inner radius in cm
-throat_IR = 28
+throat_IR = 25
 # Cryostat clearance in cm
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 3
@@ -79,11 +79,11 @@ fw_thickness = 0.254
 # First wall support structure thickness in cm
 fw_support_thickness = 2.54
 # Shield end location (min z) in cm
-sh_end = 325
+sh_end = 360
 # First wall inner radius in cm
-fw_radius = 65
+fw_radius = 40
 # Breeder cylinder outer radius in cm
-breeder_OR = 150
+breeder_OR = 160
 # Breeder blanket radial extension thickness
 breeder_extension = 75
 # Angle between axis and the expanding portion of shield in degree
@@ -103,7 +103,7 @@ end_radius = 850
 # End expander breeder thickness
 end_thickness = 120
 # Expander tank radius
-expand_tank_radius = 150
+expand_tank_radius = 165
 
 # Thickness for the testing region
 test_thickness = 3
@@ -171,6 +171,7 @@ test_expand_cone_outer = openmc.model.surface_composite.ZConeOneSided(0, 0,
 # shield planes
 cryo_max_zplane = openmc.ZPlane(cryo_zmax)
 shield_max_zplane = openmc.ZPlane(cryo_zmax+15)
+end_max_zplane = openmc.ZPlane(cryo_zmax+15+3.81)
 shield_min_zplane = openmc.ZPlane(sh_end)
 
 # breeder and end tank cylinders
@@ -288,7 +289,7 @@ r[5002] &= -shield_max_zplane
 r[5003] = +expand_cone_throat
 r[5003] &= -expand_cone_inner
 r[5003] &= -chamber_fw_cyl
-r[5003] &= +throat_inner_cyl
+r[5003] &= +throat_fw_cylinder
 
 # First wall cylinder support
 r[5101] = -chamber_outer_cyl
@@ -414,12 +415,12 @@ r[6901] &= -p_vaccyl
 
 # End Tank plate
 r[7001] = +shield_max_zplane
-r[7001] &= -openmc.ZPlane(cryo_zmax+15+3.81)
+r[7001] &= -end_max_zplane
 r[7001] &= -tank_outer_cyl
 r[7001] &= +throat_inner_cyl
 
 # End Tank wall
-r[7002] = +openmc.ZPlane(cryo_zmax+15+3.81)
+r[7002] = +end_max_zplane
 r[7002] &= -end_reflector_sph
 r[7002] &= -tank_outer_cyl
 r[7002] &= +tank_inner_cyl
@@ -432,7 +433,7 @@ r[7101] &= -tank_inner_cyl
 
 # End Tank vacuum
 r[7901] = -tank_inner_cyl
-r[7901] &= +openmc.ZPlane(cryo_zmax+15+3.81)
+r[7901] &= +end_max_zplane
 r[7901] &= -end_breeder_sph
 
 # End Tank vacuum beyond blanket
