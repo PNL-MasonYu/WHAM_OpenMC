@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>fixed source</run_mode>
-  <particles>5000000</particles>
+  <particles>20000000</particles>
   <batches>10</batches>
   <source strength="0.047846171915416055">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -568,4 +568,7 @@
     <tallies>false</tallies>
   </output>
   <photon_transport>true</photon_transport>
+  <cutoff>
+    <energy_photon>1000.0</energy_photon>
+  </cutoff>
 </settings>

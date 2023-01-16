@@ -66,12 +66,12 @@ midplane_dz = 21
 midplane_dr = 16
 
 # Throat inner radius in cm
-throat_IR = 25
+throat_IR = 21
 # Cryostat clearance in cm
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 3
 # Cryostat thickness in cm
-cryostat_thickness = 1
+cryostat_thickness = 14.7
 # Close shield thickness in cm
 close_shield_thickness = 2.54
 # First wall thickness in cm
@@ -79,7 +79,7 @@ fw_thickness = 0.254
 # First wall support structure thickness in cm
 fw_support_thickness = 2.54
 # Shield end location (min z) in cm
-sh_end = 360
+sh_end = 320
 # First wall inner radius in cm
 fw_radius = 40
 # Breeder cylinder outer radius in cm
@@ -87,9 +87,9 @@ breeder_OR = 160
 # Breeder blanket radial extension thickness
 breeder_extension = 75
 # Angle between axis and the expanding portion of shield in degree
-expand_angle = 10
+expand_angle = 8.5
 # Virtex of the cone for the expanding portion of shield in cm
-expand_virtex = 450
+expand_virtex = 425
 # Virtex of the outer cone of the shield
 shield_virtex = 125
 # Angle between axis and the outer cone of the shield
@@ -106,7 +106,7 @@ end_thickness = 120
 expand_tank_radius = 165
 
 # Thickness for the testing region
-test_thickness = 3
+test_thickness = 2.54
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -203,6 +203,7 @@ r[1002] = -tank_outer_cyl
 r[1002] &= +cryo_max_zplane
 r[1002] &= -shield_max_zplane
 r[1002] &= +throat_outer_cyl
+r[1002] &= +shield_min_zplane
 
 # vacuum inside the throat
 r[1901] = -throat_inner_cyl

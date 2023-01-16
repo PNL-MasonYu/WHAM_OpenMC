@@ -240,12 +240,18 @@ tantalum_hydride_30.add_element("Tantalum", 1/1.3)
 tantalum_hydride_30.add_element("Hydrogen", 0.3/1.3)
 #tantalum_hydride_30.temperature = 500.0
 
+Nak_77 = openmc.Material(name="NaK eutectic, 550C")
+Nak_77.set_density("g/cm3", 0.749)
+Nak_77.add_element("Na", 23, 'wo')
+Nak_77.add_element("K", 77, 'wo')
+Nak_77.temperature = 900
+
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
                   rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
                   TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
-                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel]
+                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77]
 materials = openmc.Materials(materials_list)
 """
 fig=openmc.plot_xs(tantalum_hydride_30, ['elastic'])

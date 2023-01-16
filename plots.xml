@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plots>
-  <plot basis="yz" color_by="material" filename="./slice" id="1" type="slice">
-    <origin>0 0 200</origin>
-    <width>240 400</width>
-    <pixels>3600 6000</pixels>
+  <plot basis="xz" color_by="material" filename="./background" id="1" type="slice">
+    <origin>0 0 520.0</origin>
+    <width>550 1040</width>
+    <pixels>3000 3000</pixels>
     <background>255 0 255</background>
     <color id="0" rgb="0 0 0" />
     <color id="1" rgb="0 0 0" />
@@ -26,6 +26,7 @@
     <color id="18" rgb="0 128 0" />
     <color id="21" rgb="0 0 255" />
     <color id="22" rgb="128 128 0" />
+    <color id="23" rgb="211 211 211" />
     <color id="31" rgb="128 128 0" />
     <color id="81" rgb="165 42 42" />
     <color id="101" rgb="0 0 255" />

@@ -20,7 +20,7 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(5000000)
+settings.particles = int(20000000)
 settings.batches = 10
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
@@ -29,6 +29,7 @@ settings.output = {'tallies': False}
 #settings.track = [(1, 1, 95007)]
 #settings.trace = (1, 1, 95007)
 #settings.survival_bias = True
+settings.cutoff = {'energy_photon' : 1e3}
 settings.photon_transport = True
 settings.export_to_xml(working_directory)
 settings.export_to_xml("./")
@@ -36,7 +37,7 @@ settings.export_to_xml("./")
 # Set OPENMC_CROSS_SECTIONS environment variable to the path to cross_sections.xml, or
 # modify this on different machines to point to the correct cross_sections.xml file
 # ENDF/B-VIII.0 cross sections on local machine
-materials.cross_sections = "/mnt/g/endfb-viii.0-hdf5/cross_sections.xml"
+#materials.cross_sections = "/mnt/g/endfb-viii.0-hdf5/cross_sections.xml"
 # ENDF/B-VIII.0 cross sections on cluster
 #materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml"
 
@@ -129,7 +130,7 @@ radiative_capture.scores = ['(n,gamma)']
 tallies_file.append(radiative_capture)
 
 absorption = openmc.Tally(name='neutron absorption')
-absorption.filters = [full_mesh_filter]
+absorption.filters = [full_mesh_filter, openmc.ParticleFilter('neutron')]
 absorption.scores = ['absorption']
 tallies_file.append(absorption)
 
@@ -140,7 +141,7 @@ tallies_file.append(avg_coil_flux)
 
 breeder_reaction = openmc.Tally(name='Breeder Li-6(n,alpha)T reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
-breeder_reaction.scores = ['(n,a)', '(n,Xt)']
+breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)']
 tallies_file.append(breeder_reaction)
 
 multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
@@ -150,7 +151,7 @@ tallies_file.append(multiplier_reaction)
 
 breeder_mesh = openmc.Tally(name='Breeder mesh')
 breeder_mesh.filters = [full_mesh_filter]
-breeder_mesh.scores = ['(n,Xt)']
+breeder_mesh.scores = ['(n,Xt)', '(n,p)']
 tallies_file.append(breeder_mesh)
 
 multiplier_mesh = openmc.Tally(name='Multiplier mesh')
@@ -195,9 +196,9 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 200), 
-                                   width=(240, 400), 
-                                   pixels=(3600, 6000),
+                                   origin=(0, 0, 300), 
+                                   width=(300, 600), 
+                                   pixels=(1500, 3000),
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 
