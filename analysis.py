@@ -11,7 +11,7 @@ import threading
  
 import plotting as p
 
-source_rate = 3.5e18
+source_rate = 3.55e18
 source_power = source_rate*1.6022e-13*17.6
 source_rate_title = "{:.0e} Source ({:.1e} W DT Power)\n".format(source_rate, source_power)
 
@@ -23,12 +23,12 @@ mesh_shape = (260, 275, 275)
 #mesh_shape = (260*4, 1, 275)
 extent=(-plot_width, plot_width, 0, plot_height)
 
-statepoint_name = "statepoint.10-BAM-ALLW-NaK-REALSOURCE-V4.h5"
+statepoint_name = "statepoint.10-BAM-ALLW-PBLI-REALSOURCE-V5.h5"
 plot_dir = "./plots/"+statepoint_name.split(".")[1]
 if not os.path.isdir(plot_dir):
     os.mkdir(plot_dir)
 sp = openmc.StatePoint("./" + statepoint_name, autolink=False)
-subtitle = "Monolithic Tungsten shield - PbLi blanket"
+subtitle = "Monolithic Tungsten shield - PBLI blanket"
 
 def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWrf_5keV.nc"):
     """
@@ -39,7 +39,7 @@ def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWr
     z_bounds = solzz[-1] * 100
     return r_bounds, z_bounds
 
-def draw_psi(pleiades_file="WHAM_B3.00_beta0.30.npz", rscale=1, zscale=1):
+def draw_psi(pleiades_file="WHAM_B3.00_beta0.30.npz", rscale=1, zscale=1, draw=True):
     """
     draw a contour plot of psi
     """
@@ -52,10 +52,12 @@ def draw_psi(pleiades_file="WHAM_B3.00_beta0.30.npz", rscale=1, zscale=1):
         min_psi = np.min(psi)
         #max_psi = np.max(psi)
         max_psi = psi[0,25]
-        plt.contour(psi, [max_psi], extent=pos_extent, 
-                    origin="lower", linewidths=3, linestyles="dashed", colors="magenta")
-        plt.contour(psi, [max_psi], extent=neg_extent, 
-                    origin="lower", linewidths=3, linestyles="dashed", colors="magenta")
+        if draw:
+            plt.contour(psi, [max_psi], extent=pos_extent, 
+                        origin="lower", linewidths=3, linestyles="dashed", colors="magenta")
+            plt.contour(psi, [max_psi], extent=neg_extent, 
+                        origin="lower", linewidths=3, linestyles="dashed", colors="magenta")
+    return psi, max_psi
         
 
 def aggregate_rectangular_single(result, r_bins=100, dim=0):
@@ -99,30 +101,30 @@ def aggregate_rectangular_multi(result, r_bins=100, dim=0):
     aggregate = np.zeros((z_length, r_bins*2+2))
     edges = np.linspace(0, int(center), num=r_bins)
     #print(z_length)
-    with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
-        future_to_slice = {executor.submit(aggregate_slice, result, dim, center, z_bins, r_bins, edges)
-                           for z_bins in range(z_length)}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=19) as executor:
+        future_to_slice = [executor.submit(aggregate_slice, result[z_bins, :, :], result.shape[dim-1], center, r_bins, edges, z_bins)
+                           for z_bins in range(z_length)]
         for future in concurrent.futures.as_completed(future_to_slice):
             try:
                 z_slice, z = future.result()
+                #print(z)
                 aggregate[z, :] = z_slice
             except Exception as exp:
                 print(str(z) + " generated an exception: %s" % (exp))
     return aggregate
 
-def aggregate_slice(result, dim, center, z, r_bins, edges):
+def aggregate_slice(slice, x_range, center, r_bins, edges, z):
     result_slice = np.zeros(r_bins*2+2)
-    slice = result[z, :, :]
     #print(slice.shape)
     R = []
     W = {}
-    for x in range(result.shape[dim-1]):
-        for y in range(result.shape[dim-1]):
+    for x in range(x_range):
+        for y in range(x_range):
             r = np.sqrt((x-center)**2 + (y-center)**2)
             R.append(r)
             W[r] = slice[x, y]
     for i in range(r_bins-1):
-        binned_r = [radius for radius in R if (radius <= edges[i+1] and radius >= edges[i])]
+        binned_r = [radius for radius in R if (radius <= edges[i+1] and radius > edges[i])]
         binned_w = [W[radius] for radius in binned_r]
         result_slice[int(r_bins-i)] = np.mean(binned_w)
         result_slice[int(r_bins+i)] = np.mean(binned_w)
@@ -144,85 +146,38 @@ r_bounds, z_bounds = plasma_boundary()
 cyl_mesh = openmc.CylindricalMesh()
 cyl_mesh.r_grid = np.linspace(0, 275, 275+1)
 cyl_mesh.z_grid = np.linspace(0, 260*4, 260*4+1)
-plot_background(plot_width, plot_height)
+#plot_background(plot_width, plot_height)
 # Read background image
-background_image = plt.imread('./background.ppm')
+background_image = plt.imread('./background.png')
+def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
+                clabel = 'Thermal neutron flux $[n/cm^2-s]$', title = 'DT Thermal Flux (<0.5 eV)\n'+ source_rate_title + subtitle, savedir=plot_dir):
+    tally = sp.get_tally(name=tally_name)
+    slice = tally.get_slice(scores=[tally_score])
+    slice.mean.shape = mesh_dims
+    slice = np.add(slice.mean, 1e-15)
+    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
+    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
+    #data = slice[:, :, 137]
+    data = aggregate_rectangular_single(slice)
+    if save_aggregate:
+        np.savez(savedir + "/" + tally_name, data)
+    
+    fig = plt.figure(figsize=(10, 15))
+    draw_psi()
+    plt.imshow(background_image, extent=plot_extent)
+    im = plt.imshow(np.multiply(data, m_factor), cmap=im_cmap, origin='lower', 
+                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=min(contour_lvl), vmax=max(contour_lvl)))
+    CS = plt.contour(np.multiply(data, m_factor), contour_lvl, origin="lower",
+                    extent=extent, cmap='flag', linewidths=0.5)
+    plt.title(title)
+    plt.colorbar(im, label=clabel, orientation='vertical', shrink=0.8, format='%0.0e')
+    plt.clabel(CS, fmt='%0.0e', fontsize=11)
+    plt.xlabel('y (cm)')
+    plt.ylabel('z (cm)')
+    plt.ylim(0, extent[3])
+    fig.savefig(savedir+'/' + tally_name)
+    return
 # %%
-def plot_thermal_flux(sp):
-    thermalflux_tally = sp.get_tally(name='thermal flux')
-    thermal_flux = thermalflux_tally.get_slice(scores=['flux'])
-    thermal_flux.mean.shape = mesh_shape
-    fig1 = plt.figure(num=1, figsize=(10, 15))
-    data = aggregate_rectangular_single(thermal_flux.mean)
-    #data = thermal_flux.mean[:, :, 137]
-    plt.imshow(background_image, extent=extent)
-    draw_psi()
-    im = plt.imshow(np.multiply(data, source_rate), cmap='Spectral_r', origin='lower', 
-                    alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=0.1, vmax=1e6))
-    CS = plt.contour(np.multiply(data, source_rate), np.logspace(-1, 6, 8), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.colorbar(im, label='Thermal neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.title('DT Thermal Flux (<0.5 eV)\n'+ source_rate_title + subtitle)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    print("saving plot to " + plot_dir + "/DT strict thermal flux yz")
-    fig1.savefig(plot_dir+'/DT strict thermal flux yz')
-    return
-
-def plot_epithermal_flux(sp):
-    epithermalflux_tally = sp.get_tally(name='epithermal flux')
-    epithermal_flux = epithermalflux_tally.get_slice(scores=['flux'])
-    epithermal_flux.mean.shape = mesh_shape
-    #data_pos = np.divide(epithermal_flux.mean[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data_pos = epithermal_flux.mean[:, 0, :]
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(epithermal_flux.mean)
-    #data = epithermal_flux.mean[:, :, 137]
-    fig2 = plt.figure(num=2, figsize=(10, 20))
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate), cmap='Spectral_r', origin='lower', 
-                    alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e10, vmax=1e16))
-    CS = plt.contour(np.multiply(data, source_rate), np.logspace(10, 17, 16), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Epithermal Flux (0.5 eV - 100 keV)\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Epithermal neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig2.savefig(plot_dir+'/DT strict epithermal flux yz')
-    return
-
-def plot_fast_flux(sp):
-    fastflux_tally = sp.get_tally(name='fast flux')
-    fast_flux = fastflux_tally.get_slice(scores=['flux'])
-    fast_flux.mean.shape = mesh_shape
-    #data_pos = np.divide(fast_flux.mean[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    fig3 = plt.figure(num=3, figsize=(10, 15))
-    data = aggregate_rectangular_single(fast_flux.mean)
-    #data = fast_flux.mean[:, :, 137]
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate), cmap='Spectral_r', origin='lower', 
-                    alpha=.5, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e9, vmax=1e16))
-    CS = plt.contour(np.multiply(data, source_rate), np.logspace(9, 16, 12), origin="lower",
-                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Fast Flux (>100 keV)\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Fast neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    print("saving plot to: " + plot_dir + "/DT strict fast flux yz")
-    fig3.savefig(plot_dir+'/DT strict fast flux yz')
-    return
 
 def plot_photon_flux(sp):
     photonflux_tally = sp.get_tally(name='photon flux')
@@ -377,84 +332,6 @@ def get_tbr(sp):
     print(breeding_dataframe)
 
 
-def plot_damage_energy(sp):
-    tally = sp.get_tally(name="neutron damage_energy")
-    slice = tally.get_slice(scores=['damage-energy'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(slice)
-    #data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    plt.imshow(background_image, extent=extent)
-    draw_psi()
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='viridis', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e13, vmax=19))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(13, 19, 10), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Damage Energy Rate\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Neutron Damage Energy $[eV/s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/DT damage yz')
-    return
-
-def plot_multiplying_flux(sp):
-    tally = sp.get_tally(name="Pb multiplying flux")
-    slice = tally.get_slice(scores=['flux'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(slice)
-    #data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate), cmap='plasma', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e5, vmax=1e15))
-    CS = plt.contour(np.multiply(data, source_rate), np.logspace(5, 15, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('Fast Neutron Flux > 5 MeV for Multiplication \n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Fast neutron flux $[n/cm^2-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/multiplying flux yz')
-    return
-
-def plot_breeding(sp):
-    tally = sp.get_tally(name="Breeder mesh")
-    slice = tally.get_slice(scores=['(n,Xt)'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(slice)
-    #data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    plt.imshow(background_image, extent=extent)
-    #draw_psi()
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='plasma', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e6, vmax=1e13))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(6, 13, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('(n, Xt) Breeding Sites \n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='(n, Xt) rate $[1/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/breeding yz')
-    return
-
 def plot_np(sp):
     tally = sp.get_tally(name="Breeder mesh")
     slice = tally.get_slice(scores=['(n,p)'])
@@ -481,31 +358,6 @@ def plot_np(sp):
     fig.savefig(plot_dir+'/breeding yz')
     return
 
-def plot_n2n(sp):
-    tally = sp.get_tally(name="Multiplier mesh")
-    slice = tally.get_slice(scores=['(n,2n)'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(slice)
-    #data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='plasma', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e6, vmax=1e13))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(6, 13, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('(n, 2n) Multiplication Sites \n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='(n, 2n) rate $[1/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/n2n yz')
-    return
 
 def plot_n3n(sp):
     tally = sp.get_tally(name="Multiplier mesh")
@@ -561,67 +413,27 @@ def plot_wall_load(sp):
     fig3.savefig(plot_dir+'/wall load yz')
     return
 
-def plot_neutron_source(sp):
+def plot_neutron_source(statepoint_name, wallload_factor=1):
+    sp = openmc.StatePoint("./" + statepoint_name, autolink=False)
     tally = sp.get_tally(name="Pb multiplying flux")
     slice = tally.get_slice(scores=['flux'])
     slice.mean.shape = mesh_shape
     slice = np.add(slice.mean, 1e-15)
-    #data = aggregate_rectangular_single(slice)
+    data = aggregate_rectangular_single(slice)
     #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
     #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = slice[:, :, 137]
+    #data = slice[:, :, 137]
+    np.savez("./plots/neutron_source", data)
     fig = plt.figure(figsize=(10, 15))
     #draw_psi()
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate), cmap='plasma', origin='lower', 
-                    alpha=0.45, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e13, vmax=1e16))
+    im = plt.imshow(np.multiply(data, source_rate/8*wallload_factor), cmap='plasma', origin='lower', 
+                    alpha=0.45, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e14, vmax=1e16))
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
     plt.ylim(0, extent[3])
+
     fig.savefig(plot_dir+'/neutron source figure yz')
     return
 
-#plot_fast_flux(sp)
-#plot_absorption(sp)
-#plot_breeding(sp)
-#plot_damage_energy(sp)
-#plot_epithermal_flux(sp)
-#plot_total_heat(sp)
-#plot_thermal_flux(sp)
-#plot_epithermal_flux(sp)
-"""
-ff = threading.Thread(target=plot_fast_flux, args=(sp, ))
-ff.start()
-ab = threading.Thread(target=plot_absorption, args=(sp, ))
-ab.start()
-br = threading.Thread(target=plot_breeding, args=(sp, ))
-br.start()
-de = threading.Thread(target=plot_damage_energy, args=(sp, ))
-de.start()
-he = threading.Thread(target=plot_total_heat, args=(sp, ))
-he.start()
-th = threading.Thread(target=plot_thermal_flux, args=(sp, ))
-th.start()
-ep = threading.Thread(target=plot_epithermal_flux, args=(sp, ))
-ep.start()
-ff.join()
-ab.join()
-br.join()
-de.join()
-he.join()
-th.join()
-ep.join()
-
-with concurrent.futures.ThreadPoolExecutor(max_workers=16) as executor:
-    executor.submit(plot_fast_flux, sp)
-    #executor.submit(plot_wall_load, sp)
-    executor.submit(plot_absorption, sp)
-    executor.submit(plot_breeding, sp)
-    #executor.submit(plot_damage_energy, sp)
-    executor.submit(plot_local_heat, sp)
-    executor.submit(plot_epithermal_flux, sp)
-    executor.submit(plot_thermal_flux, sp)
-    #executor.submit(plot_n2n, sp)
-    #executor.submit(plot_radiative_capture, sp)
-"""
 # %%
