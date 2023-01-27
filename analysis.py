@@ -23,12 +23,12 @@ mesh_shape = (260, 275, 275)
 #mesh_shape = (260*4, 1, 275)
 extent=(-plot_width, plot_width, 0, plot_height)
 
-statepoint_name = "statepoint.10-BAM-ALLW-PBLI-REALSOURCE-V5.h5"
+statepoint_name = "statepoint.10-BAM-ALLW-FLIBE-REALSOURCE-V5.h5"
 plot_dir = "./plots/"+statepoint_name.split(".")[1]
 if not os.path.isdir(plot_dir):
     os.mkdir(plot_dir)
 sp = openmc.StatePoint("./" + statepoint_name, autolink=False)
-subtitle = "Monolithic Tungsten shield - PBLI blanket"
+subtitle = "Monolithic Tungsten shield - FLIBE blanket"
 
 def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWrf_5keV.nc"):
     """
@@ -149,12 +149,14 @@ cyl_mesh.z_grid = np.linspace(0, 260*4, 260*4+1)
 #plot_background(plot_width, plot_height)
 # Read background image
 background_image = plt.imread('./background.png')
+
 def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
                 clabel = 'Thermal neutron flux $[n/cm^2-s]$', title = 'DT Thermal Flux (<0.5 eV)\n'+ source_rate_title + subtitle, savedir=plot_dir):
     tally = sp.get_tally(name=tally_name)
     slice = tally.get_slice(scores=[tally_score])
     slice.mean.shape = mesh_dims
-    slice = np.add(slice.mean, 1e-15)
+    #slice = np.add(slice.mean, 1e-15)
+    slice =slice.mean
     #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
     #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
     #data = slice[:, :, 137]

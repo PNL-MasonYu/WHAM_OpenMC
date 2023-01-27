@@ -40,7 +40,7 @@ coil_dz = 106
 coil_dr = 40
 
 # Divertor coil inner radius in cm
-divertor_radius = 150
+divertor_radius = 175
 # Divertor coil z-position (to center of coil)
 divertor_z = 225
 # Divertor coil windings in z
@@ -53,7 +53,7 @@ divertor_dz = 21
 divertor_dr = 16
 
 # Midplane coil inner radius in cm
-midplane_radius = 150.01
+midplane_radius = 175.01
 # Midplane coil z-position (to beginning of coil)
 midplane_z = 75 - 21/2
 # Midplane coil windings in z (on one side)

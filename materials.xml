@@ -434,6 +434,13 @@
     <nuclide name="K40" wo="0.009208473286630397" />
     <nuclide name="K41" wo="5.429253390770036" />
   </material>
+  <material id="24" name="pure iron">
+    <density units="g/cm3" value="7.874" />
+    <nuclide ao="5.845000000000001" name="Fe54" />
+    <nuclide ao="91.754" name="Fe56" />
+    <nuclide ao="2.119" name="Fe57" />
+    <nuclide ao="0.28200000000000003" name="Fe58" />
+  </material>
   <material id="31" name="tungsten">
     <density units="g/cm3" value="19.25" />
     <nuclide ao="0.12" name="W180" />

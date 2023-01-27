@@ -20,7 +20,7 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(20000000)
+settings.particles = int(5e6)
 settings.batches = 10
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
@@ -29,7 +29,7 @@ settings.output = {'tallies': False}
 #settings.track = [(1, 1, 95007)]
 #settings.trace = (1, 1, 95007)
 #settings.survival_bias = True
-settings.cutoff = {'energy_photon' : 1e3}
+#settings.cutoff = {'energy_photon' : 1e3}
 settings.photon_transport = True
 settings.export_to_xml(working_directory)
 settings.export_to_xml("./")
@@ -77,17 +77,27 @@ mesh_surface = openmc.MeshSurfaceFilter(mesh)
 total_current = openmc.Tally(name='total neutron current')
 total_current.filters = [mesh_surface, openmc.ParticleFilter('neutron')]
 total_current.scores = ['current']
-tallies_file.append(total_current)
+#tallies_file.append(total_current)
 
 fast_current = openmc.Tally(name='fast neutron current')
 fast_current.filters = [mesh_surface, openmc.EnergyFilter([1e5, 20e6]), openmc.ParticleFilter('neutron')]
 fast_current.scores = ['current']
-tallies_file.append(fast_current)
+#tallies_file.append(fast_current)
 
 photon_flux = openmc.Tally(name='photon flux')
 photon_flux.filters = [full_mesh_filter, openmc.ParticleFilter('photon')]
 photon_flux.scores = ['flux']
 tallies_file.append(photon_flux)
+
+total_flux = openmc.Tally(name='total neutron flux')
+total_flux.filters = [full_mesh_filter, openmc.ParticleFilter('neutron')]
+total_flux.scores = ['flux']
+tallies_file.append(total_flux)
+
+thermal_flux = openmc.Tally(name='thermal flux')
+thermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([1e-6, 0.5]), openmc.ParticleFilter('neutron')]
+thermal_flux.scores = ['flux']
+tallies_file.append(thermal_flux)
 
 epithermal_flux = openmc.Tally(name='epithermal flux')
 epithermal_flux.filters = [full_mesh_filter, openmc.EnergyFilter([0.5, 1.0e5]), openmc.ParticleFilter('neutron')]
@@ -210,5 +220,5 @@ openmc.plot_geometry()
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=20, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+#openmc.run(threads=20, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%

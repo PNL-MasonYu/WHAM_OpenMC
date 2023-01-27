@@ -1,3 +1,4 @@
+# %%
 import openmc
 import matplotlib.pyplot as plt
 from pkg_resources import ZipProvider
@@ -181,6 +182,7 @@ helium_8mpa.set_density("kg/m3", 5.323)
 helium_8mpa.add_element("He", 100)
 
 he_cooled_rafm = openmc.Material.mix_materials([helium_8mpa, rafm_steel], [0.45, 0.55], 'vo')
+#print(he_cooled_rafm.density)
 
 rings = openmc.Material.mix_materials([stainless, vacuum], [0.1, 0.9], 'vo')
 
@@ -246,28 +248,32 @@ Nak_77.add_element("Na", 23, 'wo')
 Nak_77.add_element("K", 77, 'wo')
 Nak_77.temperature = 900
 
+iron = openmc.Material(name='pure iron')
+iron.set_density("g/cm3", 7.874)
+iron.add_element("Fe", 100, 'ao')
+
 materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
-                  rebco, magnet, tungsten, crispy, water, he_cooled_rafm,
+                  rebco, magnet, tungsten, crispy, water, he_cooled_rafm, iron,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
                   TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
                   tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77]
 materials = openmc.Materials(materials_list)
 """
-fig=openmc.plot_xs(tantalum_hydride_30, ['elastic'])
-openmc.plot_xs(tantalum_hydride_39, ["elastic"], axis=fig.get_axes()[0])
-openmc.plot_xs(tantalum_hydride_46, ["elastic"], axis=fig.get_axes()[0])
-openmc.plot_xs(tantalum_hydride_55, ["elastic"], axis=fig.get_axes()[0])
-#openmc.plot_xs(TiH2, ["damage"], axis=fig.get_axes()[0])
+fig=openmc.plot_xs(rafm_steel, ['damage'])
+openmc.plot_xs(he_cooled_rafm, ["damage"], axis=fig.get_axes()[0])
+openmc.plot_xs(stainless, ['damage'], axis=fig.get_axes()[0])
+openmc.plot_xs(iron, ["damage"], axis=fig.get_axes()[0])
 #openmc.plot_xs(tantalum_hydride, ["damage"], axis=fig.get_axes()[0])
-plt.title("Tantalum hydride (500 K) elastic macroscopic cross section")
+plt.title("MT=444 Damage macroscopic cross section")
 plt.xlabel("Energy (MeV)")
 plt.xlim([1e-2, 20])
 #plt.ylim([1e-1, 1e2])
-plt.legend(["TaH0.30", "TaH0.39", "TaH0.46", "TaH0.55"], loc='upper left')
+plt.legend(["EUROFER97", "EUROFER97 Cooled with 45% vo Helium", "SS316", 'iron'], loc='upper left')
 #plt.xscale("linear")
-plt.ylim([1e-1, 5])
-plt.yscale("linear")
-fig.savefig("./plots/TaH elastic linear")
+#plt.ylim([1e-1, 5])
+#plt.yscale("linear")
+fig.savefig("./plots/Eurofer damage")
 plt.show()
 """
+# %%
