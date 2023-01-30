@@ -2,7 +2,7 @@
 <plots>
   <plot basis="yz" color_by="material" filename="./slice" id="1" type="slice">
     <origin>0 0 300</origin>
-    <width>300 600</width>
+    <width>450 900</width>
     <pixels>1500 3000</pixels>
     <background>255 0 255</background>
     <color id="0" rgb="0 0 0" />
@@ -27,6 +27,8 @@
     <color id="21" rgb="0 0 255" />
     <color id="22" rgb="128 128 0" />
     <color id="23" rgb="211 211 211" />
+    <color id="24" rgb="128 128 128" />
+    <color id="25" rgb="0 128 0" />
     <color id="31" rgb="128 128 0" />
     <color id="81" rgb="165 42 42" />
     <color id="101" rgb="0 0 255" />

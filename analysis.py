@@ -23,7 +23,7 @@ mesh_shape = (260, 275, 275)
 #mesh_shape = (260*4, 1, 275)
 extent=(-plot_width, plot_width, 0, plot_height)
 
-statepoint_name = "statepoint.10-BAM-ALLW-FLIBE-REALSOURCE-V5.h5"
+statepoint_name = "statepoint.10-BAM-ALLW-K-DDCATSOURCE-V9.h5"
 plot_dir = "./plots/"+statepoint_name.split(".")[1]
 if not os.path.isdir(plot_dir):
     os.mkdir(plot_dir)
@@ -146,17 +146,20 @@ r_bounds, z_bounds = plasma_boundary()
 cyl_mesh = openmc.CylindricalMesh()
 cyl_mesh.r_grid = np.linspace(0, 275, 275+1)
 cyl_mesh.z_grid = np.linspace(0, 260*4, 260*4+1)
-#plot_background(plot_width, plot_height)
+plot_background(plot_width, plot_height)
 # Read background image
-background_image = plt.imread('./background.png')
+background_image = plt.imread('./background.ppm')
 
-def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
+def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, nuclide_dim=0, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
                 clabel = 'Thermal neutron flux $[n/cm^2-s]$', title = 'DT Thermal Flux (<0.5 eV)\n'+ source_rate_title + subtitle, savedir=plot_dir):
     tally = sp.get_tally(name=tally_name)
     slice = tally.get_slice(scores=[tally_score])
     slice.mean.shape = mesh_dims
     #slice = np.add(slice.mean, 1e-15)
-    slice =slice.mean
+    if nuclide_dim == 0:
+        slice =slice.mean
+    else:
+        slice = slice.mean[:, :, :, nuclide_dim]
     #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
     #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
     #data = slice[:, :, 137]
@@ -181,31 +184,6 @@ def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims
     return
 # %%
 
-def plot_photon_flux(sp):
-    photonflux_tally = sp.get_tally(name='photon flux')
-    photon_flux = photonflux_tally.get_slice(scores=['flux'])
-    photon_flux.mean.shape = mesh_shape
-    fig3 = plt.figure(num=3, figsize=(10, 15))
-    #data_pos = np.divide(photon_flux.mean[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(photon_flux.mean)
-    #data = photon_flux.mean[:, :, 137]
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate), cmap='Spectral_r', origin='lower', 
-                    alpha=.7, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e8, vmax=1e15))
-    CS = plt.contour(np.multiply(data, source_rate), np.logspace(8, 15, 12), origin="lower",
-                     extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('Photon Flux (>100 keV)\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Photon flux $[\gamma/cm^2-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    print("saving plot to: " + plot_dir + "/DT photon flux yz")
-    fig3.savefig(plot_dir+'/photon flux yz')
-    return
 
 def plot_total_heat(sp):
     heat_tally = sp.get_tally(name="neutron heat load")
@@ -259,62 +237,10 @@ def plot_local_heat(sp):
     fig5.savefig(plot_dir+'/DT local heating with photon yz')
     return
 
-def plot_radiative_capture(sp):
-    radiative_capture_tally = sp.get_tally(name="neutron radiative capture")
-    radiative_capture = radiative_capture_tally.get_slice(scores=['(n,gamma)'])
-    radiative_capture.mean.shape = mesh_shape
-    radiative_capture = np.add(radiative_capture.mean, 1e-15)
-    #data_pos = np.divide(radiative_capture[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(radiative_capture.mean)
-    #data = radiative_capture[:, :, 137]
-    fig6 = plt.figure(num=6, figsize=(10, 15))
-    plt.imshow(background_image, extent=extent)
-    draw_psi()
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='viridis', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e7, vmax=1e13))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(7, 13, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Radiative Capture\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Neutron radiative capture $[#/cm^3-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig6.savefig(plot_dir+'/DT radiative capture yz')
-    return
-
-def plot_absorption(sp):
-    absorption_tally = sp.get_tally(name="neutron absorption")
-    absorption = absorption_tally.get_slice(scores=['absorption'])
-    absorption.mean.shape = mesh_shape
-    absorption = np.add(absorption.mean, 1e-15)
-    #data_pos = np.divide(absorption[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(absorption)
-    #data = absorption[:, :, 137]
-    fig7 = plt.figure(num=7, figsize=(10, 15))
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='viridis', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e14, vmax=1e19))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(14, 19, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('DT Neutron Absorption\n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='Neutron absorption $[#/cm^3-s]$', orientation='vertical',
-                shrink=0.7, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig7.savefig(plot_dir+'/DT absorption yz')
-    return
-
 def plot_coil_flux_energy(sp):
     avg_coil_flux_tally = sp.get_tally(name='Average neutron flux')
     avg_coil_flux = avg_coil_flux_tally.get_slice(scores=['flux'])
-    fig = plt.figure(num=8, figsize=(10, 15))
+    fig = plt.figure(num=8, figsize=(15, 10))
     flux = np.multiply(avg_coil_flux.mean, source_rate)
     plt.plot(np.logspace(-4, 7, 999), flux[:, 0, 0])
     plt.title('Neutron energy spectrum through coil \n'+ source_rate_title + subtitle)
@@ -333,59 +259,13 @@ def get_tbr(sp):
     print("tritium production by Li-6:")
     print(breeding_dataframe)
 
-
-def plot_np(sp):
-    tally = sp.get_tally(name="Breeder mesh")
-    slice = tally.get_slice(scores=['(n,p)'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    data = aggregate_rectangular_single(slice)
-    #data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    plt.imshow(background_image, extent=extent)
-    #draw_psi()
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='plasma', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e6, vmax=1e13))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(6, 13, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('(n, p) Breeding Sites \n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='(n, Xt) rate $[1/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/breeding yz')
-    return
-
-
-def plot_n3n(sp):
-    tally = sp.get_tally(name="Multiplier mesh")
-    slice = tally.get_slice(scores=['(n,3n)'])
-    slice.mean.shape = mesh_shape
-    slice = np.add(slice.mean, 1e-15)
-    #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
-    #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-    #data = aggregate_rectangular_single(slice)
-    data = slice[:, :, 137]
-    fig = plt.figure(figsize=(10, 15))
-    draw_psi()
-    plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate/8), cmap='plasma', origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e3, vmax=1e10))
-    CS = plt.contour(np.multiply(data, source_rate/8), np.logspace(3, 10, 14), origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
-    plt.title('(n, 3n) Multiplication Sites \n'+ source_rate_title + subtitle)
-    plt.colorbar(im, label='(n, 3n) rate $[1/cm^3-s]$', orientation='vertical',
-                shrink=0.8, format='%0.0e')
-    plt.clabel(CS, fmt='%0.0e', fontsize=11)
-    plt.xlabel('y (cm)')
-    plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(plot_dir+'/n3n yz')
-    return
+def get_np(sp):
+    breeding_tally = sp.get_tally(name='Breeder misc reaction')
+    breeding = breeding_tally.get_slice(scores=['(n,p)'])
+    breeding_dataframe = breeding.get_pandas_dataframe()
+    
+    print("Ar39 production:")
+    print(breeding_dataframe)
 
 def plot_wall_load(sp):
     fastflux_tally = sp.get_tally(name='fast flux')

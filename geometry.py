@@ -40,7 +40,7 @@ coil_dz = 106
 coil_dr = 40
 
 # Divertor coil inner radius in cm
-divertor_radius = 175
+divertor_radius = 200
 # Divertor coil z-position (to center of coil)
 divertor_z = 225
 # Divertor coil windings in z
@@ -53,7 +53,7 @@ divertor_dz = 21
 divertor_dr = 16
 
 # Midplane coil inner radius in cm
-midplane_radius = 175.01
+midplane_radius = 200.01
 # Midplane coil z-position (to beginning of coil)
 midplane_z = 75 - 21/2
 # Midplane coil windings in z (on one side)
@@ -71,7 +71,7 @@ throat_IR = 21
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 3
 # Cryostat thickness in cm
-cryostat_thickness = 14.7
+cryostat_thickness = 15.6
 # Close shield thickness in cm
 close_shield_thickness = 2.54
 # First wall thickness in cm
@@ -79,13 +79,13 @@ fw_thickness = 0.254
 # First wall support structure thickness in cm
 fw_support_thickness = 2.54
 # Shield end location (min z) in cm
-sh_end = 320
+sh_end = 340
 # First wall inner radius in cm
 fw_radius = 40
 # Breeder cylinder outer radius in cm
 breeder_OR = 160
 # Breeder blanket radial extension thickness
-breeder_extension = 75
+breeder_extension = 150
 # Angle between axis and the expanding portion of shield in degree
 expand_angle = 8.5
 # Virtex of the cone for the expanding portion of shield in cm
@@ -105,8 +105,11 @@ end_thickness = 120
 # Expander tank radius
 expand_tank_radius = 165
 
+# Reflector Thickness
+reflector_thickness = 25.4
+
 # Thickness for the testing region
-test_thickness = 2.54
+test_thickness = 5.08
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -176,7 +179,7 @@ shield_min_zplane = openmc.ZPlane(sh_end)
 
 # breeder and end tank cylinders
 breeder_inner_cyl = openmc.ZCylinder(0, 0, breeder_OR+breeder_extension)
-reflector_outer_cyl = openmc.ZCylinder(0, 0, breeder_OR+breeder_extension+10)
+reflector_outer_cyl = openmc.ZCylinder(0, 0, breeder_OR+breeder_extension+reflector_thickness)
 
 # end tank faces
 tank_inner_cyl = openmc.ZCylinder(0, 0, expand_tank_radius)

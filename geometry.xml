@@ -1,26 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
 <geometry>
   <cell id="1001" material="0" name="Vacuum" region="(-18 1 -40) | (-8 -9 1 18 -21) | (-65 66 -67 68 ~(-44 45 -46 ~(-41 42 -43))) | (-73 74 -75 76 ~(-56 57 -58 ~(-53 54 -55))) | (-81 82 -83 84 ~(-50 51 -52 ~(-47 48 -49))) | (31 1 -2 -3) | (-32 28 -35 ~(-87 88 -14 15 -32)) | (-2 -33 36) | (-2 33 -31 39)" universe="0" />
-  <cell id="2001" material="0" name="CFS coil" region="-44 45 -46 ~(-41 42 -43)" universe="0" />
-  <cell id="2101" material="0" name="Divertor coil" region="-50 51 -52 ~(-47 48 -49)" universe="0" />
-  <cell id="2201" material="0" name="Central coil" region="-56 57 -58 ~(-53 54 -55)" universe="0" />
-  <cell id="3001" material="0" name="Shield" region="((((4 -5) | 5) (-10 11) 29 -26 16 -12 13 -33) | (-33 26 -27 16 29)) ~(-59 60 -26 61) ~(-50 51 -52 ~(-47 48 -49))" universe="0" />
-  <cell id="3002" material="0" name="Cryostat shield" region="-59 60 -26 61 ~(-62 63 -26 64)" universe="0" />
-  <cell id="4001" material="0" name="Cryostat" region="-62 63 -26 64 ~(-65 66 -67 68)" universe="0" />
-  <cell id="4101" material="0" name="Central Cryostat" region="-69 70 -71 72 ~(-73 74 -75 76)" universe="0" />
-  <cell id="4201" material="0" name="Divertor Cryostat" region="-77 78 -79 80 ~(-81 82 -83 84)" universe="0" />
-  <cell id="5000" material="0" name="First Wall Cylinder" region="-20 21 1 -8 -9" universe="0" />
-  <cell id="5001" material="0" name="First Wall Throat" region="-17 18 ((8 -9) | 9) -27" universe="0" />
-  <cell id="5002" material="0" name="First Wall Expanding" region="((8 -9) | 9) (-6 -7) -20 17" universe="0" />
-  <cell id="5100" material="0" name="First Wall Cylinder structure" region="-19 20 1 -6 -7" universe="0" />
-  <cell id="5101" material="0" name="First Wall throat structure" region="-16 17 ((6 -7) | 7) -27" universe="0" />
-  <cell id="5102" material="0" name="First Wall expanding structure" region="((6 -7) | 7) (-4 -5) -19 16 1" universe="0" />
-  <cell id="5201" material="0" name="Material testing - Central Cylinder" region="-22 19 1 -4 -5" universe="0" />
-  <cell id="5203" material="0" name="Material testing - Expanding" region="((4 -5) | 5) (-24 -25) -22 16 -29" universe="0" />
-  <cell id="6000" material="0" name="Breeder blanket" region="((-33 19 1 -29) | (-33 ((12 13) | -13) ((4 -5) | 5) -26 29) | (((4 -5) | 5) -29 -19) | (-34 35 -14 15 -32) | (29 ((10 11) | -11) -12 13) | (-30 33 1 -38)) ~((-22 19 1 -4 -5) | (((4 -5) | 5) (-24 -25) -22 16 -29)) ~(-69 70 -71 72) ~(-77 78 -79 80)" universe="0" />
-  <cell id="6100" material="0" name="Breeder outer reflector" region="(30 -31 1 -26) | (34 -36 -14 15 -32) | (-31 -38 26 30) | (-31 38 -39 33)" universe="0" />
-  <cell id="7000" material="0" name="End expander tank" region="(27 -28 -33 18) | (28 -36 -33 32)" universe="0" />
-  <cell id="7100" material="0" name="Bias rings" region="-87 88 -14 15 -32" universe="0" />
+  <cell id="2001" material="6" name="CFS coil" region="-44 45 -46 ~(-41 42 -43)" universe="0" />
+  <cell id="2101" material="6" name="Divertor coil" region="-50 51 -52 ~(-47 48 -49)" universe="0" />
+  <cell id="2201" material="6" name="Central coil" region="-56 57 -58 ~(-53 54 -55)" universe="0" />
+  <cell id="3001" material="31" name="Shield" region="((((4 -5) | 5) (-10 11) 29 -26 16 -12 13 -33) | (-33 26 -27 16 29)) ~(-59 60 -26 61) ~(-50 51 -52 ~(-47 48 -49))" universe="0" />
+  <cell id="3002" material="31" name="Cryostat shield" region="-59 60 -26 61 ~(-62 63 -26 64)" universe="0" />
+  <cell id="4001" material="31" name="Cryostat" region="-62 63 -26 64 ~(-65 66 -67 68)" universe="0" />
+  <cell id="4101" material="31" name="Central Cryostat" region="-69 70 -71 72 ~(-73 74 -75 76)" universe="0" />
+  <cell id="4201" material="31" name="Divertor Cryostat" region="-77 78 -79 80 ~(-81 82 -83 84)" universe="0" />
+  <cell id="5000" material="900" name="First Wall Cylinder" region="-20 21 1 -8 -9" universe="0" />
+  <cell id="5001" material="900" name="First Wall Throat" region="-17 18 ((8 -9) | 9) -27" universe="0" />
+  <cell id="5002" material="900" name="First Wall Expanding" region="((8 -9) | 9) (-6 -7) -20 17" universe="0" />
+  <cell id="5100" material="10" name="First Wall Cylinder structure" region="-19 20 1 -6 -7" universe="0" />
+  <cell id="5101" material="31" name="First Wall throat structure" region="-16 17 ((6 -7) | 7) -27" universe="0" />
+  <cell id="5102" material="31" name="First Wall expanding structure" region="((6 -7) | 7) (-4 -5) -19 16 1" universe="0" />
+  <cell id="5201" material="17" name="Material testing - Central Cylinder" region="-22 19 1 -4 -5" universe="0" />
+  <cell id="5203" material="10" name="Material testing - Expanding" region="((4 -5) | 5) (-24 -25) -22 16 -29" universe="0" />
+  <cell id="6000" material="23" name="Breeder blanket" region="((-33 19 1 -29) | (-33 ((12 13) | -13) ((4 -5) | 5) -26 29) | (((4 -5) | 5) -29 -19) | (-34 35 -14 15 -32) | (29 ((10 11) | -11) -12 13) | (-30 33 1 -38)) ~((-22 19 1 -4 -5) | (((4 -5) | 5) (-24 -25) -22 16 -29)) ~(-69 70 -71 72) ~(-77 78 -79 80)" universe="0" />
+  <cell id="6100" material="17" name="Breeder outer reflector" region="(30 -31 1 -26) | (34 -36 -14 15 -32) | (-31 -38 26 30) | (-31 38 -39 33)" universe="0" />
+  <cell id="7000" material="298" name="End expander tank" region="(27 -28 -33 18) | (28 -36 -33 32)" universe="0" />
+  <cell id="7100" material="11" name="Bias rings" region="-87 88 -14 15 -32" universe="0" />
   <surface boundary="reflective" coeffs="0" id="1" type="z-plane" />
   <surface boundary="vacuum" coeffs="1500" id="2" type="z-plane" />
   <surface boundary="vacuum" coeffs="0 0 800" id="3" type="z-cylinder" />
@@ -42,15 +42,15 @@
   <surface coeffs="0 0 42.794" id="19" type="z-cylinder" />
   <surface coeffs="0 0 40.254" id="20" type="z-cylinder" />
   <surface coeffs="0 0 40" id="21" type="z-cylinder" />
-  <surface coeffs="0 0 45.333999999999996" id="22" type="z-cylinder" />
-  <surface coeffs="0 0 443.04350602318124 0.1494510013491278" id="24" type="z-cone" />
-  <surface coeffs="443.04350602318124" id="25" type="z-plane" />
-  <surface coeffs="520.7" id="26" type="z-plane" />
-  <surface coeffs="535.7" id="27" type="z-plane" />
-  <surface coeffs="539.51" id="28" type="z-plane" />
-  <surface coeffs="320" id="29" type="z-plane" />
-  <surface coeffs="0 0 235" id="30" type="z-cylinder" />
-  <surface coeffs="0 0 245" id="31" type="z-cylinder" />
+  <surface coeffs="0 0 47.873999999999995" id="22" type="z-cylinder" />
+  <surface coeffs="0 0 451.6356517485056 0.1494510013491278" id="24" type="z-cone" />
+  <surface coeffs="451.6356517485056" id="25" type="z-plane" />
+  <surface coeffs="521.6" id="26" type="z-plane" />
+  <surface coeffs="536.6" id="27" type="z-plane" />
+  <surface coeffs="540.41" id="28" type="z-plane" />
+  <surface coeffs="340" id="29" type="z-plane" />
+  <surface coeffs="0 0 310" id="30" type="z-cylinder" />
+  <surface coeffs="0 0 335.4" id="31" type="z-cylinder" />
   <surface coeffs="0 0 165" id="32" type="z-cylinder" />
   <surface coeffs="0 0 165.7" id="33" type="z-cylinder" />
   <surface coeffs="0 0 75 970" id="34" type="sphere" />
@@ -58,51 +58,51 @@
   <surface coeffs="0 0 75 980" id="36" type="sphere" />
   <surface coeffs="1020" id="38" type="z-plane" />
   <surface coeffs="1030" id="39" type="z-plane" />
-  <surface coeffs="539.51" id="40" type="z-plane" />
+  <surface coeffs="540.41" id="40" type="z-plane" />
   <surface coeffs="0 0 75" id="41" type="z-cylinder" />
   <surface coeffs="397.0" id="42" type="z-plane" />
   <surface coeffs="503.0" id="43" type="z-plane" />
   <surface coeffs="0 0 115" id="44" type="z-cylinder" />
   <surface coeffs="397.0" id="45" type="z-plane" />
   <surface coeffs="503.0" id="46" type="z-plane" />
-  <surface coeffs="0 0 150" id="47" type="z-cylinder" />
+  <surface coeffs="0 0 200" id="47" type="z-cylinder" />
   <surface coeffs="214.5" id="48" type="z-plane" />
   <surface coeffs="235.5" id="49" type="z-plane" />
-  <surface coeffs="0 0 166" id="50" type="z-cylinder" />
+  <surface coeffs="0 0 216" id="50" type="z-cylinder" />
   <surface coeffs="214.5" id="51" type="z-plane" />
   <surface coeffs="235.5" id="52" type="z-plane" />
-  <surface coeffs="0 0 150.01" id="53" type="z-cylinder" />
+  <surface coeffs="0 0 200.01" id="53" type="z-cylinder" />
   <surface coeffs="64.5" id="54" type="z-plane" />
   <surface coeffs="85.5" id="55" type="z-plane" />
-  <surface coeffs="0 0 166.01" id="56" type="z-cylinder" />
+  <surface coeffs="0 0 216.01" id="56" type="z-cylinder" />
   <surface coeffs="64.5" id="57" type="z-plane" />
   <surface coeffs="85.5" id="58" type="z-plane" />
-  <surface coeffs="0 0 135.23999999999998" id="59" type="z-cylinder" />
-  <surface coeffs="376.76" id="60" type="z-plane" />
-  <surface coeffs="0 0 54.76" id="61" type="z-cylinder" />
-  <surface coeffs="0 0 132.7" id="62" type="z-cylinder" />
-  <surface coeffs="379.3" id="63" type="z-plane" />
-  <surface coeffs="0 0 57.3" id="64" type="z-cylinder" />
+  <surface coeffs="0 0 136.14" id="59" type="z-cylinder" />
+  <surface coeffs="375.85999999999996" id="60" type="z-plane" />
+  <surface coeffs="0 0 53.86" id="61" type="z-cylinder" />
+  <surface coeffs="0 0 133.6" id="62" type="z-cylinder" />
+  <surface coeffs="378.4" id="63" type="z-plane" />
+  <surface coeffs="0 0 56.4" id="64" type="z-cylinder" />
   <surface coeffs="0 0 118" id="65" type="z-cylinder" />
   <surface coeffs="394.0" id="66" type="z-plane" />
-  <surface coeffs="506.00000000000006" id="67" type="z-plane" />
+  <surface coeffs="506.0" id="67" type="z-plane" />
   <surface coeffs="0 0 72" id="68" type="z-cylinder" />
-  <surface coeffs="0 0 183.70999999999998" id="69" type="z-cylinder" />
-  <surface coeffs="46.8" id="70" type="z-plane" />
-  <surface coeffs="103.2" id="71" type="z-plane" />
-  <surface coeffs="0 0 132.31" id="72" type="z-cylinder" />
-  <surface coeffs="0 0 169.01" id="73" type="z-cylinder" />
+  <surface coeffs="0 0 234.60999999999999" id="69" type="z-cylinder" />
+  <surface coeffs="45.9" id="70" type="z-plane" />
+  <surface coeffs="104.1" id="71" type="z-plane" />
+  <surface coeffs="0 0 181.41" id="72" type="z-cylinder" />
+  <surface coeffs="0 0 219.01" id="73" type="z-cylinder" />
   <surface coeffs="61.5" id="74" type="z-plane" />
   <surface coeffs="88.5" id="75" type="z-plane" />
-  <surface coeffs="0 0 147.01" id="76" type="z-cylinder" />
-  <surface coeffs="0 0 183.7" id="77" type="z-cylinder" />
-  <surface coeffs="196.8" id="78" type="z-plane" />
-  <surface coeffs="253.2" id="79" type="z-plane" />
-  <surface coeffs="0 0 132.3" id="80" type="z-cylinder" />
-  <surface coeffs="0 0 169" id="81" type="z-cylinder" />
+  <surface coeffs="0 0 197.01" id="76" type="z-cylinder" />
+  <surface coeffs="0 0 234.6" id="77" type="z-cylinder" />
+  <surface coeffs="195.9" id="78" type="z-plane" />
+  <surface coeffs="254.1" id="79" type="z-plane" />
+  <surface coeffs="0 0 181.4" id="80" type="z-cylinder" />
+  <surface coeffs="0 0 219" id="81" type="z-cylinder" />
   <surface coeffs="211.5" id="82" type="z-plane" />
   <surface coeffs="238.5" id="83" type="z-plane" />
-  <surface coeffs="0 0 147" id="84" type="z-cylinder" />
+  <surface coeffs="0 0 197" id="84" type="z-cylinder" />
   <surface coeffs="0 0 75 825" id="87" type="sphere" />
   <surface coeffs="0 0 75 800" id="88" type="sphere" />
 </geometry>

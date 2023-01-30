@@ -20,7 +20,7 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(5e6)
+settings.particles = int(1e7)
 settings.batches = 10
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
@@ -149,9 +149,10 @@ avg_coil_flux.filters = [coil_filter, log_energy_filter, openmc.ParticleFilter('
 avg_coil_flux.scores = ['flux']
 tallies_file.append(avg_coil_flux)
 
-breeder_reaction = openmc.Tally(name='Breeder Li-6(n,alpha)T reaction')
+breeder_reaction = openmc.Tally(name='Breeder misc reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
 breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)']
+breeder_reaction.nuclides = ['Na23', 'K39']
 tallies_file.append(breeder_reaction)
 
 multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
@@ -162,6 +163,7 @@ tallies_file.append(multiplier_reaction)
 breeder_mesh = openmc.Tally(name='Breeder mesh')
 breeder_mesh.filters = [full_mesh_filter]
 breeder_mesh.scores = ['(n,Xt)', '(n,p)']
+breeder_mesh.nuclides = ['Na23', 'K39']
 tallies_file.append(breeder_mesh)
 
 multiplier_mesh = openmc.Tally(name='Multiplier mesh')
@@ -188,13 +190,13 @@ central_dpa = openmc.Tally(name="damage energy for test region around central cy
 central_dpa.filters = [openmc.CellFilter([c[5201].id])]
 central_dpa.scores = ['damage-energy']
 tallies_file.append(central_dpa)
-"""
+
 expanding_dpa = openmc.Tally(name="damage energy for test region around expanding chamfer")
 expanding_dpa.filters = [openmc.CellFilter([c[5203].id])]
 expanding_dpa.scores = ['damage-energy']
 tallies_file.append(expanding_dpa)
-"""
-all_gamma_spectrum = openmc.Tally(name="neutron spectrum all cell")
+
+all_gamma_spectrum = openmc.Tally(name="gamma spectrum all cell")
 all_gamma_spectrum.filters = [all_cell_filter, openmc.ParticleFilter('photon'), log_energy_filter]
 all_gamma_spectrum.scores = ['flux']
 tallies_file.append(all_gamma_spectrum)
@@ -207,18 +209,18 @@ geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
                                    origin=(0, 0, 300), 
-                                   width=(300, 600), 
+                                   width=(450, 900), 
                                    pixels=(1500, 3000),
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
 
 # Plot geometry
 #openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
-openmc.plot_geometry()
+#openmc.plot_geometry()
 #r_bounds, z_bounds = a.plasma_boundary()
 #p.plot_geometry(r_bounds, z_bounds)
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-#openmc.run(threads=20, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%
