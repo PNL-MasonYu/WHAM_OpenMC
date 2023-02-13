@@ -41,8 +41,11 @@
   <filter id="3" type="cell">
     <bins>1001 2001 2101 2201 6000 3001 3002 4001 4101 4201 5000 5001 5002 5100 5101 5102 5201 5203 6100 7000 7100</bins>
   </filter>
-  <filter id="30" type="cell">
+  <filter id="31" type="cell">
     <bins>5201</bins>
+  </filter>
+  <filter id="32" type="cell">
+    <bins>5203</bins>
   </filter>
   <tally id="3" name="photon flux">
     <filters>4 12</filters>
@@ -96,9 +99,10 @@
     <filters>7 1 13</filters>
     <scores>flux</scores>
   </tally>
-  <tally id="16" name="Breeder Li-6(n,alpha)T reaction">
+  <tally id="16" name="Breeder misc reaction">
     <filters>26</filters>
-    <scores>(n,a) (n,Xt) (n,p)</scores>
+    <nuclides>K39 Cl35 Cl37 Li6 Li7</nuclides>
+    <scores>(n,a) (n,Xt) (n,p) (n,gamma) (n,2n) (n,3n)</scores>
   </tally>
   <tally id="17" name="Breeder Pb(n,2n) reaction">
     <filters>26</filters>
@@ -106,25 +110,39 @@
   </tally>
   <tally id="18" name="Breeder mesh">
     <filters>4</filters>
-    <scores>(n,Xt) (n,p)</scores>
+    <nuclides>Li6 Li7</nuclides>
+    <scores>(n,Xt)</scores>
   </tally>
-  <tally id="19" name="Multiplier mesh">
+  <tally id="18" name="Breeder mesh">
+    <filters>4</filters>
+    <nuclides>Li6 Li7</nuclides>
+    <scores>(n,Xt)</scores>
+  </tally>
+  <tally id="20" name="Multiplier mesh">
     <filters>4</filters>
     <scores>(n,2n) (n,3n)</scores>
   </tally>
-  <tally id="20" name="helium production mesh">
+  <tally id="21" name="helium production mesh">
     <filters>4</filters>
     <scores>He4-production</scores>
   </tally>
-  <tally id="22" name="neutron spectrum all cell">
+  <tally id="23" name="neutron spectrum all cell">
     <filters>3 13 1</filters>
     <scores>flux</scores>
   </tally>
-  <tally id="23" name="damage energy for test region around central cylinder">
-    <filters>30</filters>
+  <tally id="24" name="all cell neutron absorption">
+    <filters>3 13</filters>
+    <scores>absorption</scores>
+  </tally>
+  <tally id="25" name="damage energy for test region around central cylinder">
+    <filters>31</filters>
     <scores>damage-energy</scores>
   </tally>
-  <tally id="24" name="neutron spectrum all cell">
+  <tally id="26" name="damage energy for test region around expanding chamfer">
+    <filters>32</filters>
+    <scores>damage-energy</scores>
+  </tally>
+  <tally id="27" name="gamma spectrum all cell">
     <filters>3 12 1</filters>
     <scores>flux</scores>
   </tally>

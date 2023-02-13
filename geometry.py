@@ -40,7 +40,7 @@ coil_dz = 106
 coil_dr = 40
 
 # Divertor coil inner radius in cm
-divertor_radius = 250
+divertor_radius = 200
 # Divertor coil z-position (to center of coil)
 divertor_z = 225
 # Divertor coil windings in z
@@ -53,7 +53,7 @@ divertor_dz = 21
 divertor_dr = 16
 
 # Midplane coil inner radius in cm
-midplane_radius = 250.01
+midplane_radius = 200.01
 # Midplane coil z-position (to beginning of coil)
 midplane_z = 75 - 21/2
 # Midplane coil windings in z (on one side)
@@ -71,7 +71,7 @@ throat_IR = 21
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 1
 # Cryostat thickness in cm
-cryostat_thickness = 15.24
+cryostat_thickness = 5.08
 # Close shield thickness in cm
 close_shield_thickness = 2.54
 # First wall thickness in cm
@@ -85,7 +85,7 @@ fw_radius = 40
 # Breeder cylinder outer radius in cm
 breeder_OR = 160
 # Breeder blanket radial extension thickness
-breeder_extension = 200
+breeder_extension = 125
 # Angle between axis and the expanding portion of shield in degree
 expand_angle = 8.5
 # Virtex of the cone for the expanding portion of shield in cm

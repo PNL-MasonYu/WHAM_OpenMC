@@ -20,7 +20,7 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(5e6)
+settings.particles = int(5e7)
 settings.batches = 10
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
@@ -152,7 +152,7 @@ tallies_file.append(avg_coil_flux)
 breeder_reaction = openmc.Tally(name='Breeder misc reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
 breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)', '(n,gamma)','(n,2n)','(n,3n)']
-breeder_reaction.nuclides = ['K39', 'Cl35', 'Cl37']
+breeder_reaction.nuclides = ['K39', 'Cl35', 'Cl37', 'Li6', 'Li7']
 tallies_file.append(breeder_reaction)
 
 multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
@@ -162,9 +162,15 @@ tallies_file.append(multiplier_reaction)
 
 breeder_mesh = openmc.Tally(name='Breeder mesh')
 breeder_mesh.filters = [full_mesh_filter]
-breeder_mesh.scores = ['(n,Xt)', '(n,p)', '(n,gamma)', '(n,a)', '(n,2n)']
-breeder_mesh.nuclides = ['K39', 'Cl35', 'Cl37']
+breeder_mesh.scores = ['(n,Xt)']
+breeder_mesh.nuclides = ['Li6', 'Li7']
 tallies_file.append(breeder_mesh)
+
+production_mesh = openmc.Tally(name='Production mesh')
+production_mesh.filters = [full_mesh_filter]
+production_mesh.scores = ['(n,a)', '(n,p)', '(n,gamma)','(n,2n)','(n,3n)']
+production_mesh.nuclides = ['K39', 'Cl35', 'Cl37']
+tallies_file.append(production_mesh)
 
 multiplier_mesh = openmc.Tally(name='Multiplier mesh')
 multiplier_mesh.filters = [full_mesh_filter]
@@ -227,5 +233,5 @@ chamber_geometry_plot.export_to_xml("./")
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+openmc.run(threads=20, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%

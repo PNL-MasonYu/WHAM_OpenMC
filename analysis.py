@@ -13,7 +13,7 @@ import threading
 import plotting as p
 
 # Default plotting params
-statepoint_name = "statepoint.10-BAM-ALLW-K-DDCATSOURCE-V10.h5"
+statepoint_name = "statepoint.10-BAM-ALLW-PBLI-REALSOURCE-V12.h5"
 plot_dir = "./plots/"+statepoint_name.split(".")[1]
 if not os.path.isdir(plot_dir):
     os.mkdir(plot_dir)
@@ -31,8 +31,8 @@ plot_height = 260*4
 mesh_shape = (260, 275, 275)
 extent=(-plot_width, plot_width, 0, plot_height)
 # Read background image
-background_image = plt.imread('./background.ppm')
-#background_image = plt.imread('./background.png')
+#background_image = plt.imread('./background.ppm')
+background_image = plt.imread(plot_dir + '/background.png')
 
 
 def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWrf_5keV.nc"):
@@ -230,8 +230,8 @@ def plot_flux_energy(sp, source_rate, source_rate_title, subtitle, plot_dir, cel
         np.savez(savedir + "/neutron spectrum all cell " + str(cell), flux)
     return
 
-def get_tbr(sp):
-    li6_breeding_tally = sp.get_tally(name='Breeder Li-6(n,alpha)T reaction')
+def get_tbr(sp, tally_name = 'Breeder Li-6(n,alpha)T reaction'):
+    li6_breeding_tally = sp.get_tally(name=tally_name)
     li6_breeding = li6_breeding_tally.get_slice(scores=['(n,Xt)'])
     breeding_dataframe = li6_breeding.get_pandas_dataframe()
     
@@ -309,20 +309,20 @@ def plot_flux_heat_breed():
     source_rate = 3.55e18
     volume = 16
     # load data
-    fast_flux_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V5/fast flux.npz")
+    fast_flux_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/fast flux.npz")
     fast_flux = fast_flux_npzfile['arr_0']
-    heat_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V5/neutron heat load.npz")
+    heat_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/neutron heat load.npz")
     heat = np.add(heat_npzfile['arr_0'], 1e-10)
     np.nan_to_num(heat, copy=False)
-    breeder_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V5/Breeder mesh.npz")
+    breeder_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/Breeder mesh.npz")
     breed = np.add(breeder_npzfile['arr_0'], 1e-15)
-    damage_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V5/neutron damage_energy.npz")
+    damage_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/neutron damage_energy.npz")
     damage = np.add(damage_npzfile['arr_0'], 1e-15)
     np.nan_to_num(damage, copy=False)
     vacuum_source_npzfile = np.load("plots/neutron_source.npz")
     vacuum_source = np.add(vacuum_source_npzfile['arr_0'], 1e-15)
     np.nan_to_num(vacuum_source)
-    background_image = plt.imread("plots/10-BAM-ALLW-FLIBE-REALSOURCE-V5/background.png")
+    background_image = plt.imread("plots/10-BAM-ALLW-FLIBE-REALSOURCE-V12/background.png")
 
     fast_flux_data = np.multiply(fast_flux, source_rate/volume)
     nuclear_heat_data = np.multiply(heat, source_rate*1.602e-19/volume)
