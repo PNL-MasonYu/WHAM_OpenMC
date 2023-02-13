@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <settings>
   <run_mode>fixed source</run_mode>
-  <particles>10000000</particles>
+  <particles>5000000</particles>
   <batches>10</batches>
   <source strength="0.047846171915416055">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -12,7 +12,14 @@
       <z parameters="0.0 9.999999999999943" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.04758287897885874">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -23,7 +30,14 @@
       <z parameters="9.999999999999943 19.999999999999886" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.046808573472061986">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -34,7 +48,14 @@
       <z parameters="19.999999999999886 29.99999999999983" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.04568220274099653">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -45,7 +66,14 @@
       <z parameters="29.99999999999983 39.99999999999977" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.04444594673365707">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -56,7 +84,14 @@
       <z parameters="39.99999999999977 49.999999999999716" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.043248634343262884">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -67,7 +102,14 @@
       <z parameters="49.999999999999716 59.99999999999966" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.042140754878211506">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -78,7 +120,14 @@
       <z parameters="59.99999999999966 69.9999999999996" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.04114867789174582">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -89,7 +138,14 @@
       <z parameters="69.9999999999996 79.99999999999955" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.04028422643069008">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -100,7 +156,14 @@
       <z parameters="79.99999999999955 89.99999999999949" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.03953249974487644">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -111,7 +174,14 @@
       <z parameters="89.99999999999949 99.99999999999943" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.0388486560400947">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -122,7 +192,14 @@
       <z parameters="99.99999999999943 109.99999999999937" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.03817044602253948">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -133,7 +210,14 @@
       <z parameters="109.99999999999937 119.99999999999932" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.03743167944456506">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -144,7 +228,14 @@
       <z parameters="119.99999999999932 129.99999999999926" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.036572359107606936">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -155,7 +246,14 @@
       <z parameters="129.99999999999926 139.9999999999992" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.035549706457939034">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -166,7 +264,14 @@
       <z parameters="139.9999999999992 149.99999999999915" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.03434667540445139">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -177,7 +282,14 @@
       <z parameters="149.99999999999915 159.9999999999991" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.032979058199501234">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -188,7 +300,14 @@
       <z parameters="159.9999999999991 169.99999999999903" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.03149148478527576">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -199,7 +318,14 @@
       <z parameters="169.99999999999903 179.99999999999898" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.02991470883006661">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -210,7 +336,14 @@
       <z parameters="179.99999999999898 189.99999999999892" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.02827195093121913">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -221,7 +354,14 @@
       <z parameters="189.99999999999892 199.99999999999886" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.026594084210331628">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -232,7 +372,14 @@
       <z parameters="199.99999999999886 209.9999999999988" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.02491734988598663">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -243,7 +390,14 @@
       <z parameters="209.9999999999988 219.99999999999875" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.023249839803173803">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -254,7 +408,14 @@
       <z parameters="219.99999999999875 229.9999999999987" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.02156226310883516">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -265,7 +426,14 @@
       <z parameters="229.9999999999987 239.99999999999864" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.019850168736273988">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -276,7 +444,14 @@
       <z parameters="239.99999999999864 249.99999999999858" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.01810951278875565">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -287,7 +462,14 @@
       <z parameters="249.99999999999858 259.9999999999985" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.01630735450662332">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -298,7 +480,14 @@
       <z parameters="259.9999999999985 269.99999999999847" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.014445184652310388">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -309,7 +498,14 @@
       <z parameters="269.99999999999847 279.9999999999984" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.012544350941993762">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -320,7 +516,14 @@
       <z parameters="279.9999999999984 289.99999999999835" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.010618345172655207">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -331,7 +534,14 @@
       <z parameters="289.99999999999835 299.9999999999983" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.00873030703060456">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -342,7 +552,14 @@
       <z parameters="299.9999999999983 309.99999999999824" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.006913130857550294">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -353,7 +570,14 @@
       <z parameters="309.99999999999824 319.9999999999982" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.005221206865887817">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -364,7 +588,14 @@
       <z parameters="319.9999999999982 329.9999999999981" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.0037164190953031654">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -375,7 +606,14 @@
       <z parameters="329.9999999999981 339.99999999999807" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.002438793931740612">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -386,7 +624,14 @@
       <z parameters="339.99999999999807 349.999999999998" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.0014322017330964769">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -397,7 +642,14 @@
       <z parameters="349.999999999998 359.99999999999795" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.0007117003318269526">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -408,7 +660,14 @@
       <z parameters="359.99999999999795 369.9999999999979" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="0.00026973218778662047">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -419,7 +678,14 @@
       <z parameters="369.9999999999979 379.99999999999784" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="6.444583773928071e-05">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -430,7 +696,14 @@
       <z parameters="379.99999999999784 389.9999999999978" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="5.878169989169141e-06">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -441,7 +714,14 @@
       <z parameters="389.9999999999978 399.9999999999977" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="2.6548112160004244e-07">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -452,7 +732,14 @@
       <z parameters="399.9999999999977 409.99999999999767" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="1.1904036759129204e-07">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -463,7 +750,14 @@
       <z parameters="409.99999999999767 419.9999999999976" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="3.2338071233674434e-08">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -474,7 +768,14 @@
       <z parameters="419.9999999999976 429.99999999999756" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="2.093893860624708e-08">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -485,7 +786,14 @@
       <z parameters="429.99999999999756 439.9999999999975" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -496,7 +804,14 @@
       <z parameters="439.9999999999975 449.99999999999744" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -507,7 +822,14 @@
       <z parameters="449.99999999999744 459.9999999999974" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -518,7 +840,14 @@
       <z parameters="459.9999999999974 469.9999999999973" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -529,7 +858,14 @@
       <z parameters="469.9999999999973 479.99999999999727" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -540,7 +876,14 @@
       <z parameters="479.99999999999727 489.9999999999972" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -551,7 +894,14 @@
       <z parameters="489.9999999999972 499.99999999999716" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <source strength="4.968083495541659e-18">
     <space origin="0.0 0.0 0.0" type="cylindrical">
@@ -562,7 +912,14 @@
       <z parameters="499.99999999999716 509.9999999999971" type="uniform" />
     </space>
     <angle type="isotropic" />
-    <energy parameters="14100000.0 106207.34437881403" type="normal" />
+    <energy type="mixture">
+      <pair probability="0.5">
+        <dist parameters="2450000.0 156524.75842498528" type="normal" />
+      </pair>
+      <pair probability="0.5">
+        <dist parameters="14100000.0 106207.34437881403" type="normal" />
+      </pair>
+    </energy>
   </source>
   <output>
     <tallies>false</tallies>

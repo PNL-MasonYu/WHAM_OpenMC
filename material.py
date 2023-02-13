@@ -249,11 +249,18 @@ Nak_77.add_element("K", 77, 'wo')
 Nak_77.temperature = 900
 Nak_77.depletable = True
 
-potassium = openmc.Material(name="NaK eutectic, 550C")
+potassium = openmc.Material(name="K molten, 550C")
 potassium.set_density("g/cm3", 0.82948 )
-potassium.add_element("K", 100, 'wo')
+potassium.add_element("K", 100, 'ao')
 potassium.temperature = 900
 potassium.depletable = True
+
+KCl = openmc.Material(name="KCl molten, 977C")
+KCl.set_density("g/cm3", 1.527)
+KCl.add_elements_from_formula("KCl", enrichment=90, enrichment_target="Cl37")
+#KCl.add_elements_from_formula("KCl")
+KCl.temperature = 1200
+KCl.depletable = True
 
 iron = openmc.Material(name='pure iron')
 iron.set_density("g/cm3", 7.874)
@@ -264,7 +271,7 @@ materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
                   rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
                   TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
-                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77, potassium]
+                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77, potassium, KCl]
 materials = openmc.Materials(materials_list)
 """
 fig=openmc.plot_xs(rafm_steel, ['damage'])

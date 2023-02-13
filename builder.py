@@ -20,7 +20,7 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(1e7)
+settings.particles = int(5e6)
 settings.batches = 10
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
@@ -151,8 +151,8 @@ tallies_file.append(avg_coil_flux)
 
 breeder_reaction = openmc.Tally(name='Breeder misc reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
-breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)']
-breeder_reaction.nuclides = ['Na23', 'K39']
+breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)', '(n,gamma)','(n,2n)','(n,3n)']
+breeder_reaction.nuclides = ['K39', 'Cl35', 'Cl37']
 tallies_file.append(breeder_reaction)
 
 multiplier_reaction = openmc.Tally(name='Breeder Pb(n,2n) reaction')
@@ -162,8 +162,8 @@ tallies_file.append(multiplier_reaction)
 
 breeder_mesh = openmc.Tally(name='Breeder mesh')
 breeder_mesh.filters = [full_mesh_filter]
-breeder_mesh.scores = ['(n,Xt)', '(n,p)']
-breeder_mesh.nuclides = ['Na23', 'K39']
+breeder_mesh.scores = ['(n,Xt)', '(n,p)', '(n,gamma)', '(n,a)', '(n,2n)']
+breeder_mesh.nuclides = ['K39', 'Cl35', 'Cl37']
 tallies_file.append(breeder_mesh)
 
 multiplier_mesh = openmc.Tally(name='Multiplier mesh')
@@ -185,6 +185,11 @@ all_spectrum = openmc.Tally(name="neutron spectrum all cell")
 all_spectrum.filters = [all_cell_filter, openmc.ParticleFilter('neutron'), log_energy_filter]
 all_spectrum.scores = ['flux']
 tallies_file.append(all_spectrum)
+
+all_absorption = openmc.Tally(name="all cell neutron absorption")
+all_absorption.filters = [all_cell_filter, openmc.ParticleFilter('neutron')]
+all_absorption.scores = ['absorption']
+tallies_file.append(all_absorption)
 
 central_dpa = openmc.Tally(name="damage energy for test region around central cylinder")
 central_dpa.filters = [openmc.CellFilter([c[5201].id])]

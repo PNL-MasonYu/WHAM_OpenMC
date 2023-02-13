@@ -28,8 +28,8 @@ def pleiades_source(pleiades_file = "WHAM_B3.00_beta0.30.npz", rscale=1, zscale=
             fusion_source.angle = openmc.stats.Isotropic()
             DT_energy = openmc.stats.muir(14.1e6, 5, 1e3)
             DD_energy = openmc.stats.muir(2.45e6, 4, 10e3)
-            #fusion_source.energy = openmc.stats.Mixture([0.5, 0.5], [DD_energy, DT_energy])
-            fusion_source.energy = DT_energy
+            fusion_source.energy = openmc.stats.Mixture([0.5, 0.5], [DD_energy, DT_energy])
+            #fusion_source.energy = DT_energy
             z_thickness = Z[1, 0] - Z[0, 0] * z_scale
             z_uniform = openmc.stats.Uniform(z_thickness*n, z_thickness*(n+1))
             r_tabular = openmc.stats.Tabular(R[n, :]*r_scale, ne[n, :])

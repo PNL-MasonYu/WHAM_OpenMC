@@ -434,13 +434,21 @@
     <nuclide name="K40" wo="0.009208473286630397" />
     <nuclide name="K41" wo="5.429253390770036" />
   </material>
-  <material depletable="true" id="24" name="NaK eutectic, 550C" temperature="900">
+  <material depletable="true" id="24" name="K molten, 550C" temperature="900">
     <density units="g/cm3" value="0.82948" />
-    <nuclide name="K39" wo="92.93706251421212" />
-    <nuclide name="K40" wo="0.011959056216403112" />
-    <nuclide name="K41" wo="7.050978429571475" />
+    <nuclide ao="93.2581" name="K39" />
+    <nuclide ao="0.0117" name="K40" />
+    <nuclide ao="6.7302" name="K41" />
   </material>
-  <material id="25" name="pure iron">
+  <material depletable="true" id="25" name="KCl molten, 977C" temperature="1200">
+    <density units="g/cm3" value="1.527" />
+    <nuclide ao="0.4662905" name="K39" />
+    <nuclide ao="5.85e-05" name="K40" />
+    <nuclide ao="0.033651" name="K41" />
+    <nuclide ao="0.04999999999999999" name="Cl35" />
+    <nuclide ao="0.45" name="Cl37" />
+  </material>
+  <material id="26" name="pure iron">
     <density units="g/cm3" value="7.874" />
     <nuclide ao="5.845000000000001" name="Fe54" />
     <nuclide ao="91.754" name="Fe56" />
