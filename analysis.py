@@ -13,7 +13,7 @@ import threading
 import plotting as p
 
 # Default plotting params
-statepoint_name = "statepoint.10-BAM-ALLW-PBLI-REALSOURCE-V12.h5"
+statepoint_name = "statepoint.10-Li.h5"
 plot_dir = "./plots/"+statepoint_name.split(".")[1]
 if not os.path.isdir(plot_dir):
     os.mkdir(plot_dir)
@@ -32,7 +32,7 @@ mesh_shape = (260, 275, 275)
 extent=(-plot_width, plot_width, 0, plot_height)
 # Read background image
 #background_image = plt.imread('./background.ppm')
-background_image = plt.imread(plot_dir + '/background.png')
+#background_image = plt.imread(plot_dir + '/background.png')
 
 
 def plasma_boundary(cql3d_file="WHAM_VNS_gen3_large_50keV_NBI_HFS_2p9Tres_2x2MWrf_5keV.nc"):
@@ -76,9 +76,11 @@ def aggregate_rectangular_single(result, r_bins=100, dim=0, max_r = 0):
     if max_r == 0:
         max_r = center
     z_length = result.shape[dim]
-    aggregate = np.zeros((z_length, r_bins*2+2))
-    edges = np.linspace(0, int(max_r), num=r_bins)
-    #print(z_length)
+    aggregate = np.zeros((z_length, r_bins*2-1))
+    edges = np.linspace(0, int(max_r), num=r_bins+1)
+    # add one more bin more than max_r so the binning can take care of the final bin
+    edges = np.append(edges, max_r+1)
+    #print(edges)
     for z in range(z_length):
         slice = result[z, :, :]
         #print(slice.shape)
@@ -89,11 +91,11 @@ def aggregate_rectangular_single(result, r_bins=100, dim=0, max_r = 0):
                 r = np.sqrt((x-center)**2 + (y-center)**2)
                 R.append(r)
                 W[r] = slice[x, y]
-        for i in range(r_bins-1):
-            binned_r = [radius for radius in R if (radius <= edges[i+1] and radius >= edges[i])]
+        for i in range(r_bins):
+            binned_r = [radius for radius in R if (radius <= edges[i+1] and radius > edges[i])]
             binned_w = [W[radius] for radius in binned_r]
-            aggregate[z, int(r_bins-i)] = np.mean(binned_w)
-            aggregate[z, int(r_bins+i)] = np.mean(binned_w)
+            aggregate[z, int(r_bins-i-1)] = np.mean(binned_w)
+            aggregate[z, int(r_bins+i-1)] = np.mean(binned_w)
     return aggregate
 
 def aggregate_rectangular_multi(result, r_bins=100, dim=0):
@@ -137,16 +139,19 @@ def aggregate_slice(slice, x_range, center, r_bins, edges, z):
         result_slice[int(r_bins+i)] = np.mean(binned_w)
     return result_slice, z
 
-def plot_background(width, height):
-    background_plot = p.slice_plot(basis="xz", origin=(0, 0, height/2), cwd='./background',
+def plot_background(width, height, dst_dir=plot_dir):
+    
+    background_plot = p.slice_plot(basis="yz", origin=(0, 0, height/2), cwd='./background',
                                 width=(width*2, height), color=p.material_color)
     background_plot.export_to_xml()
     openmc.plot_geometry(background_plot)
 
-    shutil.copy("./background.png", plot_dir+'/background.png')
-    shutil.copy("./geometry.py", plot_dir+'/geometry.py')
-    shutil.copy("./boolean.py", plot_dir+'/boolean.py')
-    shutil.copy("./source.py", plot_dir+'/source.py')
+    shutil.copy("./background.png", dst_dir)
+    shutil.copy("./geometry.py", dst_dir)
+    shutil.copy("./boolean.py", dst_dir)
+    shutil.copy("./source.py", dst_dir)
+    background_image = plt.imread("./background.png")
+    return background_image
 
 if not os.path.isdir('./plots'):
     os.makedirs('./plots')
@@ -157,21 +162,23 @@ cyl_mesh.r_grid = np.linspace(0, 275, 275+1)
 cyl_mesh.z_grid = np.linspace(0, 260*4, 260*4+1)
 
 
-def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, nuclide_dim=0, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
+def plot_result(sp, background, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims = mesh_shape, save_aggregate = True, nuclide_dim=None, im_cmap = 'Spectral_r', contour_lvl = np.logspace(-1, 6, 8), plot_extent = extent, m_factor=source_rate/8,
                 clabel = 'Thermal neutron flux $[n/cm^2-s]$', title = 'DT Thermal Flux (<0.5 eV)\n'+ source_rate_title + subtitle, savedir=plot_dir, from_file=False):
     if not from_file:
         tally = sp.get_tally(name=tally_name)
         slice = tally.get_slice(scores=[tally_score])
         slice.mean.shape = mesh_dims
-        if nuclide_dim == 0:
+        if nuclide_dim == None:
             slice =slice.mean
         else:
             slice = slice.mean[:, :, :, nuclide_dim]
+            #print(slice.mean[15, 15, 15, :])
         #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
         #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-        #data = slice[:, :, 137]
-        
-        data = aggregate_rectangular_single(slice, max_r=extent[1]/2)
+        data = slice[:, :, 137]
+        #data = slice[:, :, 14]
+
+        #data = aggregate_rectangular_single(slice, r_bins=100, max_r=mesh_dims[1]/2)
         if save_aggregate:
             np.savez(savedir + "/" + tally_name, data)
     else:
@@ -180,19 +187,21 @@ def plot_result(sp, tally_name = 'thermal flux', tally_score = 'flux', mesh_dims
     data = np.add(data, min(contour_lvl)/m_factor/100)
     data = np.nan_to_num(data, copy=False)
     fig = plt.figure(figsize=(10, 15))
-    draw_psi()
-    plt.imshow(background_image, extent=plot_extent)
+    #draw_psi()
+    plt.imshow(background, extent=plot_extent)
     im = plt.imshow(np.multiply(data, m_factor), cmap=im_cmap, origin='lower', 
-                    alpha=0.85, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=min(contour_lvl), vmax=max(contour_lvl)))
-    CS = plt.contour(np.multiply(data, m_factor), contour_lvl, origin="lower",
-                    extent=extent, cmap='flag', linewidths=0.5)
+                    alpha=0.85, interpolation="quadric", extent=plot_extent, norm=colors.LogNorm(vmin=min(contour_lvl), vmax=max(contour_lvl)))
+    CS = plt.contour(np.multiply(data, m_factor), contour_lvl, origin="lower", norm=colors.LogNorm(vmin=min(contour_lvl), vmax=max(contour_lvl)),
+                     extent=plot_extent, cmap='flag', linewidths=0.5)
     plt.title(title)
     plt.colorbar(im, label=clabel, orientation='vertical', shrink=0.8, format='%0.0e')
     plt.clabel(CS, fmt='%0.0e', fontsize=11)
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
-    plt.ylim(0, extent[3])
-    fig.savefig(savedir+'/' + tally_name)
+    plt.ylim(plot_extent[2], plot_extent[3])
+    plt.xlim(plot_extent[0], plot_extent[1])
+    fig.savefig(savedir + '/' + tally_name)
+    plt.close(fig)
     return
 # %%
 
@@ -233,7 +242,7 @@ def plot_flux_energy(sp, source_rate, source_rate_title, subtitle, plot_dir, cel
 def get_tbr(sp, tally_name = 'Breeder Li-6(n,alpha)T reaction'):
     li6_breeding_tally = sp.get_tally(name=tally_name)
     li6_breeding = li6_breeding_tally.get_slice(scores=['(n,Xt)'])
-    breeding_dataframe = li6_breeding.get_pandas_dataframe()
+    breeding_dataframe = li6_breeding.get_pandas_dataframe(float_format='{:.9e}')
     
     print("tritium production by Li-6:")
     print(breeding_dataframe)
@@ -288,7 +297,7 @@ def plot_neutron_source(statepoint_name, source_rate, mesh_shape, background_ima
     slice = tally.get_slice(scores=['flux'])
     slice.mean.shape = mesh_shape
     slice = np.add(slice.mean, 1e-15)
-    data = aggregate_rectangular_single(slice)
+    data = aggregate_rectangular_single(slice, r_bins=100, max_r=mesh_shape[1]/2)
     #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
     #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
     #data = slice[:, :, 137]
@@ -296,8 +305,8 @@ def plot_neutron_source(statepoint_name, source_rate, mesh_shape, background_ima
     fig = plt.figure(figsize=(10, 15))
     #draw_psi()
     plt.imshow(background_image, extent=extent)
-    im = plt.imshow(np.multiply(data, source_rate/8*wallload_factor), cmap='plasma', origin='lower', 
-                    alpha=0.45, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e14, vmax=1e16))
+    im = plt.imshow(np.multiply(data, source_rate/16*wallload_factor), cmap='plasma', origin='lower', 
+                    alpha=0.45, interpolation="quadric", extent=extent, norm=colors.LogNorm(vmin=1e13, vmax=1e15))
     plt.xlabel('y (cm)')
     plt.ylabel('z (cm)')
     plt.ylim(0, extent[3])
@@ -309,100 +318,135 @@ def plot_flux_heat_breed():
     source_rate = 3.55e18
     volume = 16
     # load data
-    fast_flux_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/fast flux.npz")
+    fast_flux_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/fast flux.npz")
     fast_flux = fast_flux_npzfile['arr_0']
-    heat_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/neutron heat load.npz")
+    fast_flux_with_beam_npzfile = np.load("plots/100-naturalLi-5cmPb-1x20cmbeam/fast flux.npz")
+    fast_flux_with_beam = fast_flux_with_beam_npzfile['arr_0']
+    heat_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/neutron heat load.npz")
     heat = np.add(heat_npzfile['arr_0'], 1e-10)
     np.nan_to_num(heat, copy=False)
-    breeder_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/Breeder mesh.npz")
+    breeder_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/Breeder mesh.npz")
     breed = np.add(breeder_npzfile['arr_0'], 1e-15)
-    damage_npzfile = np.load("plots/10-BAM-ALLW-PBLI-REALSOURCE-V12/neutron damage_energy.npz")
+    damage_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/neutron damage_energy.npz")
     damage = np.add(damage_npzfile['arr_0'], 1e-15)
     np.nan_to_num(damage, copy=False)
     vacuum_source_npzfile = np.load("plots/neutron_source.npz")
     vacuum_source = np.add(vacuum_source_npzfile['arr_0'], 1e-15)
     np.nan_to_num(vacuum_source)
-    background_image = plt.imread("plots/10-BAM-ALLW-FLIBE-REALSOURCE-V12/background.png")
+    background_image = plt.imread("plots/100-naturalLi-5cmPb-biased/background.png")
+    background_image_with_beam = plt.imread("plots/100-naturalLi-5cmPb-1x20cmbeam/background.png")
+    #background_image = plot_background(275, 260*4)
 
     fast_flux_data = np.multiply(fast_flux, source_rate/volume)
-    nuclear_heat_data = np.multiply(heat, source_rate*1.602e-19/volume)
-    dpa_data = np.multiply(damage, source_rate*0.8/(2*40)*3600*24*365/(volume*4.29129535/(55.845*1.66054E-24)))
+    fast_flux_with_beam_data = np.multiply(fast_flux_with_beam, source_rate/volume)
+    nuclear_heat_data = np.multiply(heat, source_rate*1.602e-19/volume/0.55)
+    number_of_neutrons_per_year = source_rate * 60 * 60 * 24 * 365.25
+    iron_atomic_mass_in_g = 55.845*1.66054E-24
+    density_of_FW_in_g_per_cm3 = 7.798 * 0.55 * 0.9
+    number_of_iron_atoms = volume * density_of_FW_in_g_per_cm3 / (iron_atomic_mass_in_g)
+    #dpa_data = np.multiply(damage, source_rate*0.8/(2*40)*3600*24*365/(volume*4.29129535/(55.845*1.66054E-24)))
+    dpa_data = np.multiply(damage, 0.8/(2*40) * number_of_neutrons_per_year / number_of_iron_atoms)
     breeding_data = np.multiply(breed, source_rate*6/6.0221408e23/volume*3600*24*365*1e6)
     wall_load_data = np.multiply(vacuum_source, source_rate/volume*14e6*1.602e-19/1e6*1e4)
     
     plot_extent = (-275, 275, 0, 260*4)
-    
-    fig1, axs1 = plt.subplots(1, 3, layout="constrained")
+    # Setup figures 1 and 2
+    fig1, axs1 = plt.subplots(1, 4, layout="constrained")
     fig_scale = 2
-    fig1.set_size_inches(7*fig_scale, 4*fig_scale)
+    fig1.set_size_inches(10*fig_scale, 4*fig_scale)
     psi, max_psi = draw_psi(draw=False)
 
     fig2, axs2 = plt.subplots(1, 3, layout="constrained")
     fig_scale = 2
     fig2.set_size_inches(8*fig_scale, 4*fig_scale)
 
-    axs1[0].imshow(background_image, extent=plot_extent)
+    # Calculates the 1 fpy and 10 fpy flux
+    fpy_1_flux = 3e18 / (3600*24*365.25)
+    fpy_10_flux = 3e18 / (3600*24*365.25*10)
+    FPY_ARR = [fpy_10_flux, fpy_1_flux]
+
+    axs1[0].imshow(background_image_with_beam, extent=plot_extent)
     
-    im0 = axs1[0].imshow(fast_flux_data, cmap="Spectral_r", origin='lower', alpha=0.7, interpolation='quadric',
+    im0 = axs1[0].imshow(fast_flux_with_beam_data, cmap="Spectral_r", origin='lower', alpha=0.7, interpolation='quadric',
                         extent=plot_extent, norm=colors.LogNorm(vmin=1e8, vmax=1e16))
-    cs0 = axs1[0].contour(fast_flux_data, np.logspace(9, 16, 8), origin="lower",
-                         extent=extent, cmap='flag', linewidths=0.6, norm=colors.LogNorm(vmin=1e9, vmax=1e16))
+    #cs_fpy0 = axs1[0].contour(fast_flux_with_beam_data, levels=FPY_ARR, origin="lower",
+    #                          extent=plot_extent,linewidths=0.6)
+    cs0 = axs1[0].contour(fast_flux_with_beam_data, np.logspace(10, 16, 7), origin="lower",
+                         extent=plot_extent, cmap='flag', linewidths=0.6, norm=colors.LogNorm(vmin=1e9, vmax=1e16))
     cbar0 = fig1.colorbar(im0, ax=axs1[0], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
-    cbar0.set_label(r"Fast Neutron Flux (>100keV) $\left[\dfrac{n}{cm^2s}\right]$", fontsize=16)
+    cbar0.set_label(r"Fast Neutron Flux (>100keV) $\left[\dfrac{n}{cm^2s}\right]$" + "\n Lithium With 20 cm Diameter Beam Duct", fontsize=16)
     cbar0.ax.tick_params(labelsize=10)
     plt.clabel(cs0, fmt='%0.0e', fontsize=9)
-    cs0.collections[1].set_linestyle('dotted')
-    cs0.collections[1].set_linewidth(2)
-    cs0.collections[2].set_linestyle('dashed')
-    cs0.collections[2].set_linewidth(2)
 
-    axs1[1].imshow(background_image, extent=plot_extent)
+    cs0.collections[0].set_linestyle('dotted')
+    cs0.collections[0].set_linewidth(1)
+    cs0.collections[1].set_linestyle('dashed')
+    cs0.collections[1].set_linewidth(1)
     
-    im1 = axs1[1].imshow(nuclear_heat_data, cmap="plasma", origin='lower', alpha=0.7, interpolation='quadric',
-                        extent=plot_extent, norm=colors.LogNorm(vmin=1e-4, vmax=1e2))
-    cs1 = axs1[1].contour(nuclear_heat_data, np.logspace(-4, -1, 6), origin="lower",
-                         extent=extent, cmap='winter', linewidths=1, norm=colors.LogNorm(vmin=1e-3, vmax=1e-1))
-    cbar1 = fig2.colorbar(im1, ax=axs1[1], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
-    cbar1.set_label(r'Nuclear Heating $\left[\dfrac{W}{cm^3}\right]$', fontsize=16)
+    axs1[1].imshow(background_image, extent=plot_extent)
+
+    im1 = axs1[1].imshow(fast_flux_data, cmap="Spectral_r", origin='lower', alpha=0.7, interpolation='quadric',
+                        extent=plot_extent, norm=colors.LogNorm(vmin=1e8, vmax=1e16))
+    cs1 = axs1[1].contour(fast_flux_data, np.logspace(10, 16, 7), origin="lower",
+                         extent=plot_extent, cmap='flag', linewidths=0.6, norm=colors.LogNorm(vmin=1e9, vmax=1e16))
+    cbar1 = fig1.colorbar(im1, ax=axs1[1], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
+    cbar1.set_label(r"Fast Neutron Flux (>100keV) $\left[\dfrac{n}{cm^2s}\right]$" + "\n PbLi, No Blanket Penetrations", fontsize=16)
     cbar1.ax.tick_params(labelsize=10)
     plt.clabel(cs1, fmt='%0.0e', fontsize=9)
-
+    
+    cs1.collections[0].set_linestyle('dotted')
+    cs1.collections[0].set_linewidth(1)
+    cs1.collections[1].set_linestyle('dashed')
+    cs1.collections[1].set_linewidth(1)
+    
     axs1[2].imshow(background_image, extent=plot_extent)
-    im2 = axs1[2].imshow(breeding_data, cmap="jet", origin='lower', alpha=0.8, interpolation='quadric',
+    
+    im2 = axs1[2].imshow(nuclear_heat_data, cmap="plasma", origin='lower', alpha=0.7, interpolation='quadric',
+                        extent=plot_extent, norm=colors.LogNorm(vmin=1e-4, vmax=1e2))
+    cs2 = axs1[2].contour(nuclear_heat_data, np.logspace(-4, -1, 6), origin="lower",
+                         extent=plot_extent, cmap='winter', linewidths=1, norm=colors.LogNorm(vmin=1e-3, vmax=1e-1))
+    cbar2 = fig2.colorbar(im2, ax=axs1[2], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
+    cbar2.set_label(r'Nuclear Heating $\left[\dfrac{W}{cm^3}\right]$', fontsize=16)
+    cbar2.ax.tick_params(labelsize=10)
+    plt.clabel(cs2, fmt='%0.0e', fontsize=9)
+
+    axs1[3].imshow(background_image, extent=plot_extent)
+    im3 = axs1[3].imshow(breeding_data, cmap="jet", origin='lower', alpha=0.8, interpolation='quadric',
                         extent=plot_extent, norm=colors.LogNorm(vmin=1e-2, vmax=1e3))
     #cs2 = axs[2].contour(breeding_data, origin="lower",
     #                     extent=extent, cmap='flag', linewidths=0.5)
-    cbar2 = fig1.colorbar(im2, ax=axs1[2], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
-    cbar2.set_label(r'Tritium breeding rate $\left[\dfrac{g}{m^3yr}\right]$', fontsize=16)
-    cbar2.ax.tick_params(labelsize=10)
+    cbar3 = fig1.colorbar(im3, ax=axs1[3], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
+    cbar3.set_label(r'Tritium breeding rate $\left[\dfrac{g}{m^3yr}\right]$', fontsize=16)
+    cbar3.ax.tick_params(labelsize=10)
 
     axs2[0].imshow(background_image, extent=plot_extent)
     im3 = axs2[0].imshow(dpa_data, cmap="gnuplot2", origin='lower', alpha=0.8, interpolation='quadric',
-                        extent=plot_extent, norm=colors.LogNorm(vmin=5e-2, vmax=50))
-    cs3 = axs2[0].contour(dpa_data, [0.1, 1, 10, 20], origin="lower",
-                         extent=extent, cmap='hot', linewidths=0.5, norm=colors.LogNorm(vmin=5e-2, vmax=50))
+                        extent=plot_extent, norm=colors.LogNorm(vmin=5e-1, vmax=50))
+    #cs3 = axs2[0].contour(dpa_data, [0.1, 1, 10, 20], origin="lower",
+    #                     extent=plot_extent, cmap='hot', linewidths=0.5, norm=colors.LogNorm(vmin=5e-2, vmax=50))
     cbar3 = fig2.colorbar(im3, ax=axs2[0], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
     cbar3.set_label(r"Fe Displacement Damage Rate $\left[\dfrac{DPA}{FPY}\right]$", fontsize=16)
     cbar3.ax.tick_params(labelsize=10)
     axs2[0].set_xlim((-100, 100))
     axs2[0].set_ylim((0, 400))
-    plt.clabel(cs3, fmt='%0.0e', fontsize=9)
+    #plt.clabel(cs3, fmt='%0.0e', fontsize=9)
 
-    axs2[2].imshow(background_image, extent=plot_extent)
-    axs2[2].annotate("Mirror HTS Magnet",            [100, 460], [320, 450], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
-    axs2[2].annotate("Water Cooled Tungsten Shield", [75,  350], [320, 340], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
+    annotated_image = plt.imread("plots/10-BAM-ALLW-NaK-REALSOURCE-V3/background.png")
+    axs2[2].imshow(annotated_image, extent=plot_extent)
+    axs2[2].annotate("Mirror HTS Magnet",            [80,  460], [320, 450], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
+    axs2[2].annotate("Water Cooled Tungsten Shield", [75,  380], [320, 380], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
     axs2[2].annotate("Liquid Immersion Blanket",     [200, 760], [320, 750], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
     axs2[2].annotate("Direct Convertor/Bias Rings",  [0,   880], [320, 870], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
-    axs2[2].annotate("Tungsten Bioshield",           [240, 970], [320, 970], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
-    axs2[2].annotate("RAFM First Wall",              [42,  120], [320, 110], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
+    axs2[2].annotate("Bioshield",                    [230, 970], [320, 970], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
+    axs2[2].annotate("RAFM First Wall, Multiplier",  [35,  120], [320, 110], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
     axs2[2].annotate("Central Coils",                [160, 225], [320, 220], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
     axs2[2].annotate("End Expander",                 [160, 610], [320, 600], fontsize=13, arrowprops=dict(arrowstyle='<|-', color='blue'))
 
     axs2[1].imshow(background_image, extent=plot_extent)
     im4 = axs2[1].imshow(wall_load_data, cmap="rainbow", origin='lower', alpha=0.8, interpolation='quadric',
                         extent=plot_extent, norm=colors.Normalize(vmin=1e-1, vmax=5))
-    #cs4 = axs2[1].contour(np.multiply(heat, source_rate/volume), np.linspace(0, 10, 10), origin="lower",
-    #                     extent=extent, cmap='flag', linewidths=0.5)
+    cs4 = axs2[1].contour(wall_load_data, np.linspace(0, 5, 6), origin="lower",
+                         extent=plot_extent, cmap='flag', linewidths=0.5)
     cbar4 = fig2.colorbar(im4, ax=axs2[1], orientation="horizontal", shrink=1, format='%0.0f', pad=0.1)
     cbar4.set_label(r'Uncollided (Source) Neutron Flux $\left[\dfrac{MW}{m^2}\right]$', fontsize=16)
     cbar4.ax.tick_params(labelsize=10)
@@ -420,17 +464,17 @@ def plot_flux_heat_breed():
         ax.set_ylabel("y [cm]", fontsize=18)
 
     #plt.tight_layout()
-    fig1.savefig("flux heat breed PBLI.png", dpi=400)
+    fig1.savefig("flux heat breed LI.png", dpi=400)
 
     fig2.savefig("DPA Wall Load Annotation PBLI.png", dpi=400)
-    plt.show(fig2)
+    plt.show()
     plt.close()
 
     fig3, axs3 = plt.subplots(1, 2, layout="constrained")
     fig_scale = 2
     fig3.set_size_inches(8*fig_scale, 4*fig_scale)
-    z_mesh = range(0, plot_extent[-1], 4)
-    first_wall_r = int(40/(plot_extent[1]/100)+100)
+    z_mesh = range(0, plot_extent[3], 4)
+    first_wall_r = int(40/(plot_extent[1]/100)+99)
     axs_dpa = axs3[0].twinx()
     axs3[0].plot(z_mesh, fast_flux_data[:, first_wall_r], label="Fast flux", color="blue")
     axs3[0].set_xlim(0, 400)
@@ -452,14 +496,14 @@ def plot_flux_heat_breed():
     axs_heat.tick_params(axis='y', colors='orange')
 
     fig3.suptitle("Neutronics Parameters At First Wall \n PbLi blanket, He-cooled EUROFER-97 First Wall \n 10 MW DT Source")
-    
+    plt.show()
     plt.close()
     
     from matplotlib.gridspec import GridSpec
     from matplotlib.ticker import MultipleLocator as ML
     from scipy.interpolate import griddata
     z_mesh = range(0, plot_extent[-1], 4)
-    first_wall_r = int(40/(plot_extent[1]/100)+100)
+    first_wall_r = int(40/(plot_extent[1]/100)+99)
     # Version 1, black and white figure
 
     # units for figsize are in inches. I generally oversize (4,3) for a 
@@ -591,12 +635,12 @@ def plot_flux_heat_breed():
     axRR.set_ylim((0,1.05*np.amax(nuclear_heat_data[:, first_wall_r])))
 
     axL.yaxis.set_minor_locator(ML(.5))
-    axL.set_yticks([0,7])
+    axL.set_yticks([0,8])
     axL.text(-.03,.5,'Neutron Flux [$\\frac{10^{14} n}{cm^2 s}$]',transform=axL.transAxes,
         ha='right',va='center',rotation=90,color='firebrick')
 
     axLL.yaxis.set_minor_locator(ML(1))
-    axLL.set_yticks([0,10,12]); axLL.set_yticklabels(['0','','12'])
+    axLL.set_yticks([0,10,14]); axLL.set_yticklabels(['0','','14'])
     axLL.text(1.05,.45,'Fe DPA Rate [$\\frac{DPA}{FPY}$]',transform=axLL.transAxes,
         ha='left',va='center',rotation=90,color='royalblue')
 
@@ -607,7 +651,7 @@ def plot_flux_heat_breed():
 
 
     axRR.yaxis.set_minor_locator(ML(.5))
-    axRR.set_yticks([0,5,6]); axRR.set_yticklabels(['0','','6'])
+    axRR.set_yticks([0,5]); axRR.set_yticklabels(['0','5'])
     axRR.text(1.05,.5,'Nucl. Heating [$\\frac{W}{cm^3}$]',transform=axRR.transAxes,
         ha='left',va='center',rotation=90,color='royalblue')
 

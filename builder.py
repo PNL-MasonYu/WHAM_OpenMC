@@ -3,8 +3,9 @@ import openmc
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+import openmc_weight_window_generator
 
-from material import materials
+import material as m
 from boolean import c, root_cells, root
 from source import vns_sources, worst_source, pleiades_source
 import plotting as p
@@ -20,8 +21,8 @@ settings.run_mode = 'fixed source'
 #settings.source = worst_source
 settings.source = pleiades_source("WHAM_B3.00_beta0.30.npz")
 
-settings.particles = int(5e7)
-settings.batches = 10
+settings.particles = int(5e6)
+settings.batches = 100
 settings.output = {'tallies': False}
 #settings.max_lost_particles = int(settings.particles / 2e4)
 #settings.verbosity = 7
@@ -30,9 +31,7 @@ settings.output = {'tallies': False}
 #settings.trace = (1, 1, 95007)
 #settings.survival_bias = True
 #settings.cutoff = {'energy_photon' : 1e3}
-settings.photon_transport = True
-settings.export_to_xml(working_directory)
-settings.export_to_xml("./")
+settings.photon_transport = False
 
 # Set OPENMC_CROSS_SECTIONS environment variable to the path to cross_sections.xml, or
 # modify this on different machines to point to the correct cross_sections.xml file
@@ -41,7 +40,7 @@ settings.export_to_xml("./")
 # ENDF/B-VIII.0 cross sections on cluster
 #materials.cross_sections = "/home/myu233/nuclear_data/endfb80_hdf5/cross_sections.xml"
 
-materials.export_to_xml("./")
+m.materials.export_to_xml("./")
 
 ###########################Tally Definition#############################
 
@@ -52,14 +51,14 @@ energy_filter = openmc.EnergyFilter([0., 0.5, 1.0e6, 20.0e6])
 all_cell_id = [c for c in c.keys()]
 all_cell_filter = openmc.CellFilter(all_cell_id)
 # Full mesh tally covering the whole device for both thermal and fast flux
-mesh = openmc.RegularMesh(mesh_id=1)
+mesh = openmc.RegularMesh()
 mesh.dimension = [275, 275, 260]
 mesh.lower_left = [-275, -275, 0]
 mesh.width = [2, 2, 4]
 full_mesh_filter = openmc.MeshFilter(mesh)
 
 # Mesh tally covering a quarter of the device, focused on the breeder
-breeder_mesh = openmc.RegularMesh(mesh_id=2)
+breeder_mesh = openmc.RegularMesh()
 breeder_mesh.dimension = [125, 125, 120]
 breeder_mesh.lower_left = [-200, -200, 0]
 breeder_mesh.width = [4, 4, 4]
@@ -151,7 +150,7 @@ tallies_file.append(avg_coil_flux)
 
 breeder_reaction = openmc.Tally(name='Breeder misc reaction')
 breeder_reaction.filters = [openmc.CellFilter(c[6000].id)]
-breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,p)', '(n,gamma)','(n,2n)','(n,3n)']
+breeder_reaction.scores = ['(n,a)', '(n,Xt)', '(n,t)','(n,p)', '(n,gamma)','(n,2n)','(n,3n)', 'H1-production', 'H3-production', 'He4-production']
 breeder_reaction.nuclides = ['K39', 'Cl35', 'Cl37', 'Li6', 'Li7']
 tallies_file.append(breeder_reaction)
 
@@ -219,12 +218,32 @@ geometry.export_to_xml(working_directory)
 geometry.export_to_xml('./')
 
 chamber_geometry_plot = p.slice_plot(basis='yz', 
-                                   origin=(0, 0, 300), 
-                                   width=(450, 900), 
+                                   origin=(0, 0, 400), 
+                                   width=(750, 900), 
                                    pixels=(1500, 3000),
                                    cwd='./slice')
 chamber_geometry_plot.export_to_xml("./")
+"""
+sp_file = openmc.StatePoint("statepoint.100-naturalLi-5cmPb-biased.h5")
+weight_windows = sp_file.generate_wws(tally=total_flux, rel_err_tol=0.7)
+settings.weight_windows = weight_windows
+settings.max_splits = int(10000)
 
+vol_calc = openmc.VolumeCalculation([c[3001]], int(1e7))
+#vol_calc.set_trigger(1e-4, 'std_dev')
+settings.volume_calculations = [vol_calc]
+
+wwg = openmc.WeightWindowGenerator(
+    mesh=mesh,  # this is the mesh that covers the geometry
+    energy_bounds=np.linspace(0.0, 2.5e6, 10),  # 10 energy bins from 0 to max source energy
+    particle_type='neutron'
+)
+settings.weight_window_generator = wwg
+"""
+settings.export_to_xml("./")
+settings.export_to_xml(working_directory)
+
+#openmc.calculate_volumes()
 # Plot geometry
 #openmc.plot_geometry(openmc_exec='/software/myu233/openmc/build/bin/openmc')
 #openmc.plot_geometry()
@@ -233,5 +252,5 @@ chamber_geometry_plot.export_to_xml("./")
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=20, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%

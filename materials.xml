@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <materials>
   <material id="0" name="vacuum">
-    <density units="g/cm3" value="1e-20" />
+    <density units="g/cm3" value="1e-40" />
     <nuclide ao="1" name="N14" />
   </material>
   <material id="1" name="deuterium">
@@ -325,7 +325,7 @@
     <nuclide ao="0.0009870052955342082" name="Ni61" />
     <nuclide ao="0.003147091368514811" name="Ni62" />
     <nuclide ao="0.0008013627516218174" name="Ni64" />
-    <nuclide ao="4.414010352690217e-20" name="N14" />
+    <nuclide ao="4.414010352690216e-40" name="N14" />
   </material>
   <material id="12" name="tungsten boride W2B5(0.9)-water(0.1)">
     <density units="g/cm3" value="11.719" />
@@ -455,6 +455,32 @@
     <nuclide ao="2.119" name="Fe57" />
     <nuclide ao="0.28200000000000003" name="Fe58" />
   </material>
+  <material id="27" name="Lithium Hydride LiH breeder" temperature="900">
+    <density units="g/cm3" value="0.775" />
+    <nuclide ao="2.425" name="Li6" />
+    <nuclide ao="47.575" name="Li7" />
+    <nuclide ao="49.992213" name="H1" />
+    <nuclide ao="0.007787" name="H2" />
+  </material>
+  <material id="28" name="Lithium Deuteride LiD breeder" temperature="900">
+    <density units="g/cm3" value="0.885" />
+    <nuclide ao="2.425" name="Li6" />
+    <nuclide ao="47.575" name="Li7" />
+    <nuclide ao="0.0" name="H1" />
+    <nuclide ao="50.0" name="H2" />
+  </material>
+  <material id="29" name="pure lead" temperature="900">
+    <density units="g/cm3" value="11.34" />
+    <nuclide ao="1.4000000000000001" name="Pb204" />
+    <nuclide ao="24.099999999999998" name="Pb206" />
+    <nuclide ao="22.1" name="Pb207" />
+    <nuclide ao="52.400000000000006" name="Pb208" />
+  </material>
+  <material id="30" name="molten lithium" temperature="900">
+    <density units="g/cm3" value="0.512" />
+    <nuclide ao="7.5889999999999995" name="Li6" />
+    <nuclide ao="92.411" name="Li7" />
+  </material>
   <material id="31" name="tungsten">
     <density units="g/cm3" value="19.25" />
     <nuclide ao="0.12" name="W180" />
@@ -462,6 +488,99 @@
     <nuclide ao="14.31" name="W183" />
     <nuclide ao="30.64" name="W184" />
     <nuclide ao="28.43" name="W186" />
+  </material>
+  <material id="32" name="Hafnium hydride HfH2">
+    <density units="g/cm3" value="11.36" />
+    <nuclide ao="0.0005333333333333334" name="Hf174" />
+    <nuclide ao="0.01753333333333333" name="Hf176" />
+    <nuclide ao="0.062" name="Hf177" />
+    <nuclide ao="0.09093333333333332" name="Hf178" />
+    <nuclide ao="0.045399999999999996" name="Hf179" />
+    <nuclide ao="0.11693333333333333" name="Hf180" />
+    <nuclide ao="0.66656284" name="H1" />
+    <nuclide ao="0.00010382666666666666" name="H2" />
+  </material>
+  <material id="33" name="pure titanium">
+    <density units="g/cm3" value="4.506" />
+    <nuclide ao="8.25" name="Ti46" />
+    <nuclide ao="7.4399999999999995" name="Ti47" />
+    <nuclide ao="73.72" name="Ti48" />
+    <nuclide ao="5.41" name="Ti49" />
+    <nuclide ao="5.18" name="Ti50" />
+  </material>
+  <material id="34" name="Magnesium oxide MgO">
+    <density units="g/cm3" value="3.58" />
+    <nuclide ao="0.394755" name="Mg24" />
+    <nuclide ao="0.0501" name="Mg25" />
+    <nuclide ao="0.055145" name="Mg26" />
+    <nuclide ao="0.4988103" name="O16" />
+    <nuclide ao="0.0001895" name="O17" />
+    <nuclide ao="0.0010002" name="O18" />
+  </material>
+  <material id="35" name="MgO 40% vo, HfH2 40% vo, void 20% vo, Snead alloy 1">
+    <density units="g/cm3" value="5.976" />
+    <nuclide ao="0.191365401431677" name="Mg24" />
+    <nuclide ao="0.024286979548649203" name="Mg25" />
+    <nuclide ao="0.026732644455294614" name="Mg26" />
+    <nuclide ao="0.24180829450609928" name="O16" />
+    <nuclide ao="9.186392464010027e-05" name="O17" />
+    <nuclide ao="0.00048486700488141585" name="O18" />
+    <nuclide ao="0.0002747893062020046" name="Hf174" />
+    <nuclide ao="0.009033698441390901" name="Hf176" />
+    <nuclide ao="0.03194425684598303" name="Hf177" />
+    <nuclide ao="0.046851576707441785" name="Hf178" />
+    <nuclide ao="0.02339143969044564" name="Hf179" />
+    <nuclide ao="0.060247555384789514" name="Hf180" />
+    <nuclide ao="0.3434331381443209" name="H1" />
+    <nuclide ao="5.349460818487524e-05" name="H2" />
+    <nuclide ao="9.743783219153774e-42" name="N14" />
+  </material>
+  <material id="36" name="Fe 54 vol % HfH2 34 vol % WB2 7 vol % remainder void, Snead alloy 2">
+    <density units="g/cm3" value="8.98376" />
+    <nuclide ao="0.02908169267908783" name="Fe54" />
+    <nuclide ao="0.4565203815358468" name="Fe56" />
+    <nuclide ao="0.010543046499056819" name="Fe57" />
+    <nuclide ao="0.0014030859427720734" name="Fe58" />
+    <nuclide ao="0.00022373254303791824" name="Hf174" />
+    <nuclide ao="0.0073552073523715615" name="Hf176" />
+    <nuclide ao="0.026008908128158" name="Hf177" />
+    <nuclide ao="0.038146398587965064" name="Hf178" />
+    <nuclide ao="0.01904523272610279" name="Hf179" />
+    <nuclide ao="0.049053360061063575" name="Hf180" />
+    <nuclide ao="0.27962212366458195" name="H1" />
+    <nuclide ao="4.355513281590673e-05" name="H2" />
+    <nuclide ao="3.318131005885589e-05" name="W180" />
+    <nuclide ao="0.00732753930466401" name="W182" />
+    <nuclide ao="0.003956871224518566" name="W183" />
+    <nuclide ao="0.008472294501694538" name="W184" />
+    <nuclide ao="0.007861205374777277" name="W186" />
+    <nuclide ao="0.010960892756108731" name="B10" />
+    <nuclide ao="0.04434129067531776" name="B11" />
+    <nuclide ao="2.3333400078541002e-42" name="N14" />
+  </material>
+  <material id="37" name="Ti 50 vol % HfH2 48vol % remainder void, Snead alloy 3">
+    <density units="g/cm3" value="7.705799999999998" />
+    <nuclide ao="0.028200713086286914" name="Ti46" />
+    <nuclide ao="0.025431915801451467" name="Ti47" />
+    <nuclide ao="0.2519947356025541" name="Ti48" />
+    <nuclide ao="0.01849283124809845" name="Ti49" />
+    <nuclide ao="0.017706629549935297" name="Ti50" />
+    <nuclide ao="0.0003510256931795594" name="Hf174" />
+    <nuclide ao="0.011539969663278015" name="Hf176" />
+    <nuclide ao="0.04080673683212378" name="Hf177" />
+    <nuclide ao="0.05984988068711488" name="Hf178" />
+    <nuclide ao="0.02988106213190999" name="Hf179" />
+    <nuclide ao="0.0769623832296184" name="Hf180" />
+    <nuclide ao="0.4387137805476296" name="H1" />
+    <nuclide ao="6.833592681973072e-05" name="H2" />
+    <nuclide ao="1.0372547807532612e-42" name="N14" />
+  </material>
+  <material id="38" name="Boron carbide B4C">
+    <density units="g/cm3" value="2.5" />
+    <nuclide ao="0.15856" name="B10" />
+    <nuclide ao="0.64144" name="B11" />
+    <nuclide ao="0.1977844" name="C12" />
+    <nuclide ao="0.0022156" name="C13" />
   </material>
   <material id="81" name="crispy">
     <density units="g/cm3" value="1.4" />
@@ -592,6 +711,16 @@
     <nuclide ao="0.08122857142857143" name="W186" />
     <nuclide ao="0.14157142857142857" name="B10" />
     <nuclide ao="0.5727142857142857" name="B11" />
+  </material>
+  <material id="1202" name="tungsten boride WB2">
+    <density units="g/cm3" value="12.42" />
+    <nuclide ao="0.00039999999999999996" name="W180" />
+    <nuclide ao="0.08833333333333333" name="W182" />
+    <nuclide ao="0.0477" name="W183" />
+    <nuclide ao="0.10213333333333333" name="W184" />
+    <nuclide ao="0.09476666666666667" name="W186" />
+    <nuclide ao="0.13213333333333332" name="B10" />
+    <nuclide ao="0.5345333333333333" name="B11" />
   </material>
   <material id="1300" name="titanium hydride">
     <density units="g/cm3" value="3.75" />

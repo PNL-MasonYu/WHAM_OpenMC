@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plots>
-  <plot basis="yz" color_by="material" filename="./slice" id="1" type="slice">
-    <origin>0 0 300</origin>
-    <width>450 900</width>
-    <pixels>1500 3000</pixels>
+  <plot basis="yz" color_by="material" filename="./background" id="1" type="slice">
+    <origin>0 0 520.0</origin>
+    <width>550 1040</width>
+    <pixels>3000 3000</pixels>
     <background>255 0 255</background>
     <color id="0" rgb="0 0 0" />
     <color id="1" rgb="0 0 0" />
@@ -30,7 +30,18 @@
     <color id="24" rgb="128 128 128" />
     <color id="25" rgb="211 211 211" />
     <color id="26" rgb="0 128 0" />
+    <color id="27" rgb="0 128 0" />
+    <color id="28" rgb="0 128 0" />
+    <color id="29" rgb="0 128 0" />
+    <color id="30" rgb="0 128 0" />
     <color id="31" rgb="128 128 0" />
+    <color id="32" rgb="0 128 0" />
+    <color id="33" rgb="0 128 0" />
+    <color id="34" rgb="0 128 0" />
+    <color id="35" rgb="0 128 0" />
+    <color id="36" rgb="0 128 0" />
+    <color id="37" rgb="0 128 0" />
+    <color id="38" rgb="0 128 0" />
     <color id="81" rgb="165 42 42" />
     <color id="101" rgb="0 0 255" />
     <color id="298" rgb="0 128 128" />
@@ -38,6 +49,7 @@
     <color id="1000" rgb="128 128 128" />
     <color id="1200" rgb="255 255 0" />
     <color id="1201" rgb="255 255 0" />
+    <color id="1202" rgb="0 128 0" />
     <color id="1300" rgb="238 130 238" />
     <color id="1400" rgb="0 128 0" />
     <show_overlaps>true</show_overlaps>

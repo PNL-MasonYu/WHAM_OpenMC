@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pkg_resources import ZipProvider
 
 vacuum = openmc.Material(0, name='vacuum')
-vacuum.set_density('g/cm3', 1e-20)
+vacuum.set_density('g/cm3', 1e-40)
 vacuum.add_nuclide('N14', 1)
 
 air = openmc.Material(4, name='air')
@@ -190,6 +190,10 @@ tungsten_boride = openmc.Material(1200, name="tungsten boride WB")
 tungsten_boride.set_density("g/cm3", 15.43)
 tungsten_boride.add_elements_from_formula('WB')
 
+WB2 = openmc.Material(1202, name="tungsten boride WB2")
+WB2.set_density("g/cm3", 12.42)
+WB2.add_elements_from_formula("WB2")
+
 w2b5 = openmc.Material(1201, name="tungsten boride W2B5")
 w2b5.set_density("g/cm3", 12.91)
 w2b5.add_elements_from_formula("W2B5")
@@ -266,28 +270,75 @@ iron = openmc.Material(name='pure iron')
 iron.set_density("g/cm3", 7.874)
 iron.add_element("Fe", 100, 'ao')
 
-materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium,
-                  rebco, magnet, tungsten, crispy, water, he_cooled_rafm, iron,
+LiH = openmc.Material(name='Lithium Hydride LiH breeder')
+LiH.set_density("g/cm3", 0.775)
+LiH.add_element("Li", enrichment=4.85, percent=50, enrichment_target='Li6', enrichment_type='ao')
+LiH.add_element("H", 50, 'ao')
+LiH.temperature = 900
+
+LiD = openmc.Material(name='Lithium Deuteride LiD breeder')
+LiD.set_density("g/cm3", 0.885)
+LiD.add_element("Li", enrichment=4.85, percent=50, enrichment_target='Li6', enrichment_type='ao')
+LiD.add_element("H", enrichment=100, percent=50, enrichment_target='H2', enrichment_type='ao')
+LiD.temperature = 900
+
+lead = openmc.Material(name='pure lead')
+lead.set_density("g/cm3", 11.34)
+lead.add_element("Pb", 100)
+lead.temperature = 900
+
+lithium = openmc.Material(name='molten lithium')
+lithium.set_density("g/cm3", 0.512)
+lithium.add_element("Li", 100)
+lithium.temperature = 900
+
+HfH2 = openmc.Material(name="Hafnium hydride HfH2")
+HfH2.set_density("g/cm3", 11.36)
+HfH2.add_elements_from_formula("HfH2")
+
+titanium = openmc.Material(name="pure titanium")
+titanium.set_density("g/cm3", 4.506)
+titanium.add_element("Ti", 100)
+
+MgO = openmc.Material(name="Magnesium oxide MgO")
+MgO.set_density("g/cm3", 3.58)
+MgO.add_elements_from_formula("MgO")
+
+MgO_HfH2 = openmc.Material.mix_materials([MgO, HfH2, vacuum], [0.4, 0.4, 0.2], 'vo', name="MgO 40% vo, HfH2 40% vo, void 20% vo, Snead alloy 1")
+
+Fe_HfH2_WB2 = openmc.Material.mix_materials([iron, HfH2, WB2, vacuum], [0.54, 0.34, 0.07, 0.05], 'vo', name="Fe 54 vol % HfH2 34 vol % WB2 7 vol % remainder void, Snead alloy 2")
+
+Ti_HfH2 = openmc.Material.mix_materials([titanium, HfH2, vacuum], [0.5, 0.48, 0.02], 'vo', name="Ti 50 vol % HfH2 48vol % remainder void, Snead alloy 3")
+
+B4C = openmc.Material(name="Boron carbide B4C")
+B4C.set_density("g/cm3", 2.5)
+B4C.add_elements_from_formula("B4C")
+
+materials_list = [vacuum, air, deuterium, aluminum_6061, stainless, beryllium, lead, LiH, LiD,
+                  rebco, magnet, tungsten, crispy, water, he_cooled_rafm, iron, lithium,
                   cooled_tungsten, tungsten_carbide, cooled_tungsten_carbide,
-                  rafm_steel, LiPb_breeder, rings, tungsten_boride, w2b5, cooled_w2b5,
+                  rafm_steel, LiPb_breeder, rings, tungsten_boride, WB2, w2b5, cooled_w2b5,
                   TiH2, cooled_TiH2, zirconium_hydride, copper, hastelloy, flibe, tantalum,
-                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77, potassium, KCl]
+                  tantalum_hydride_55, tantalum_hydride_30, cooled_rafm_steel, Nak_77, potassium, KCl,
+                  HfH2, titanium, MgO, MgO_HfH2, Fe_HfH2_WB2, Ti_HfH2, B4C]
 materials = openmc.Materials(materials_list)
+# %%
 """
-fig=openmc.plot_xs(rafm_steel, ['damage'])
-openmc.plot_xs(he_cooled_rafm, ["damage"], axis=fig.get_axes()[0])
-openmc.plot_xs(stainless, ['damage'], axis=fig.get_axes()[0])
-openmc.plot_xs(iron, ["damage"], axis=fig.get_axes()[0])
+fig=openmc.plot_xs(tungsten, ['capture'])
+openmc.plot_xs(tungsten_carbide, ["capture"], axis=fig.get_axes()[0])
+openmc.plot_xs(TiH2, ['capture'], axis=fig.get_axes()[0])
+openmc.plot_xs(LiD, ["capture"], axis=fig.get_axes()[0])
+openmc.plot_xs(LiH, ["capture"], axis=fig.get_axes()[0])
 #openmc.plot_xs(tantalum_hydride, ["damage"], axis=fig.get_axes()[0])
-plt.title("MT=444 Damage macroscopic cross section")
-plt.xlabel("Energy (MeV)")
-plt.xlim([1e-2, 20])
-#plt.ylim([1e-1, 1e2])
-plt.legend(["EUROFER97", "EUROFER97 Cooled with 45% vo Helium", "SS316", 'iron'], loc='upper left')
+plt.title("Neutron capture Macroscopic Cross Section")
+plt.xlabel("Energy (eV)")
+plt.xlim([1e5, 20e6])
+plt.ylim([1e-5, 1e0])
+plt.legend(["tungsten", "tungsten carbide", "TiH2", 'LiD', 'LiH'], loc='upper left')
 #plt.xscale("linear")
 #plt.ylim([1e-1, 5])
 #plt.yscale("linear")
-fig.savefig("./plots/Eurofer damage")
+fig.savefig("./plots/W vs hydrides capture")
 plt.show()
 """
 # %%

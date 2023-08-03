@@ -39,7 +39,7 @@
     <bins>6000</bins>
   </filter>
   <filter id="3" type="cell">
-    <bins>1001 2001 2101 2201 6000 3001 3002 4001 4101 4201 5000 5001 5002 5100 5101 5102 5201 5203 6100 7000 7100</bins>
+    <bins>1001 2001 2101 2201 6000 3001 3002 4001 4101 4201 5000 5100 5101 5102 5200 5201 5203 6100 7000 7100</bins>
   </filter>
   <filter id="31" type="cell">
     <bins>5201</bins>
@@ -102,7 +102,7 @@
   <tally id="16" name="Breeder misc reaction">
     <filters>26</filters>
     <nuclides>K39 Cl35 Cl37 Li6 Li7</nuclides>
-    <scores>(n,a) (n,Xt) (n,p) (n,gamma) (n,2n) (n,3n)</scores>
+    <scores>(n,a) (n,Xt) (n,p) (n,gamma) (n,2n) (n,3n) H1-production He4-production</scores>
   </tally>
   <tally id="17" name="Breeder Pb(n,2n) reaction">
     <filters>26</filters>
@@ -113,10 +113,10 @@
     <nuclides>Li6 Li7</nuclides>
     <scores>(n,Xt)</scores>
   </tally>
-  <tally id="18" name="Breeder mesh">
+  <tally id="19" name="Production mesh">
     <filters>4</filters>
-    <nuclides>Li6 Li7</nuclides>
-    <scores>(n,Xt)</scores>
+    <nuclides>K39 Cl35 Cl37</nuclides>
+    <scores>(n,a) (n,p) (n,gamma) (n,2n) (n,3n)</scores>
   </tally>
   <tally id="20" name="Multiplier mesh">
     <filters>4</filters>

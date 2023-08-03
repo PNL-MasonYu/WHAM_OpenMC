@@ -71,7 +71,7 @@ throat_IR = 21
 # This is the distance from coil pack to cryostat in all directions
 cryostat_dist = 1
 # Cryostat thickness in cm
-cryostat_thickness = 5.08
+cryostat_thickness = 15
 # Close shield thickness in cm
 close_shield_thickness = 2.54
 # First wall thickness in cm
@@ -108,8 +108,17 @@ expand_tank_radius = 165
 # Reflector Thickness
 reflector_thickness = 25.4
 
-# Thickness for the testing region
-test_thickness = 0.01
+# Thickness for the testing/multiplier region
+test_thickness = 10
+
+# Inner vacuum diameter of the beam duct
+beam_duct_ID = 60
+# Beam duct wall thickness
+beam_duct_thickness = 2
+# Beam duct z-position
+beam_duct_z = 0
+# Beam duct x offset
+beam_duct_x = 0
 
 coil_zmin = coil_z-(coil_dz*coil_nz/2)
 cryo_zmin = coil_zmin - cryostat_dist - cryostat_thickness
@@ -190,6 +199,11 @@ end_reflector_sph = openmc.Sphere(0, 0, 75, end_radius+end_thickness+10)
 end_breeder_cyl = openmc.ZCylinder(0, 0, expand_tank_radius+0.7+end_thickness)
 end_reflector_zmin = openmc.ZPlane(end_radius+end_thickness+50)
 end_reflector_zmax = openmc.ZPlane(end_radius+end_thickness+60)
+
+# beam duct cylinders
+beam_inner_cyl = openmc.YCylinder(beam_duct_x, beam_duct_z, beam_duct_ID/2)
+beam_outer_cyl = openmc.YCylinder(beam_duct_x, beam_duct_z, beam_duct_ID/2 + beam_duct_thickness)
+beam_inner_cap = openmc.YPlane(0)
 
 ############################Shield##################################
 # The conical shield itself
@@ -314,6 +328,14 @@ r[5103] &= -chamber_outer_cyl
 r[5103] &= +throat_outer_cyl
 r[5103] &= +p_vacz1
 
+# Beam duct wall
+r[5200] = -beam_outer_cyl
+r[5200] &= +beam_inner_cyl
+r[5200] &= +chamber_inner_cyl
+r[5200] &= -reflector_outer_cyl
+r[5200] &= +p_vacz1
+r[5200] &= +beam_inner_cap
+
 # Material testing cylinder region
 r[5201] = -test_outer_cyl
 r[5201] &= +chamber_outer_cyl
@@ -434,6 +456,13 @@ r[7101] = -openmc.Sphere(0, 0, 75, end_radius-25)
 r[7101] &= +openmc.Sphere(0, 0, 75, end_radius-50)
 r[7101] &= -end_cone
 r[7101] &= -tank_inner_cyl
+
+# Vacuum inside beam duct
+r[7201] = -beam_inner_cyl
+r[7201] &= +chamber_inner_cyl
+r[7201] &= -reflector_outer_cyl
+r[7201] &= +p_vacz1
+r[7201] &= +beam_inner_cap
 
 # End Tank vacuum
 r[7901] = -tank_inner_cyl
