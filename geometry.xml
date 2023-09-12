@@ -57,8 +57,8 @@
   <surface coeffs="0 0 75 1060" id="36" type="sphere" />
   <surface coeffs="1100" id="38" type="z-plane" />
   <surface coeffs="1110" id="39" type="z-plane" />
-  <surface coeffs="0 0 60" id="40" type="y-cylinder" />
-  <surface coeffs="0 0 62" id="41" type="y-cylinder" />
+  <surface coeffs="0 0 30.0" id="40" type="y-cylinder" />
+  <surface coeffs="0 0 32.0" id="41" type="y-cylinder" />
   <surface coeffs="0" id="42" type="y-plane" />
   <surface coeffs="537.81" id="43" type="z-plane" />
   <surface coeffs="0 0 75" id="44" type="z-cylinder" />

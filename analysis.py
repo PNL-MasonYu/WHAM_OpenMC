@@ -175,16 +175,16 @@ def plot_result(sp, background, tally_name = 'thermal flux', tally_score = 'flux
             #print(slice.mean[15, 15, 15, :])
         #data_pos = np.divide(slice[:, 0, :], np.transpose(cyl_mesh.volumes[:, 0, :]))
         #data = np.concatenate([np.flip(data_pos, axis=1), data_pos], axis=1)
-        data = slice[:, :, 137]
+        #data = slice[:, :, 137]
         #data = slice[:, :, 14]
 
-        #data = aggregate_rectangular_single(slice, r_bins=100, max_r=mesh_dims[1]/2)
+        data = aggregate_rectangular_single(slice, r_bins=20, max_r=mesh_dims[1]/2)
         if save_aggregate:
             np.savez(savedir + "/" + tally_name, data)
     else:
         data = np.load(savedir + "/" + tally_name + ".npz")['arr_0']
 
-    data = np.add(data, min(contour_lvl)/m_factor/100)
+    #data = np.add(data, min(contour_lvl)/m_factor/100)
     data = np.nan_to_num(data, copy=False)
     fig = plt.figure(figsize=(10, 15))
     #draw_psi()
@@ -320,7 +320,7 @@ def plot_flux_heat_breed():
     # load data
     fast_flux_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/fast flux.npz")
     fast_flux = fast_flux_npzfile['arr_0']
-    fast_flux_with_beam_npzfile = np.load("plots/100-naturalLi-5cmPb-1x20cmbeam/fast flux.npz")
+    fast_flux_with_beam_npzfile = np.load("plots/100-naturalLi-10cmPb-1x60cmbeam/fast flux.npz")
     fast_flux_with_beam = fast_flux_with_beam_npzfile['arr_0']
     heat_npzfile = np.load("plots/100-naturalPbLi-5cmPb-biased/neutron heat load.npz")
     heat = np.add(heat_npzfile['arr_0'], 1e-10)
@@ -334,7 +334,7 @@ def plot_flux_heat_breed():
     vacuum_source = np.add(vacuum_source_npzfile['arr_0'], 1e-15)
     np.nan_to_num(vacuum_source)
     background_image = plt.imread("plots/100-naturalLi-5cmPb-biased/background.png")
-    background_image_with_beam = plt.imread("plots/100-naturalLi-5cmPb-1x20cmbeam/background.png")
+    background_image_with_beam = plt.imread("plots/100-naturalLi-5cmPb-1x60cmbeam/background.png")
     #background_image = plot_background(275, 260*4)
 
     fast_flux_data = np.multiply(fast_flux, source_rate/volume)
@@ -374,7 +374,7 @@ def plot_flux_heat_breed():
     cs0 = axs1[0].contour(fast_flux_with_beam_data, np.logspace(10, 16, 7), origin="lower",
                          extent=plot_extent, cmap='flag', linewidths=0.6, norm=colors.LogNorm(vmin=1e9, vmax=1e16))
     cbar0 = fig1.colorbar(im0, ax=axs1[0], orientation="horizontal", shrink=1, format='%0.0e', pad=0.1)
-    cbar0.set_label(r"Fast Neutron Flux (>100keV) $\left[\dfrac{n}{cm^2s}\right]$" + "\n Lithium With 20 cm Diameter Beam Duct", fontsize=16)
+    cbar0.set_label(r"Fast Neutron Flux (>100keV) $\left[\dfrac{n}{cm^2s}\right]$" + "\n Lithium With 60 cm Diameter Beam Duct", fontsize=16)
     cbar0.ax.tick_params(labelsize=10)
     plt.clabel(cs0, fmt='%0.0e', fontsize=9)
 

@@ -252,5 +252,5 @@ settings.export_to_xml(working_directory)
 # Plot geometry in line
 #openmc.plot_inline(chamber_geometry_plot)
 # Run locally
-openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
+#openmc.run(threads=16, openmc_exec="/usr/local/bin/openmc", geometry_debug=False)
 # %%
